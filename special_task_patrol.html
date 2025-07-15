@@ -1,0 +1,872 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Creation Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #f0f4f8;
+        }
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .form-header {
+            background-color: #4f46e5;
+            color: white;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+        .file-upload-label {
+            border: 2px dashed #cbd5e1;
+            transition: all 0.3s ease;
+        }
+        .file-upload-label:hover {
+            border-color: #4f46e5;
+            background-color: #f8fafc;
+        }
+        .custom-select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+    </style>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.16 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.absolute{position:absolute}.relative{position:relative}.inset-0{inset:0px}.-top-8{top:-2rem}.left-1\/2{left:50%}.z-10{z-index:10}.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:0.25rem}.mb-3{margin-bottom:0.75rem}.mb-4{margin-bottom:1rem}.mr-2{margin-right:0.5rem}.mt-1{margin-top:0.25rem}.ml-2{margin-left:0.5rem}.mr-3{margin-right:0.75rem}.block{display:block}.inline-block{display:inline-block}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-3{height:0.75rem}.h-5{height:1.25rem}.h-96{height:24rem}.h-full{height:100%}.h-2{height:0.5rem}.h-4{height:1rem}.h-8{height:2rem}.max-h-40{max-height:10rem}.max-h-60{max-height:15rem}.w-3{width:0.75rem}.w-5{width:1.25rem}.w-full{width:100%}.w-2{width:0.5rem}.w-4{width:1rem}.w-8{width:2rem}.max-w-7xl{max-width:80rem}.-translate-x-1\/2{--tw-translate-x:-50%;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.-translate-y-1\/2{--tw-translate-y:-50%;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.transform{transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-pointer{cursor:pointer}.grid-cols-1{grid-template-columns:repeat(1, minmax(0, 1fr))}.flex-col{flex-direction:column}.items-center{align-items:center}.justify-end{justify-content:flex-end}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.space-x-6 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(1.5rem * var(--tw-space-x-reverse));margin-left:calc(1.5rem * calc(1 - var(--tw-space-x-reverse)))}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-6 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1.5rem * var(--tw-space-y-reverse))}.divide-y > :not([hidden]) ~ :not([hidden]){--tw-divide-y-reverse:0;border-top-width:calc(1px * calc(1 - var(--tw-divide-y-reverse)));border-bottom-width:calc(1px * var(--tw-divide-y-reverse))}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.whitespace-nowrap{white-space:nowrap}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.rounded-md{border-radius:0.375rem}.rounded{border-radius:0.25rem}.border{border-width:1px}.border-2{border-width:2px}.border-b{border-bottom-width:1px}.border-gray-200{--tw-border-opacity:1;border-color:rgb(229 231 235 / var(--tw-border-opacity, 1))}.border-gray-300{--tw-border-opacity:1;border-color:rgb(209 213 219 / var(--tw-border-opacity, 1))}.border-indigo-100{--tw-border-opacity:1;border-color:rgb(224 231 255 / var(--tw-border-opacity, 1))}.border-green-500{--tw-border-opacity:1;border-color:rgb(34 197 94 / var(--tw-border-opacity, 1))}.border-red-500{--tw-border-opacity:1;border-color:rgb(239 68 68 / var(--tw-border-opacity, 1))}.border-yellow-500{--tw-border-opacity:1;border-color:rgb(234 179 8 / var(--tw-border-opacity, 1))}.bg-gray-100{--tw-bg-opacity:1;background-color:rgb(243 244 246 / var(--tw-bg-opacity, 1))}.bg-gray-50{--tw-bg-opacity:1;background-color:rgb(249 250 251 / var(--tw-bg-opacity, 1))}.bg-green-500{--tw-bg-opacity:1;background-color:rgb(34 197 94 / var(--tw-bg-opacity, 1))}.bg-indigo-50{--tw-bg-opacity:1;background-color:rgb(238 242 255 / var(--tw-bg-opacity, 1))}.bg-indigo-600{--tw-bg-opacity:1;background-color:rgb(79 70 229 / var(--tw-bg-opacity, 1))}.bg-red-500{--tw-bg-opacity:1;background-color:rgb(239 68 68 / var(--tw-bg-opacity, 1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-yellow-500{--tw-bg-opacity:1;background-color:rgb(234 179 8 / var(--tw-bg-opacity, 1))}.p-2{padding:0.5rem}.p-4{padding:1rem}.p-6{padding:1.5rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.py-8{padding-top:2rem;padding-bottom:2rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.text-2xl{font-size:1.5rem;line-height:2rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity, 1))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity, 1))}.text-gray-700{--tw-text-opacity:1;color:rgb(55 65 81 / var(--tw-text-opacity, 1))}.text-green-600{--tw-text-opacity:1;color:rgb(22 163 74 / var(--tw-text-opacity, 1))}.text-indigo-100{--tw-text-opacity:1;color:rgb(224 231 255 / var(--tw-text-opacity, 1))}.text-indigo-600{--tw-text-opacity:1;color:rgb(79 70 229 / var(--tw-text-opacity, 1))}.text-indigo-800{--tw-text-opacity:1;color:rgb(55 48 163 / var(--tw-text-opacity, 1))}.text-red-600{--tw-text-opacity:1;color:rgb(220 38 38 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.text-yellow-600{--tw-text-opacity:1;color:rgb(202 138 4 / var(--tw-text-opacity, 1))}.text-red-500{--tw-text-opacity:1;color:rgb(239 68 68 / var(--tw-text-opacity, 1))}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-md{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-shadow{transition-property:box-shadow;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.hover\:bg-indigo-50:hover{--tw-bg-opacity:1;background-color:rgb(238 242 255 / var(--tw-bg-opacity, 1))}.hover\:bg-indigo-700:hover{--tw-bg-opacity:1;background-color:rgb(67 56 202 / var(--tw-bg-opacity, 1))}.hover\:shadow-lg:hover{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.focus\:border-indigo-500:focus{--tw-border-opacity:1;border-color:rgb(99 102 241 / var(--tw-border-opacity, 1))}.focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px}.focus\:ring-2:focus{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)}.focus\:ring-indigo-500:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(99 102 241 / var(--tw-ring-opacity, 1))}.focus\:ring-offset-2:focus{--tw-ring-offset-width:2px}@media (min-width: 768px){.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.md\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}}@media (min-width: 1024px){.lg\:w-1\/3{width:33.333333%}.lg\:w-2\/3{width:66.666667%}.lg\:flex-row{flex-direction:row}}</style></head>
+<body class="py-8 px-4">
+    <div class="flex flex-col lg:flex-row gap-6 max-w-7xl mx-auto">
+        <div class="form-container lg:w-2/3">
+            <div class="form-header p-6">
+                <h1 class="text-2xl font-bold">Create New Task</h1>
+                <p class="text-indigo-100 mt-1">Fill in the details below to create a new task</p>
+            </div>
+            
+            <form class="p-6 space-y-6">
+            <!-- Contract ID and Task Name -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="contract-id" class="block text-sm font-medium text-gray-700 mb-1">Contract ID</label>
+                    <input type="text" id="contract-id" name="contract-id" required="" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+                <div>
+                    <label for="task-name" class="block text-sm font-medium text-gray-700 mb-1">Task Name</label>
+                    <input type="text" id="task-name" name="task-name" required="" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+            </div>
+            
+            <!-- Task Type and Location -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="task-type" class="block text-sm font-medium text-gray-700 mb-1">Task Type</label>
+                    <select id="task-type" name="task-type" required="" class="custom-select w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="" disabled="" selected="">Select task type</option>
+                        <option value="adhoc">Ad Hoc</option>
+                        <option value="scheduled">Scheduled</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="location" class="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                    <div class="relative">
+                        <input type="text" id="location" name="location" required="" placeholder="Search for a location..." class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" autocomplete="off">
+                        <div id="location-dropdown" class="absolute z-10 w-full mt-1 bg-white shadow-lg rounded-md border border-gray-200 hidden max-h-60 overflow-y-auto">
+                            <div class="p-2 hover:bg-indigo-50 cursor-pointer location-option">Building A - Floor 1</div>
+                            <div class="p-2 hover:bg-indigo-50 cursor-pointer location-option">Building A - Floor 2</div>
+                            <div class="p-2 hover:bg-indigo-50 cursor-pointer location-option">Building B - Reception</div>
+                            <div class="p-2 hover:bg-indigo-50 cursor-pointer location-option">Building B - Conference Room</div>
+                            <div class="p-2 hover:bg-indigo-50 cursor-pointer location-option">Building C - Cafeteria</div>
+                            <div class="p-2 hover:bg-indigo-50 cursor-pointer location-option">Building C - Office Space</div>
+                            <div class="p-2 hover:bg-indigo-50 cursor-pointer location-option">Parking Lot - Section A</div>
+                            <div class="p-2 hover:bg-indigo-50 cursor-pointer location-option">Parking Lot - Section B</div>
+                            <div class="p-2 hover:bg-indigo-50 cursor-pointer location-option">Warehouse - Storage Area</div>
+                            <div class="p-2 hover:bg-indigo-50 cursor-pointer location-option">Warehouse - Loading Dock</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Scheduled Time Options (Hidden by default) -->
+            <div id="scheduled-options" class="hidden bg-indigo-50 p-4 rounded-lg border border-indigo-100">
+                <h3 class="font-medium text-indigo-800 mb-3">Schedule Details</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label for="date-range" class="block text-sm font-medium text-gray-700 mb-1">Date Range</label>
+                        <input type="date" id="date-range" name="date-range" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label for="start-time" class="block text-sm font-medium text-gray-700 mb-1">Start Time</label>
+                        <input type="time" id="start-time" name="start-time" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label for="end-time" class="block text-sm font-medium text-gray-700 mb-1">End Time</label>
+                        <input type="time" id="end-time" name="end-time" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Checklist and Document Upload -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="checklist" class="block text-sm font-medium text-gray-700 mb-1">Checklist</label>
+                    <select id="checklist" name="checklist" required="" class="custom-select w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="" disabled="" selected="">Select checklist</option>
+                        <option value="checklist-1">Daily Inspection</option>
+                        <option value="checklist-2">Safety Protocol</option>
+                        <option value="checklist-3">Maintenance Routine</option>
+                        <option value="checklist-4">Quality Assurance</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Document Upload</label>
+                    <label for="document-upload" class="file-upload-label flex justify-center items-center px-4 py-2 rounded-md cursor-pointer">
+                        <span class="text-indigo-600 mr-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                            </svg>
+                        </span>
+                        <span class="text-gray-600">Click to upload document</span>
+                        <input id="document-upload" name="document-upload" type="file" class="hidden">
+                    </label>
+                    <p id="file-name" class="mt-1 text-sm text-gray-500"></p>
+                </div>
+            </div>
+            
+            <!-- Priority and Incident Number -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="priority" class="block text-sm font-medium text-gray-700 mb-1">Priority</label>
+                    <select id="priority" name="priority" required="" class="custom-select w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="" disabled="" selected="">Select priority</option>
+                        <option value="high" class="text-red-600">High</option>
+                        <option value="medium" class="text-yellow-600">Medium</option>
+                        <option value="low" class="text-green-600">Low</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="incident-number" class="block text-sm font-medium text-gray-700 mb-1">Incident Number</label>
+                    <input type="text" id="incident-number" name="incident-number" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+            </div>
+            
+            <!-- Incident Document/Photo -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Incident Attachment (Document/Photo)</label>
+                <label for="incident-attachment" class="file-upload-label flex justify-center items-center px-4 py-2 rounded-md cursor-pointer">
+                    <span class="text-indigo-600 mr-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </span>
+                    <span class="text-gray-600">Upload incident document or photo</span>
+                    <input id="incident-attachment" name="incident-attachment" type="file" accept="image/*,.pdf,.doc,.docx" class="hidden">
+                </label>
+                <p id="incident-file-name" class="mt-1 text-sm text-gray-500"></p>
+            </div>
+            
+            <!-- Staff Assignment -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Assign Staff</label>
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <div class="mb-3">
+                        <input type="text" id="staff-search" placeholder="Search staff members..." class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div class="space-y-2 max-h-40 overflow-y-auto" id="staff-assignment-list"><div class="flex items-center">
+                    <input id="staff-1" name="staff[]" type="checkbox" value="staff-1" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                    <label for="staff-1" class="ml-2 flex items-center text-sm text-gray-700">
+                        <span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
+                        John Smith (Technician)
+                        
+                    </label>
+                </div><div class="flex items-center">
+                    <input id="staff-2" name="staff[]" type="checkbox" value="staff-2" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                    <label for="staff-2" class="ml-2 flex items-center text-sm text-gray-700">
+                        <span class="inline-block w-2 h-2 rounded-full bg-red-500 mr-2"></span>
+                        Sarah Johnson (Engineer)
+                        <span class="ml-2 text-xs text-red-500">(In Task)</span>
+                    </label>
+                </div><div class="flex items-center">
+                    <input id="staff-3" name="staff[]" type="checkbox" value="staff-3" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                    <label for="staff-3" class="ml-2 flex items-center text-sm text-gray-700">
+                        <span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
+                        Michael Brown (Supervisor)
+                        
+                    </label>
+                </div><div class="flex items-center">
+                    <input id="staff-4" name="staff[]" type="checkbox" value="staff-4" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                    <label for="staff-4" class="ml-2 flex items-center text-sm text-gray-700">
+                        <span class="inline-block w-2 h-2 rounded-full bg-red-500 mr-2"></span>
+                        Emily Davis (Inspector)
+                        <span class="ml-2 text-xs text-red-500">(In Task)</span>
+                    </label>
+                </div><div class="flex items-center">
+                    <input id="staff-5" name="staff[]" type="checkbox" value="staff-5" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                    <label for="staff-5" class="ml-2 flex items-center text-sm text-gray-700">
+                        <span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
+                        Robert Wilson (Maintenance)
+                        
+                    </label>
+                </div></div>
+                </div>
+            </div>
+            
+            <!-- Submit Button -->
+            <div class="flex justify-end">
+                <button type="submit" class="px-6 py-3 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+                    Create Task
+                </button>
+            </div>
+        </form>
+        <div class="lg:w-1/3 xl:w-full h-max">
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden h-full">
+                <div class="bg-indigo-600 p-4 text-white">
+                    <h2 class="text-xl font-bold">Staff Location Map</h2>
+                    <p class="text-indigo-100 text-sm">Real-time staff locations and availability</p>
+                </div>
+                <div class="p-4">
+                    <div class="relative w-full h-96 bg-gray-100 rounded-lg overflow-hidden mb-4">
+                        <!-- Map Container -->
+                        <div id="map-container" class="w-full h-full relative">
+                            <!-- Office Map SVG -->
+                            <svg viewBox="0 0 800 600" class="w-full h-full">
+                                <!-- Building Outline -->
+                                <rect x="50" y="50" width="700" height="500" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2"></rect>
+                                
+                                <!-- Rooms -->
+                                <rect x="100" y="100" width="200" height="150" fill="#e5e7eb" stroke="#9ca3af" stroke-width="1"></rect>
+                                <text x="200" y="175" text-anchor="middle" fill="#4b5563" font-size="14">Conference Room A</text>
+                                
+                                <rect x="100" y="300" width="200" height="150" fill="#e5e7eb" stroke="#9ca3af" stroke-width="1"></rect>
+                                <text x="200" y="375" text-anchor="middle" fill="#4b5563" font-size="14">Office Area 1</text>
+                                
+                                <rect x="350" y="100" width="300" height="150" fill="#e5e7eb" stroke="#9ca3af" stroke-width="1"></rect>
+                                <text x="500" y="175" text-anchor="middle" fill="#4b5563" font-size="14">Warehouse Zone</text>
+                                
+                                <rect x="350" y="300" width="150" height="150" fill="#e5e7eb" stroke="#9ca3af" stroke-width="1"></rect>
+                                <text x="425" y="375" text-anchor="middle" fill="#4b5563" font-size="14">Break Room</text>
+                                
+                                <rect x="550" y="300" width="100" height="150" fill="#e5e7eb" stroke="#9ca3af" stroke-width="1"></rect>
+                                <text x="600" y="375" text-anchor="middle" fill="#4b5563" font-size="14">Storage</text>
+                                
+                                <!-- Hallways -->
+                                <rect x="100" y="250" width="550" height="50" fill="#f9fafb" stroke="#9ca3af" stroke-width="1"></rect>
+                                <rect x="300" y="100" width="50" height="350" fill="#f9fafb" stroke="#9ca3af" stroke-width="1"></rect>
+                                <rect x="500" y="300" width="50" height="150" fill="#f9fafb" stroke="#9ca3af" stroke-width="1"></rect>
+                                
+                                <!-- Staff Location Markers will be added dynamically -->
+                            </svg>
+                            
+                            <!-- Staff Location Markers (Positioned Absolutely) -->
+                            <div id="staff-markers"><div class="absolute transform -translate-x-1/2 -translate-y-1/2" data-staff-id="staff-1" style="left: 159.631px; top: 373.436px; pointer-events: auto;">
+                    <div class="relative group cursor-pointer">
+                        <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-green-500 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
+                            Available
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-white border-2 border-green-500 flex items-center justify-center shadow-md hover:shadow-lg transition-shadow">
+                            <span class="text-gray-700 font-bold">J</span>
+                        </div>
+                    </div>
+                </div><div class="absolute transform -translate-x-1/2 -translate-y-1/2" data-staff-id="staff-2" style="left: 447.631px; top: 146.535px; pointer-events: auto;">
+                    <div class="relative group cursor-pointer">
+                        <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-red-500 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
+                            In Task
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-white border-2 border-red-500 flex items-center justify-center shadow-md hover:shadow-lg transition-shadow">
+                            <span class="text-gray-700 font-bold">S</span>
+                        </div>
+                    </div>
+                </div><div class="absolute transform -translate-x-1/2 -translate-y-1/2" data-staff-id="staff-3" style="left: 192.874px; top: 158.014px; pointer-events: auto;">
+                    <div class="relative group cursor-pointer">
+                        <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-green-500 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
+                            Available
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-white border-2 border-green-500 flex items-center justify-center shadow-md hover:shadow-lg transition-shadow">
+                            <span class="text-gray-700 font-bold">M</span>
+                        </div>
+                    </div>
+                </div><div class="absolute transform -translate-x-1/2 -translate-y-1/2" data-staff-id="staff-4" style="left: 401.769px; top: 352.27px; pointer-events: auto;">
+                    <div class="relative group cursor-pointer">
+                        <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-red-500 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
+                            In Task
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-white border-2 border-red-500 flex items-center justify-center shadow-md hover:shadow-lg transition-shadow">
+                            <span class="text-gray-700 font-bold">E</span>
+                        </div>
+                    </div>
+                </div><div class="absolute transform -translate-x-1/2 -translate-y-1/2" data-staff-id="staff-5" style="left: 589.212px; top: 352.329px; pointer-events: auto;">
+                    <div class="relative group cursor-pointer">
+                        <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-green-500 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
+                            Available
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-white border-2 border-green-500 flex items-center justify-center shadow-md hover:shadow-lg transition-shadow">
+                            <span class="text-gray-700 font-bold">R</span>
+                        </div>
+                    </div>
+                </div></div>
+                            
+                            <!-- Map Interaction Layer -->
+                            <div class="absolute inset-0 cursor-pointer" id="map-interaction-layer" style="pointer-events: none;"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Legend -->
+                    <div class="flex items-center justify-center space-x-6 mb-4">
+                        <div class="flex items-center">
+                            <span class="inline-block w-3 h-3 rounded-full bg-green-500 mr-2"></span>
+                            <span class="text-sm text-gray-600">Available</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="inline-block w-3 h-3 rounded-full bg-red-500 mr-2"></span>
+                            <span class="text-sm text-gray-600">In Task</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="inline-block w-3 h-3 rounded-full bg-yellow-500 mr-2"></span>
+                            <span class="text-sm text-gray-600">On Break</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Staff List -->
+                    <div class="border rounded-lg overflow-hidden">
+                        <div class="bg-gray-50 px-4 py-2 border-b">
+                            <h3 class="font-medium text-gray-700">Staff Status</h3>
+                        </div>
+                        <div class="divide-y" id="staff-status-list"><div class="px-4 py-3 flex items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center mr-3">
+                            <span class="text-gray-700 font-bold">J</span>
+                        </div>
+                        <div>
+                            <p class="font-medium">John Smith</p>
+                            <p class="text-xs text-gray-500">Technician</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
+                        <span class="text-sm">Available</span>
+                    </div>
+                </div><div class="px-4 py-3 flex items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center mr-3">
+                            <span class="text-gray-700 font-bold">S</span>
+                        </div>
+                        <div>
+                            <p class="font-medium">Sarah Johnson</p>
+                            <p class="text-xs text-gray-500">Engineer</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="inline-block w-2 h-2 rounded-full bg-red-500 mr-2"></span>
+                        <span class="text-sm">In Task</span>
+                    </div>
+                </div><div class="px-4 py-3 flex items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center mr-3">
+                            <span class="text-gray-700 font-bold">M</span>
+                        </div>
+                        <div>
+                            <p class="font-medium">Michael Brown</p>
+                            <p class="text-xs text-gray-500">Supervisor</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
+                        <span class="text-sm">Available</span>
+                    </div>
+                </div><div class="px-4 py-3 flex items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center mr-3">
+                            <span class="text-gray-700 font-bold">E</span>
+                        </div>
+                        <div>
+                            <p class="font-medium">Emily Davis</p>
+                            <p class="text-xs text-gray-500">Inspector</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="inline-block w-2 h-2 rounded-full bg-red-500 mr-2"></span>
+                        <span class="text-sm">In Task</span>
+                    </div>
+                </div><div class="px-4 py-3 flex items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center mr-3">
+                            <span class="text-gray-700 font-bold">R</span>
+                        </div>
+                        <div>
+                            <p class="font-medium">Robert Wilson</p>
+                            <p class="text-xs text-gray-500">Maintenance</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
+                        <span class="text-sm">Available</span>
+                    </div>
+                </div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Show/hide scheduled options based on task type selection
+        document.getElementById('task-type').addEventListener('change', function() {
+            const scheduledOptions = document.getElementById('scheduled-options');
+            if (this.value === 'scheduled') {
+                scheduledOptions.classList.remove('hidden');
+            } else {
+                scheduledOptions.classList.add('hidden');
+            }
+        });
+
+        // Display file name for document upload
+        document.getElementById('document-upload').addEventListener('change', function() {
+            const fileName = this.files[0] ? this.files[0].name : '';
+            document.getElementById('file-name').textContent = fileName;
+        });
+
+        // Display file name for incident attachment
+        document.getElementById('incident-attachment').addEventListener('change', function() {
+            const fileName = this.files[0] ? this.files[0].name : '';
+            document.getElementById('incident-file-name').textContent = fileName;
+        });
+        
+        // Location search functionality
+        const locationInput = document.getElementById('location');
+        const locationDropdown = document.getElementById('location-dropdown');
+        const locationOptions = document.querySelectorAll('.location-option');
+        
+        // Show dropdown when focusing on location input
+        locationInput.addEventListener('focus', function() {
+            locationDropdown.classList.remove('hidden');
+        });
+        
+        // Filter locations based on input
+        locationInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            let hasVisibleOptions = false;
+            
+            locationOptions.forEach(option => {
+                const text = option.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    option.style.display = '';
+                    hasVisibleOptions = true;
+                } else {
+                    option.style.display = 'none';
+                }
+            });
+            
+            // Show/hide dropdown based on whether there are matching options
+            if (hasVisibleOptions) {
+                locationDropdown.classList.remove('hidden');
+            } else {
+                locationDropdown.classList.add('hidden');
+            }
+        });
+        
+        // Select location when clicking on an option
+        locationOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                locationInput.value = this.textContent;
+                locationDropdown.classList.add('hidden');
+            });
+        });
+        
+        // Hide dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (e.target !== locationInput && !locationDropdown.contains(e.target)) {
+                locationDropdown.classList.add('hidden');
+            }
+        });
+
+        // Staff search functionality
+        document.getElementById('staff-search').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const staffItems = document.querySelectorAll('[id^="staff-"]');
+            
+            staffItems.forEach(item => {
+                if (item.type === 'checkbox') {
+                    const label = document.querySelector(`label[for="${item.id}"]`);
+                    const text = label.textContent.toLowerCase();
+                    
+                    if (text.includes(searchTerm)) {
+                        label.parentElement.style.display = '';
+                    } else {
+                        label.parentElement.style.display = 'none';
+                    }
+                }
+            });
+        });
+        
+        // Highlight staff on map when selecting from assignment list
+        document.addEventListener('change', function(e) {
+            if (e.target.name === 'staff[]') {
+                const staffId = e.target.value;
+                const isChecked = e.target.checked;
+                
+                // Find the staff marker
+                const marker = document.querySelector(`div[data-staff-id="${staffId}"]`);
+                if (marker) {
+                    const icon = marker.querySelector('div > div:nth-child(2)');
+                    
+                    if (isChecked) {
+                        // Add persistent highlight
+                        icon.classList.add('ring-2', 'ring-indigo-600');
+                        
+                        // Animate selection
+                        icon.classList.add('scale-125');
+                        setTimeout(() => {
+                            icon.classList.remove('scale-125');
+                        }, 300);
+                    } else {
+                        // Remove highlight
+                        icon.classList.remove('ring-2', 'ring-indigo-600');
+                    }
+                }
+            }
+        });
+
+        // Staff data with locations and status
+        const staffData = [
+            {
+                id: 'staff-1',
+                name: 'John Smith',
+                role: 'Technician',
+                status: 'available', // available, in-task, break
+                location: { x: 150, y: 350 }, // Office Area 1
+                lastUpdated: '2 mins ago'
+            },
+            {
+                id: 'staff-2',
+                name: 'Sarah Johnson',
+                role: 'Engineer',
+                status: 'in-task',
+                location: { x: 450, y: 150 }, // Warehouse Zone
+                lastUpdated: '5 mins ago'
+            },
+            {
+                id: 'staff-3',
+                name: 'Michael Brown',
+                role: 'Supervisor',
+                status: 'available',
+                location: { x: 200, y: 150 }, // Conference Room A
+                lastUpdated: '1 min ago'
+            },
+            {
+                id: 'staff-4',
+                name: 'Emily Davis',
+                role: 'Inspector',
+                status: 'break',
+                location: { x: 400, y: 350 }, // Break Room
+                lastUpdated: '15 mins ago'
+            },
+            {
+                id: 'staff-5',
+                name: 'Robert Wilson',
+                role: 'Maintenance',
+                status: 'in-task',
+                location: { x: 600, y: 350 }, // Storage
+                lastUpdated: '8 mins ago'
+            }
+        ];
+        
+        // Function to render staff markers on the map
+        function renderStaffMarkers() {
+            const markersContainer = document.getElementById('staff-markers');
+            markersContainer.innerHTML = '';
+            
+            staffData.forEach(staff => {
+                // Create marker container
+                const marker = document.createElement('div');
+                marker.className = 'absolute transform -translate-x-1/2 -translate-y-1/2';
+                marker.style.left = `${staff.location.x}px`;
+                marker.style.top = `${staff.location.y}px`;
+                marker.dataset.staffId = staff.id;
+                
+                // Create marker icon with status color
+                const statusColors = {
+                    'available': 'bg-green-500',
+                    'in-task': 'bg-red-500',
+                    'break': 'bg-yellow-500'
+                };
+                
+                const statusColor = statusColors[staff.status] || 'bg-gray-500';
+                
+                // Create HTML for marker
+                marker.innerHTML = `
+                    <div class="relative group cursor-pointer">
+                        <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 ${statusColor} text-white text-xs px-2 py-1 rounded whitespace-nowrap">
+                            ${staff.status === 'available' ? 'Available' : staff.status === 'in-task' ? 'In Task' : 'On Break'}
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-white border-2 ${statusColor === 'bg-green-500' ? 'border-green-500' : statusColor === 'bg-red-500' ? 'border-red-500' : 'border-yellow-500'} flex items-center justify-center shadow-md hover:shadow-lg transition-shadow">
+                            <span class="text-gray-700 font-bold">${staff.name.charAt(0)}</span>
+                        </div>
+                    </div>
+                `;
+                
+                markersContainer.appendChild(marker);
+            });
+        }
+        
+        // Function to render staff status list
+        function renderStaffStatusList() {
+            const statusList = document.getElementById('staff-status-list');
+            statusList.innerHTML = '';
+            
+            staffData.forEach(staff => {
+                const statusColors = {
+                    'available': 'bg-green-500',
+                    'in-task': 'bg-red-500',
+                    'break': 'bg-yellow-500'
+                };
+                
+                const statusColor = statusColors[staff.status] || 'bg-gray-500';
+                const statusText = staff.status === 'available' ? 'Available' : staff.status === 'in-task' ? 'In Task' : 'On Break';
+                
+                const listItem = document.createElement('div');
+                listItem.className = 'px-4 py-3 flex items-center justify-between';
+                listItem.innerHTML = `
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center mr-3">
+                            <span class="text-gray-700 font-bold">${staff.name.charAt(0)}</span>
+                        </div>
+                        <div>
+                            <p class="font-medium">${staff.name}</p>
+                            <p class="text-xs text-gray-500">${staff.role}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="inline-block w-2 h-2 rounded-full ${statusColor} mr-2"></span>
+                        <span class="text-sm">${statusText}</span>
+                    </div>
+                `;
+                
+                statusList.appendChild(listItem);
+            });
+        }
+        
+        // Function to render staff assignment checkboxes
+        function renderStaffAssignmentList() {
+            const assignmentList = document.getElementById('staff-assignment-list');
+            assignmentList.innerHTML = '';
+            
+            staffData.forEach(staff => {
+                const listItem = document.createElement('div');
+                listItem.className = 'flex items-center';
+                
+                // Create status indicator
+                const statusColors = {
+                    'available': 'bg-green-500',
+                    'in-task': 'bg-red-500',
+                    'break': 'bg-yellow-500'
+                };
+                
+                const statusColor = statusColors[staff.status] || 'bg-gray-500';
+                
+                listItem.innerHTML = `
+                    <input id="${staff.id}" name="staff[]" type="checkbox" value="${staff.id}" 
+                        class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                    <label for="${staff.id}" class="ml-2 flex items-center text-sm text-gray-700">
+                        <span class="inline-block w-2 h-2 rounded-full ${statusColor} mr-2"></span>
+                        ${staff.name} (${staff.role})
+                        ${staff.status === 'in-task' ? '<span class="ml-2 text-xs text-red-500">(In Task)</span>' : ''}
+                    </label>
+                `;
+                
+                assignmentList.appendChild(listItem);
+            });
+        }
+        
+        // Function to highlight staff on map when hovering over checkbox
+        function setupStaffHighlighting() {
+            const staffCheckboxes = document.querySelectorAll('input[name="staff[]"]');
+            
+            staffCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('mouseenter', function() {
+                    const staffId = this.value;
+                    const marker = document.querySelector(`div[data-staff-id="${staffId}"]`);
+                    if (marker) {
+                        const icon = marker.querySelector('div > div:nth-child(2)');
+                        icon.classList.add('ring-4', 'ring-indigo-300');
+                    }
+                });
+                
+                checkbox.addEventListener('mouseleave', function() {
+                    const staffId = this.value;
+                    const marker = document.querySelector(`div[data-staff-id="${staffId}"]`);
+                    if (marker) {
+                        const icon = marker.querySelector('div > div:nth-child(2)');
+                        icon.classList.remove('ring-4', 'ring-indigo-300');
+                    }
+                });
+            });
+        }
+        
+        // Staff marker click functionality to show info box
+        function setupMapInteraction() {
+            // Remove the map layer click event
+            const mapLayer = document.getElementById('map-interaction-layer');
+            mapLayer.style.pointerEvents = 'none';
+            
+            // Function to create staff info box
+            function createStaffInfoBox(staff, x, y) {
+                // Remove previous info boxes
+                const previousInfo = document.querySelector('#map-container .staff-info-box');
+                if (previousInfo) {
+                    previousInfo.remove();
+                }
+                
+                const statusText = staff.status === 'available' ? 'Available' : 
+                                  staff.status === 'in-task' ? 'In Task' : 'On Break';
+                
+                // Create info box
+                const infoBox = document.createElement('div');
+                infoBox.className = 'staff-info-box absolute bg-white p-3 rounded-lg shadow-lg z-20';
+                infoBox.style.left = `${x}px`;
+                infoBox.style.top = `${y - 100}px`;
+                infoBox.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <h4 class="font-medium">${staff.name}</h4>
+                        <button class="close-info-box text-gray-500 hover:text-gray-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <p class="text-sm text-gray-600">${staff.role}</p>
+                    <p class="text-sm font-medium mt-1">Status: ${statusText}</p>
+                    <p class="text-xs text-gray-500 mt-1">Last updated: ${staff.lastUpdated}</p>
+                `;
+                
+                // Add to map
+                document.getElementById('map-container').appendChild(infoBox);
+                
+                // Add close button event
+                infoBox.querySelector('.close-info-box').addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    infoBox.remove();
+                });
+            }
+            
+            // Add click events to staff markers
+            function addStaffMarkerClickEvents() {
+                const staffMarkers = document.querySelectorAll('[data-staff-id]');
+                
+                staffMarkers.forEach(marker => {
+                    // Make sure the marker and its children have pointer events
+                    marker.style.pointerEvents = 'auto';
+                    
+                    marker.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        
+                        const staffId = this.dataset.staffId;
+                        const staff = staffData.find(s => s.id === staffId);
+                        
+                        if (staff) {
+                            const rect = document.getElementById('map-container').getBoundingClientRect();
+                            const x = e.clientX - rect.left;
+                            const y = e.clientY - rect.top;
+                            
+                            createStaffInfoBox(staff, x, y);
+                        }
+                    });
+                });
+            }
+            
+            // Initial setup and re-apply after staff updates
+            addStaffMarkerClickEvents();
+            
+            // Re-apply click events after staff markers are updated
+            const originalRenderStaffMarkers = window.renderStaffMarkers;
+            window.renderStaffMarkers = function() {
+                originalRenderStaffMarkers();
+                addStaffMarkerClickEvents();
+            };
+        }
+        
+        // Initialize staff map and list
+        document.addEventListener('DOMContentLoaded', function() {
+            renderStaffMarkers();
+            renderStaffStatusList();
+            renderStaffAssignmentList();
+            setupStaffHighlighting();
+            setupMapInteraction();
+            
+            // Simulate staff movement and status changes
+            setInterval(() => {
+                // Randomly update one staff member's position slightly
+                const randomStaffIndex = Math.floor(Math.random() * staffData.length);
+                const staff = staffData[randomStaffIndex];
+                
+                // Small random movement
+                staff.location.x += Math.random() * 20 - 10;
+                staff.location.y += Math.random() * 20 - 10;
+                
+                // Keep within bounds
+                staff.location.x = Math.max(100, Math.min(650, staff.location.x));
+                staff.location.y = Math.max(100, Math.min(450, staff.location.y));
+                
+                // Occasionally change status
+                if (Math.random() > 0.7) {
+                    const statuses = ['available', 'in-task', 'break'];
+                    staff.status = statuses[Math.floor(Math.random() * statuses.length)];
+                    staff.lastUpdated = 'Just now';
+                }
+                
+                // Update the display
+                renderStaffMarkers();
+                renderStaffStatusList();
+                renderStaffAssignmentList();
+                setupStaffHighlighting();
+            }, 5000); // Update every 5 seconds
+        });
+        
+        // Form submission
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validate form
+            const requiredFields = document.querySelectorAll('[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value) {
+                    isValid = false;
+                    field.classList.add('border-red-500');
+                } else {
+                    field.classList.remove('border-red-500');
+                }
+            });
+            
+            // If task type is scheduled, validate schedule fields
+            if (document.getElementById('task-type').value === 'scheduled') {
+                const dateRange = document.getElementById('date-range').value;
+                const startTime = document.getElementById('start-time').value;
+                const endTime = document.getElementById('end-time').value;
+                
+                if (!dateRange || !startTime || !endTime) {
+                    isValid = false;
+                    if (!dateRange) document.getElementById('date-range').classList.add('border-red-500');
+                    if (!startTime) document.getElementById('start-time').classList.add('border-red-500');
+                    if (!endTime) document.getElementById('end-time').classList.add('border-red-500');
+                }
+            }
+            
+            if (isValid) {
+                // Show success message
+                alert('Task created successfully!');
+                this.reset();
+                document.getElementById('scheduled-options').classList.add('hidden');
+                document.getElementById('file-name').textContent = '';
+                document.getElementById('incident-file-name').textContent = '';
+            } else {
+                alert('Please fill in all required fields.');
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'95f66cc2f1396ad4',t:'MTc1MjU1Mjc4MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+
+</div><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border: none; visibility: hidden;"></iframe></body></html>
