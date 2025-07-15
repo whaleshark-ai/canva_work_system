@@ -1,0 +1,850 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Shift Schedule</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .time-slot {
+            transition: all 0.2s ease;
+        }
+        .time-slot:hover {
+            transform: scale(1.02);
+        }
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 50;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal {
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.16 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.container{width:100%}@media (min-width: 640px){.container{max-width:640px}}@media (min-width: 768px){.container{max-width:768px}}@media (min-width: 1024px){.container{max-width:1024px}}@media (min-width: 1280px){.container{max-width:1280px}}@media (min-width: 1536px){.container{max-width:1536px}}.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:0.25rem}.mb-2{margin-bottom:0.5rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.mr-2{margin-right:0.5rem}.mt-2{margin-top:0.5rem}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.grid{display:grid}.hidden{display:none}.h-24{height:6rem}.h-6{height:1.5rem}.h-full{height:100%}.min-h-screen{min-height:100vh}.w-6{width:1.5rem}.w-full{width:100%}.max-w-md{max-width:28rem}.border-collapse{border-collapse:collapse}.cursor-pointer{cursor:pointer}.appearance-none{-webkit-appearance:none;appearance:none}.grid-cols-7{grid-template-columns:repeat(7, minmax(0, 1fr))}.items-center{align-items:center}.justify-end{justify-content:flex-end}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:0.25rem}.overflow-hidden{overflow:hidden}.overflow-x-auto{overflow-x:auto}.overflow-y-auto{overflow-y:auto}.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rounded{border-radius:0.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.rounded-md{border-radius:0.375rem}.rounded-sm{border-radius:0.125rem}.rounded-xl{border-radius:0.75rem}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-b-2{border-bottom-width:2px}.bg-blue-100{--tw-bg-opacity:1;background-color:rgb(219 234 254 / var(--tw-bg-opacity, 1))}.bg-gray-50{--tw-bg-opacity:1;background-color:rgb(249 250 251 / var(--tw-bg-opacity, 1))}.bg-gray-500{--tw-bg-opacity:1;background-color:rgb(107 114 128 / var(--tw-bg-opacity, 1))}.bg-green-100{--tw-bg-opacity:1;background-color:rgb(220 252 231 / var(--tw-bg-opacity, 1))}.bg-indigo-100{--tw-bg-opacity:1;background-color:rgb(224 231 255 / var(--tw-bg-opacity, 1))}.bg-indigo-300{--tw-bg-opacity:1;background-color:rgb(165 180 252 / var(--tw-bg-opacity, 1))}.bg-indigo-50{--tw-bg-opacity:1;background-color:rgb(238 242 255 / var(--tw-bg-opacity, 1))}.bg-indigo-600{--tw-bg-opacity:1;background-color:rgb(79 70 229 / var(--tw-bg-opacity, 1))}.bg-purple-100{--tw-bg-opacity:1;background-color:rgb(243 232 255 / var(--tw-bg-opacity, 1))}.bg-red-100{--tw-bg-opacity:1;background-color:rgb(254 226 226 / var(--tw-bg-opacity, 1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-yellow-100{--tw-bg-opacity:1;background-color:rgb(254 249 195 / var(--tw-bg-opacity, 1))}.bg-gradient-to-br{background-image:linear-gradient(to bottom right, var(--tw-gradient-stops))}.from-blue-50{--tw-gradient-from:#eff6ff var(--tw-gradient-from-position);--tw-gradient-to:rgb(239 246 255 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.to-indigo-100{--tw-gradient-to:#e0e7ff var(--tw-gradient-to-position)}.p-1{padding:0.25rem}.p-2{padding:0.5rem}.p-6{padding:1.5rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-8{padding-top:2rem;padding-bottom:2rem}.text-left{text-align:left}.text-center{text-align:center}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-semibold{font-weight:600}.leading-tight{line-height:1.25}.text-gray-400{--tw-text-opacity:1;color:rgb(156 163 175 / var(--tw-text-opacity, 1))}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity, 1))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity, 1))}.text-gray-700{--tw-text-opacity:1;color:rgb(55 65 81 / var(--tw-text-opacity, 1))}.text-indigo-600{--tw-text-opacity:1;color:rgb(79 70 229 / var(--tw-text-opacity, 1))}.text-indigo-800{--tw-text-opacity:1;color:rgb(55 48 163 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.shadow{--tw-shadow:0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-md{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.hover\:bg-gray-600:hover{--tw-bg-opacity:1;background-color:rgb(75 85 99 / var(--tw-bg-opacity, 1))}.hover\:bg-indigo-100:hover{--tw-bg-opacity:1;background-color:rgb(224 231 255 / var(--tw-bg-opacity, 1))}.hover\:bg-indigo-700:hover{--tw-bg-opacity:1;background-color:rgb(67 56 202 / var(--tw-bg-opacity, 1))}.hover\:shadow-md:hover{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.hover\:shadow-sm:hover{--tw-shadow:0 1px 2px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:0 1px 2px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px}</style></head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-indigo-800 mb-6 text-center">Employee Shift Schedule</h1>
+        
+        <!-- View Selector -->
+        <div class="flex justify-center mb-8">
+            <div class="bg-white rounded-lg shadow-md p-1 inline-flex">
+                <button id="daily-btn" class="px-6 py-2 rounded-md font-medium text-indigo-600">Daily</button>
+                <button id="weekly-btn" class="px-6 py-2 rounded-md font-medium bg-indigo-600 text-white">Weekly</button>
+                <button id="monthly-btn" class="px-6 py-2 rounded-md text-indigo-600 font-medium">Monthly</button>
+            </div>
+        </div>
+        
+        <!-- Date Navigation -->
+        <div class="flex justify-between items-center mb-6">
+            <button id="prev-btn" class="bg-white p-2 rounded-full shadow-md hover:bg-indigo-100">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+            </button>
+            <h2 id="current-date" class="text-xl font-semibold text-indigo-800">11 July 2025</h2>
+            <button id="next-btn" class="bg-white p-2 rounded-full shadow-md hover:bg-indigo-100">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Schedule Views -->
+        <div id="daily-view" class="bg-white rounded-xl shadow-lg p-6 hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse">
+                    <thead>
+                        <tr>
+                            <th class="border-b-2 p-2 text-left text-sm font-medium text-gray-500">Employee</th>
+                            <th class="border-b-2 p-2 text-center text-sm font-medium text-gray-500">12:00 AM</th>
+                            <th class="border-b-2 p-2 text-center text-sm font-medium text-gray-500">1:00 AM</th>
+                            <th class="border-b-2 p-2 text-center text-sm font-medium text-gray-500">2:00 AM</th>
+                            <th class="border-b-2 p-2 text-center text-sm font-medium text-gray-500">3:00 AM</th>
+                            <th class="border-b-2 p-2 text-center text-sm font-medium text-gray-500">4:00 AM</th>
+                            <th class="border-b-2 p-2 text-center text-sm font-medium text-gray-500">5:00 AM</th>
+                            <th class="border-b-2 p-2 text-center text-sm font-medium text-gray-500">6:00 AM</th>
+                            <th class="border-b-2 p-2 text-center text-sm font-medium text-gray-500">7:00 AM</th>
+                            <th class="border-b-2 p-2 text-center text-sm font-medium text-gray-500">8:00 AM</th>
+                            <th class="border-b-2 p-2 text-center text-sm font-medium text-gray-500">9:00 AM</th>
+                            <th class="border-b-2 p-2 text-center text-sm font-medium text-gray-500">10:00 AM</th>
+                            <th class="border-b-2 p-2 text-center text-sm font-medium text-gray-500">11:00 AM</th>
+                            <th class="border-b-2 p-2 text-center text-sm font-medium text-gray-500">12:00 PM</th>
+                            <th class="border-b-2 p-2 text-center text-sm font-medium text-gray-500">1:00 PM</th>
+                            <th class="border-b-2 p-2 text-center text-sm font-medium text-gray-500">2:00 PM</th>
+                            <th class="border-b-2 p-2 text-center text-sm font-medium text-gray-500">3:00 PM</th>
+                            <th class="border-b-2 p-2 text-center text-sm font-medium text-gray-500">4:00 PM</th>
+                            <th class="border-b-2 p-2 text-center text-sm font-medium text-gray-500">5:00 PM</th>
+                            <th class="border-b-2 p-2 text-center text-sm font-medium text-gray-500">6:00 PM</th>
+                            <th class="border-b-2 p-2 text-center text-sm font-medium text-gray-500">7:00 PM</th>
+                            <th class="border-b-2 p-2 text-center text-sm font-medium text-gray-500">8:00 PM</th>
+                            <th class="border-b-2 p-2 text-center text-sm font-medium text-gray-500">9:00 PM</th>
+                            <th class="border-b-2 p-2 text-center text-sm font-medium text-gray-500">10:00 PM</th>
+                            <th class="border-b-2 p-2 text-center text-sm font-medium text-gray-500">11:00 PM</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- John Doe -->
+                        <tr>
+                            <td class="border-b p-2 font-medium">John Doe</td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1" colspan="4">
+                                <div class="time-slot cursor-pointer bg-indigo-100 rounded-lg p-2 hover:shadow-md text-center h-full" data-employee="John Doe" data-task="Customer Service" data-location="Front Desk" data-period="8:00 AM - 12:00 PM">
+                                    <div class="font-medium text-xs">Customer Service</div>
+                                    <div class="text-xs text-gray-600">Front Desk</div>
+                                </div>
+                            </td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                        </tr>
+                        
+                        <!-- Jane Smith -->
+                        <tr>
+                            <td class="border-b p-2 font-medium">Jane Smith</td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1" colspan="4">
+                                <div class="time-slot cursor-pointer bg-purple-100 rounded-lg p-2 hover:shadow-md text-center h-full" data-employee="Jane Smith" data-task="Inventory" data-location="Warehouse" data-period="9:00 AM - 1:00 PM">
+                                    <div class="font-medium text-xs">Inventory</div>
+                                    <div class="text-xs text-gray-600">Warehouse</div>
+                                </div>
+                            </td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                        </tr>
+                        
+                        <!-- Mike Johnson -->
+                        <tr>
+                            <td class="border-b p-2 font-medium">Mike Johnson</td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1" colspan="4">
+                                <div class="time-slot cursor-pointer bg-blue-100 rounded-lg p-2 hover:shadow-md text-center h-full" data-employee="Mike Johnson" data-task="Sales" data-location="Showroom" data-period="10:00 AM - 2:00 PM">
+                                    <div class="font-medium text-xs">Sales</div>
+                                    <div class="text-xs text-gray-600">Showroom</div>
+                                </div>
+                            </td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                        </tr>
+                        
+                        <!-- Sarah Williams -->
+                        <tr>
+                            <td class="border-b p-2 font-medium">Sarah Williams</td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1" colspan="4">
+                                <div class="time-slot cursor-pointer bg-green-100 rounded-lg p-2 hover:shadow-md text-center h-full" data-employee="Sarah Williams" data-task="Management" data-location="Office" data-period="11:00 AM - 3:00 PM">
+                                    <div class="font-medium text-xs">Management</div>
+                                    <div class="text-xs text-gray-600">Office</div>
+                                </div>
+                            </td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                        </tr>
+                        
+                        <!-- Robert Brown -->
+                        <tr>
+                            <td class="border-b p-2 font-medium">Robert Brown</td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1" colspan="4">
+                                <div class="time-slot cursor-pointer bg-yellow-100 rounded-lg p-2 hover:shadow-md text-center h-full" data-employee="Robert Brown" data-task="Technical Support" data-location="IT Room" data-period="1:00 PM - 5:00 PM">
+                                    <div class="font-medium text-xs">Technical Support</div>
+                                    <div class="text-xs text-gray-600">IT Room</div>
+                                </div>
+                            </td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                        </tr>
+                        
+                        <!-- Emily Davis -->
+                        <tr>
+                            <td class="border-b p-2 font-medium">Emily Davis</td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1" colspan="4">
+                                <div class="time-slot cursor-pointer bg-red-100 rounded-lg p-2 hover:shadow-md text-center h-full" data-employee="Emily Davis" data-task="Cleaning" data-location="All Areas" data-period="2:00 PM - 6:00 PM">
+                                    <div class="font-medium text-xs">Cleaning</div>
+                                    <div class="text-xs text-gray-600">All Areas</div>
+                                </div>
+                            </td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                        </tr>
+                        
+                        <!-- Night Shift Example -->
+                        <tr>
+                            <td class="border-b p-2 font-medium">Alex Taylor</td>
+                            <td class="border-b p-1" colspan="4">
+                                <div class="time-slot cursor-pointer bg-indigo-300 rounded-lg p-2 hover:shadow-md text-center h-full" data-employee="Alex Taylor" data-task="Security" data-location="Main Building" data-period="12:00 AM - 4:00 AM">
+                                    <div class="font-medium text-xs">Security</div>
+                                    <div class="text-xs text-gray-600">Main Building</div>
+                                </div>
+                            </td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1"></td>
+                            <td class="border-b p-1" colspan="4">
+                                <div class="time-slot cursor-pointer bg-indigo-300 rounded-lg p-2 hover:shadow-md text-center h-full" data-employee="Alex Taylor" data-task="Security" data-location="Main Building" data-period="8:00 PM - 12:00 AM">
+                                    <div class="font-medium text-xs">Security</div>
+                                    <div class="text-xs text-gray-600">Main Building</div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div id="weekly-view" class="bg-white rounded-xl shadow-lg p-6">
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse">
+                    <thead>
+                        <tr>
+                            <th class="border-b-2 p-2 text-left text-sm font-medium text-gray-500">Employee</th>
+                            <th class="border-b-2 p-2 text-center text-sm font-medium text-gray-500">Monday</th>
+                            <th class="border-b-2 p-2 text-center text-sm font-medium text-gray-500">Tuesday</th>
+                            <th class="border-b-2 p-2 text-center text-sm font-medium text-gray-500">Wednesday</th>
+                            <th class="border-b-2 p-2 text-center text-sm font-medium text-gray-500">Thursday</th>
+                            <th class="border-b-2 p-2 text-center text-sm font-medium text-gray-500">Friday</th>
+                            <th class="border-b-2 p-2 text-center text-sm font-medium text-gray-500">Saturday</th>
+                            <th class="border-b-2 p-2 text-center text-sm font-medium text-gray-500">Sunday</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- John Doe -->
+                        <tr>
+                            <td class="border-b p-2 font-medium">John Doe</td>
+                            <td class="border-b p-2">
+                                <div class="time-slot cursor-pointer bg-indigo-100 rounded-lg p-2 hover:shadow-md" data-employee="John Doe" data-task="Customer Service" data-location="Front Desk" data-period="8:00 AM - 12:00 PM">
+                                    <div class="font-medium text-xs">8:00 AM - 12:00 PM</div>
+                                    <div class="text-xs text-gray-600">Customer Service</div>
+                                    <div class="text-xs text-gray-600">Front Desk</div>
+                                </div>
+                            </td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2">
+                                <div class="time-slot cursor-pointer bg-indigo-100 rounded-lg p-2 hover:shadow-md" data-employee="John Doe" data-task="Customer Service" data-location="Front Desk" data-period="8:00 AM - 12:00 PM">
+                                    <div class="font-medium text-xs">8:00 AM - 12:00 PM</div>
+                                    <div class="text-xs text-gray-600">Customer Service</div>
+                                    <div class="text-xs text-gray-600">Front Desk</div>
+                                </div>
+                            </td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2"></td>
+                        </tr>
+                        
+                        <!-- Jane Smith -->
+                        <tr>
+                            <td class="border-b p-2 font-medium">Jane Smith</td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2">
+                                <div class="time-slot cursor-pointer bg-purple-100 rounded-lg p-2 hover:shadow-md" data-employee="Jane Smith" data-task="Inventory" data-location="Warehouse" data-period="9:00 AM - 1:00 PM">
+                                    <div class="font-medium text-xs">9:00 AM - 1:00 PM</div>
+                                    <div class="text-xs text-gray-600">Inventory</div>
+                                    <div class="text-xs text-gray-600">Warehouse</div>
+                                </div>
+                            </td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2">
+                                <div class="time-slot cursor-pointer bg-purple-100 rounded-lg p-2 hover:shadow-md" data-employee="Jane Smith" data-task="Inventory" data-location="Warehouse" data-period="9:00 AM - 1:00 PM">
+                                    <div class="font-medium text-xs">9:00 AM - 1:00 PM</div>
+                                    <div class="text-xs text-gray-600">Inventory</div>
+                                    <div class="text-xs text-gray-600">Warehouse</div>
+                                </div>
+                            </td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2"></td>
+                        </tr>
+                        
+                        <!-- Mike Johnson -->
+                        <tr>
+                            <td class="border-b p-2 font-medium">Mike Johnson</td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2">
+                                <div class="time-slot cursor-pointer bg-blue-100 rounded-lg p-2 hover:shadow-md" data-employee="Mike Johnson" data-task="Sales" data-location="Showroom" data-period="10:00 AM - 2:00 PM">
+                                    <div class="font-medium text-xs">10:00 AM - 2:00 PM</div>
+                                    <div class="text-xs text-gray-600">Sales</div>
+                                    <div class="text-xs text-gray-600">Showroom</div>
+                                </div>
+                            </td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2">
+                                <div class="time-slot cursor-pointer bg-blue-100 rounded-lg p-2 hover:shadow-md" data-employee="Mike Johnson" data-task="Sales" data-location="Showroom" data-period="10:00 AM - 2:00 PM">
+                                    <div class="font-medium text-xs">10:00 AM - 2:00 PM</div>
+                                    <div class="text-xs text-gray-600">Sales</div>
+                                    <div class="text-xs text-gray-600">Showroom</div>
+                                </div>
+                            </td>
+                            <td class="border-b p-2"></td>
+                        </tr>
+                        
+                        <!-- Sarah Williams -->
+                        <tr>
+                            <td class="border-b p-2 font-medium">Sarah Williams</td>
+                            <td class="border-b p-2">
+                                <div class="time-slot cursor-pointer bg-green-100 rounded-lg p-2 hover:shadow-md" data-employee="Sarah Williams" data-task="Management" data-location="Office" data-period="1:00 PM - 5:00 PM">
+                                    <div class="font-medium text-xs">1:00 PM - 5:00 PM</div>
+                                    <div class="text-xs text-gray-600">Management</div>
+                                    <div class="text-xs text-gray-600">Office</div>
+                                </div>
+                            </td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2"></td>
+                        </tr>
+                        
+                        <!-- Robert Brown -->
+                        <tr>
+                            <td class="border-b p-2 font-medium">Robert Brown</td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2">
+                                <div class="time-slot cursor-pointer bg-yellow-100 rounded-lg p-2 hover:shadow-md" data-employee="Robert Brown" data-task="Technical Support" data-location="IT Room" data-period="3:00 PM - 7:00 PM">
+                                    <div class="font-medium text-xs">3:00 PM - 7:00 PM</div>
+                                    <div class="text-xs text-gray-600">Technical Support</div>
+                                    <div class="text-xs text-gray-600">IT Room</div>
+                                </div>
+                            </td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2"></td>
+                        </tr>
+                        
+                        <!-- Emily Davis -->
+                        <tr>
+                            <td class="border-b p-2 font-medium">Emily Davis</td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2">
+                                <div class="time-slot cursor-pointer bg-red-100 rounded-lg p-2 hover:shadow-md" data-employee="Emily Davis" data-task="Cleaning" data-location="All Areas" data-period="2:00 PM - 6:00 PM">
+                                    <div class="font-medium text-xs">2:00 PM - 6:00 PM</div>
+                                    <div class="text-xs text-gray-600">Cleaning</div>
+                                    <div class="text-xs text-gray-600">All Areas</div>
+                                </div>
+                            </td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2">
+                                <div class="time-slot cursor-pointer bg-red-100 rounded-lg p-2 hover:shadow-md" data-employee="Emily Davis" data-task="Cleaning" data-location="All Areas" data-period="2:00 PM - 6:00 PM">
+                                    <div class="font-medium text-xs">2:00 PM - 6:00 PM</div>
+                                    <div class="text-xs text-gray-600">Cleaning</div>
+                                    <div class="text-xs text-gray-600">All Areas</div>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- Alex Taylor -->
+                        <tr>
+                            <td class="border-b p-2 font-medium">Alex Taylor</td>
+                            <td class="border-b p-2">
+                                <div class="time-slot cursor-pointer bg-indigo-300 rounded-lg p-2 hover:shadow-md" data-employee="Alex Taylor" data-task="Security" data-location="Main Building" data-period="12:00 AM - 4:00 AM">
+                                    <div class="font-medium text-xs">12:00 AM - 4:00 AM</div>
+                                    <div class="text-xs text-gray-600">Security</div>
+                                    <div class="text-xs text-gray-600">Main Building</div>
+                                </div>
+                                <div class="time-slot cursor-pointer bg-indigo-300 rounded-lg p-2 mt-2 hover:shadow-md" data-employee="Alex Taylor" data-task="Security" data-location="Main Building" data-period="8:00 PM - 12:00 AM">
+                                    <div class="font-medium text-xs">8:00 PM - 12:00 AM</div>
+                                    <div class="text-xs text-gray-600">Security</div>
+                                    <div class="text-xs text-gray-600">Main Building</div>
+                                </div>
+                            </td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2"></td>
+                            <td class="border-b p-2"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div id="monthly-view" class="bg-white rounded-xl shadow-lg p-6 hidden">
+            <div class="grid grid-cols-7 gap-1">
+                <!-- Days of week headers -->
+                <div class="text-center text-xs font-medium text-gray-600 p-1">Mon</div>
+                <div class="text-center text-xs font-medium text-gray-600 p-1">Tue</div>
+                <div class="text-center text-xs font-medium text-gray-600 p-1">Wed</div>
+                <div class="text-center text-xs font-medium text-gray-600 p-1">Thu</div>
+                <div class="text-center text-xs font-medium text-gray-600 p-1">Fri</div>
+                <div class="text-center text-xs font-medium text-gray-600 p-1">Sat</div>
+                <div class="text-center text-xs font-medium text-gray-600 p-1">Sun</div>
+                
+                <!-- Week 1 -->
+                <div class="border rounded-lg p-1 h-24 overflow-hidden bg-gray-50 text-gray-400">29</div>
+                <div class="border rounded-lg p-1 h-24 overflow-hidden bg-gray-50 text-gray-400">30</div>
+                <div class="border rounded-lg p-1 h-24 overflow-hidden bg-gray-50 text-gray-400">31</div>
+                <div class="border rounded-lg p-1 h-24 overflow-y-auto">
+                    <div class="text-xs font-bold mb-1">1</div>
+                    <div class="time-slot cursor-pointer bg-indigo-100 rounded-sm p-1 mb-1 text-xs hover:shadow-sm" data-employee="John Doe" data-task="Customer Service" data-location="Front Desk" data-period="8:00 AM - 12:00 PM">
+                        <div class="truncate">John Doe</div>
+                    </div>
+                </div>
+                <div class="border rounded-lg p-1 h-24 overflow-y-auto">
+                    <div class="text-xs font-bold mb-1">2</div>
+                    <div class="time-slot cursor-pointer bg-purple-100 rounded-sm p-1 mb-1 text-xs hover:shadow-sm" data-employee="Jane Smith" data-task="Inventory" data-location="Warehouse" data-period="9:00 AM - 1:00 PM">
+                        <div class="truncate">Jane Smith</div>
+                    </div>
+                </div>
+                <div class="border rounded-lg p-1 h-24 overflow-y-auto">
+                    <div class="text-xs font-bold mb-1">3</div>
+                </div>
+                <div class="border rounded-lg p-1 h-24 overflow-y-auto">
+                    <div class="text-xs font-bold mb-1">4</div>
+                </div>
+                
+                <!-- Week 2 -->
+                <div class="border rounded-lg p-1 h-24 overflow-y-auto">
+                    <div class="text-xs font-bold mb-1">5</div>
+                    <div class="time-slot cursor-pointer bg-blue-100 rounded-sm p-1 mb-1 text-xs hover:shadow-sm" data-employee="Mike Johnson" data-task="Sales" data-location="Showroom" data-period="10:00 AM - 2:00 PM">
+                        <div class="truncate">Mike Johnson</div>
+                    </div>
+                </div>
+                <div class="border rounded-lg p-1 h-24 overflow-y-auto">
+                    <div class="text-xs font-bold mb-1">6</div>
+                </div>
+                <div class="border rounded-lg p-1 h-24 overflow-y-auto">
+                    <div class="text-xs font-bold mb-1">7</div>
+                    <div class="time-slot cursor-pointer bg-green-100 rounded-sm p-1 mb-1 text-xs hover:shadow-sm" data-employee="Sarah Williams" data-task="Management" data-location="Office" data-period="11:00 AM - 3:00 PM">
+                        <div class="truncate">Sarah Williams</div>
+                    </div>
+                </div>
+                <div class="border rounded-lg p-1 h-24 overflow-y-auto">
+                    <div class="text-xs font-bold mb-1">8</div>
+                </div>
+                <div class="border rounded-lg p-1 h-24 overflow-y-auto">
+                    <div class="text-xs font-bold mb-1">9</div>
+                    <div class="time-slot cursor-pointer bg-yellow-100 rounded-sm p-1 mb-1 text-xs hover:shadow-sm" data-employee="Robert Brown" data-task="Technical Support" data-location="IT Room" data-period="1:00 PM - 5:00 PM">
+                        <div class="truncate">Robert Brown</div>
+                    </div>
+                </div>
+                <div class="border rounded-lg p-1 h-24 overflow-y-auto bg-indigo-50">
+                    <div class="text-xs font-bold mb-1">10</div>
+                    <div class="time-slot cursor-pointer bg-red-100 rounded-sm p-1 mb-1 text-xs hover:shadow-sm" data-employee="Emily Davis" data-task="Cleaning" data-location="All Areas" data-period="2:00 PM - 6:00 PM">
+                        <div class="truncate">Emily Davis</div>
+                    </div>
+                </div>
+                <div class="border rounded-lg p-1 h-24 overflow-y-auto bg-indigo-50">
+                    <div class="text-xs font-bold mb-1">11</div>
+                </div>
+                
+                <!-- Weeks 3-5 (abbreviated for space) -->
+                <!-- Week 3 -->
+                <div class="border rounded-lg p-1 h-24 overflow-y-auto">
+                    <div class="text-xs font-bold mb-1">12</div>
+                </div>
+                <div class="border rounded-lg p-1 h-24 overflow-y-auto">
+                    <div class="text-xs font-bold mb-1">13</div>
+                </div>
+                <div class="border rounded-lg p-1 h-24 overflow-y-auto">
+                    <div class="text-xs font-bold mb-1">14</div>
+                </div>
+                <div class="border rounded-lg p-1 h-24 overflow-y-auto">
+                    <div class="text-xs font-bold mb-1">15</div>
+                </div>
+                <div class="border rounded-lg p-1 h-24 overflow-y-auto">
+                    <div class="text-xs font-bold mb-1">16</div>
+                </div>
+                <div class="border rounded-lg p-1 h-24 overflow-y-auto">
+                    <div class="text-xs font-bold mb-1">17</div>
+                </div>
+                <div class="border rounded-lg p-1 h-24 overflow-y-auto">
+                    <div class="text-xs font-bold mb-1">18</div>
+                </div>
+                
+                <!-- Week 4 -->
+                <div class="border rounded-lg p-1 h-24 overflow-y-auto">
+                    <div class="text-xs font-bold mb-1">19</div>
+                </div>
+                <div class="border rounded-lg p-1 h-24 overflow-y-auto">
+                    <div class="text-xs font-bold mb-1">20</div>
+                </div>
+                <div class="border rounded-lg p-1 h-24 overflow-y-auto">
+                    <div class="text-xs font-bold mb-1">21</div>
+                </div>
+                <div class="border rounded-lg p-1 h-24 overflow-y-auto">
+                    <div class="text-xs font-bold mb-1">22</div>
+                </div>
+                <div class="border rounded-lg p-1 h-24 overflow-y-auto">
+                    <div class="text-xs font-bold mb-1">23</div>
+                </div>
+                <div class="border rounded-lg p-1 h-24 overflow-y-auto">
+                    <div class="text-xs font-bold mb-1">24</div>
+                </div>
+                <div class="border rounded-lg p-1 h-24 overflow-y-auto">
+                    <div class="text-xs font-bold mb-1">25</div>
+                </div>
+                
+                <!-- Week 5 -->
+                <div class="border rounded-lg p-1 h-24 overflow-y-auto">
+                    <div class="text-xs font-bold mb-1">26</div>
+                </div>
+                <div class="border rounded-lg p-1 h-24 overflow-y-auto">
+                    <div class="text-xs font-bold mb-1">27</div>
+                </div>
+                <div class="border rounded-lg p-1 h-24 overflow-y-auto">
+                    <div class="text-xs font-bold mb-1">28</div>
+                </div>
+                <div class="border rounded-lg p-1 h-24 overflow-y-auto">
+                    <div class="text-xs font-bold mb-1">29</div>
+                </div>
+                <div class="border rounded-lg p-1 h-24 overflow-y-auto">
+                    <div class="text-xs font-bold mb-1">30</div>
+                </div>
+                <div class="border rounded-lg p-1 h-24 overflow-hidden bg-gray-50 text-gray-400">1</div>
+                <div class="border rounded-lg p-1 h-24 overflow-hidden bg-gray-50 text-gray-400">2</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal bg-white rounded-xl shadow-xl p-6 max-w-md w-full">
+            <h3 class="text-xl font-bold text-indigo-800 mb-4">Shift Details</h3>
+            
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="period">
+                    Period
+                </label>
+                <input id="period" type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" readonly="">
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="employee">
+                    Employee
+                </label>
+                <input id="employee" type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" readonly="">
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="location">
+                    Location
+                </label>
+                <input id="location" type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" readonly="">
+            </div>
+            
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="task">
+                    Task
+                </label>
+                <input id="task" type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" readonly="">
+            </div>
+            
+            <div class="flex justify-end">
+                <button id="edit-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2">
+                    Edit
+                </button>
+                <button id="ok-btn" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // View switching
+        const dailyBtn = document.getElementById('daily-btn');
+        const weeklyBtn = document.getElementById('weekly-btn');
+        const monthlyBtn = document.getElementById('monthly-btn');
+        const dailyView = document.getElementById('daily-view');
+        const weeklyView = document.getElementById('weekly-view');
+        const monthlyView = document.getElementById('monthly-view');
+        
+        dailyBtn.addEventListener('click', () => {
+            dailyView.classList.remove('hidden');
+            weeklyView.classList.add('hidden');
+            monthlyView.classList.add('hidden');
+            
+            dailyBtn.classList.add('bg-indigo-600', 'text-white');
+            dailyBtn.classList.remove('text-indigo-600');
+            
+            weeklyBtn.classList.remove('bg-indigo-600', 'text-white');
+            weeklyBtn.classList.add('text-indigo-600');
+            
+            monthlyBtn.classList.remove('bg-indigo-600', 'text-white');
+            monthlyBtn.classList.add('text-indigo-600');
+        });
+        
+        weeklyBtn.addEventListener('click', () => {
+            dailyView.classList.add('hidden');
+            weeklyView.classList.remove('hidden');
+            monthlyView.classList.add('hidden');
+            
+            dailyBtn.classList.remove('bg-indigo-600', 'text-white');
+            dailyBtn.classList.add('text-indigo-600');
+            
+            weeklyBtn.classList.add('bg-indigo-600', 'text-white');
+            weeklyBtn.classList.remove('text-indigo-600');
+            
+            monthlyBtn.classList.remove('bg-indigo-600', 'text-white');
+            monthlyBtn.classList.add('text-indigo-600');
+        });
+        
+        monthlyBtn.addEventListener('click', () => {
+            dailyView.classList.add('hidden');
+            weeklyView.classList.add('hidden');
+            monthlyView.classList.remove('hidden');
+            
+            dailyBtn.classList.remove('bg-indigo-600', 'text-white');
+            dailyBtn.classList.add('text-indigo-600');
+            
+            weeklyBtn.classList.remove('bg-indigo-600', 'text-white');
+            weeklyBtn.classList.add('text-indigo-600');
+            
+            monthlyBtn.classList.add('bg-indigo-600', 'text-white');
+            monthlyBtn.classList.remove('text-indigo-600');
+        });
+        
+        // Date navigation
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const currentDateEl = document.getElementById('current-date');
+        
+        let currentDate = new Date();
+        
+        function updateDateDisplay() {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            currentDateEl.textContent = currentDate.toLocaleDateString(undefined, options);
+        }
+        
+        prevBtn.addEventListener('click', () => {
+            if (dailyView.classList.contains('hidden') === false) {
+                currentDate.setDate(currentDate.getDate() - 1);
+            } else if (weeklyView.classList.contains('hidden') === false) {
+                currentDate.setDate(currentDate.getDate() - 7);
+            } else {
+                currentDate.setMonth(currentDate.getMonth() - 1);
+            }
+            updateDateDisplay();
+        });
+        
+        nextBtn.addEventListener('click', () => {
+            if (dailyView.classList.contains('hidden') === false) {
+                currentDate.setDate(currentDate.getDate() + 1);
+            } else if (weeklyView.classList.contains('hidden') === false) {
+                currentDate.setDate(currentDate.getDate() + 7);
+            } else {
+                currentDate.setMonth(currentDate.getMonth() + 1);
+            }
+            updateDateDisplay();
+        });
+        
+        // Initialize date display
+        updateDateDisplay();
+        
+        // Modal functionality
+        const modalOverlay = document.getElementById('modal-overlay');
+        const okBtn = document.getElementById('ok-btn');
+        const editBtn = document.getElementById('edit-btn');
+        const periodInput = document.getElementById('period');
+        const employeeInput = document.getElementById('employee');
+        const locationInput = document.getElementById('location');
+        const taskInput = document.getElementById('task');
+        
+        // Add click event to all time slots
+        const timeSlots = document.querySelectorAll('.time-slot');
+        timeSlots.forEach(slot => {
+            slot.addEventListener('click', () => {
+                // Populate modal with data from the clicked time slot
+                periodInput.value = slot.dataset.period;
+                employeeInput.value = slot.dataset.employee;
+                locationInput.value = slot.dataset.location;
+                taskInput.value = slot.dataset.task;
+                
+                // Show modal
+                modalOverlay.style.display = 'flex';
+            });
+        });
+        
+        // Close modal when OK button is clicked
+        okBtn.addEventListener('click', () => {
+            modalOverlay.style.display = 'none';
+        });
+        
+        // Edit functionality (placeholder)
+        editBtn.addEventListener('click', () => {
+            // Make inputs editable
+            periodInput.readOnly = false;
+            employeeInput.readOnly = false;
+            locationInput.readOnly = false;
+            taskInput.readOnly = false;
+            
+            // Change button text
+            editBtn.textContent = 'Save';
+            
+            // Change button functionality to save
+            editBtn.removeEventListener('click', editBtn.clickHandler);
+            editBtn.clickHandler = () => {
+                // Make inputs readonly again
+                periodInput.readOnly = true;
+                employeeInput.readOnly = true;
+                locationInput.readOnly = true;
+                taskInput.readOnly = true;
+                
+                // Change button text back
+                editBtn.textContent = 'Edit';
+                
+                // Change button functionality back to edit
+                editBtn.removeEventListener('click', editBtn.clickHandler);
+                editBtn.addEventListener('click', editBtn.clickHandler = () => {
+                    // Make inputs editable
+                    periodInput.readOnly = false;
+                    employeeInput.readOnly = false;
+                    locationInput.readOnly = false;
+                    taskInput.readOnly = false;
+                    
+                    // Change button text
+                    editBtn.textContent = 'Save';
+                });
+                
+                // Show success message
+                alert('Shift updated successfully!');
+            };
+            
+            editBtn.addEventListener('click', editBtn.clickHandler);
+        });
+        
+        // Store the initial click handler
+        editBtn.clickHandler = () => {
+            // Make inputs editable
+            periodInput.readOnly = false;
+            employeeInput.readOnly = false;
+            locationInput.readOnly = false;
+            taskInput.readOnly = false;
+            
+            // Change button text
+            editBtn.textContent = 'Save';
+        };
+        
+        editBtn.addEventListener('click', editBtn.clickHandler);
+        
+        // Close modal when clicking outside
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                modalOverlay.style.display = 'none';
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'95d69e60c23002d6',t:'MTc1MjIxOTI2OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border: none; visibility: hidden;"></iframe>
+
+</body></html>

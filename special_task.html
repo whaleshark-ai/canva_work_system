@@ -1,0 +1,988 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Creation Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #f0f4f8;
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-header {
+            background-color: #4f46e5;
+            color: white;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+
+        .file-upload-label {
+            border: 2px dashed #cbd5e1;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-label:hover {
+            border-color: #4f46e5;
+            background-color: #f8fafc;
+        }
+
+        .custom-select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+    </style>
+    <style>
+        *,
+        ::before,
+        ::after {
+            --tw-border-spacing-x: 0;
+            --tw-border-spacing-y: 0;
+            --tw-translate-x: 0;
+            --tw-translate-y: 0;
+            --tw-rotate: 0;
+            --tw-skew-x: 0;
+            --tw-skew-y: 0;
+            --tw-scale-x: 1;
+            --tw-scale-y: 1;
+            --tw-pan-x: ;
+            --tw-pan-y: ;
+            --tw-pinch-zoom: ;
+            --tw-scroll-snap-strictness: proximity;
+            --tw-gradient-from-position: ;
+            --tw-gradient-via-position: ;
+            --tw-gradient-to-position: ;
+            --tw-ordinal: ;
+            --tw-slashed-zero: ;
+            --tw-numeric-figure: ;
+            --tw-numeric-spacing: ;
+            --tw-numeric-fraction: ;
+            --tw-ring-inset: ;
+            --tw-ring-offset-width: 0px;
+            --tw-ring-offset-color: #fff;
+            --tw-ring-color: rgb(59 130 246 / 0.5);
+            --tw-ring-offset-shadow: 0 0 #0000;
+            --tw-ring-shadow: 0 0 #0000;
+            --tw-shadow: 0 0 #0000;
+            --tw-shadow-colored: 0 0 #0000;
+            --tw-blur: ;
+            --tw-brightness: ;
+            --tw-contrast: ;
+            --tw-grayscale: ;
+            --tw-hue-rotate: ;
+            --tw-invert: ;
+            --tw-saturate: ;
+            --tw-sepia: ;
+            --tw-drop-shadow: ;
+            --tw-backdrop-blur: ;
+            --tw-backdrop-brightness: ;
+            --tw-backdrop-contrast: ;
+            --tw-backdrop-grayscale: ;
+            --tw-backdrop-hue-rotate: ;
+            --tw-backdrop-invert: ;
+            --tw-backdrop-opacity: ;
+            --tw-backdrop-saturate: ;
+            --tw-backdrop-sepia: ;
+            --tw-contain-size: ;
+            --tw-contain-layout: ;
+            --tw-contain-paint: ;
+            --tw-contain-style:
+        }
+
+        ::backdrop {
+            --tw-border-spacing-x: 0;
+            --tw-border-spacing-y: 0;
+            --tw-translate-x: 0;
+            --tw-translate-y: 0;
+            --tw-rotate: 0;
+            --tw-skew-x: 0;
+            --tw-skew-y: 0;
+            --tw-scale-x: 1;
+            --tw-scale-y: 1;
+            --tw-pan-x: ;
+            --tw-pan-y: ;
+            --tw-pinch-zoom: ;
+            --tw-scroll-snap-strictness: proximity;
+            --tw-gradient-from-position: ;
+            --tw-gradient-via-position: ;
+            --tw-gradient-to-position: ;
+            --tw-ordinal: ;
+            --tw-slashed-zero: ;
+            --tw-numeric-figure: ;
+            --tw-numeric-spacing: ;
+            --tw-numeric-fraction: ;
+            --tw-ring-inset: ;
+            --tw-ring-offset-width: 0px;
+            --tw-ring-offset-color: #fff;
+            --tw-ring-color: rgb(59 130 246 / 0.5);
+            --tw-ring-offset-shadow: 0 0 #0000;
+            --tw-ring-shadow: 0 0 #0000;
+            --tw-shadow: 0 0 #0000;
+            --tw-shadow-colored: 0 0 #0000;
+            --tw-blur: ;
+            --tw-brightness: ;
+            --tw-contrast: ;
+            --tw-grayscale: ;
+            --tw-hue-rotate: ;
+            --tw-invert: ;
+            --tw-saturate: ;
+            --tw-sepia: ;
+            --tw-drop-shadow: ;
+            --tw-backdrop-blur: ;
+            --tw-backdrop-brightness: ;
+            --tw-backdrop-contrast: ;
+            --tw-backdrop-grayscale: ;
+            --tw-backdrop-hue-rotate: ;
+            --tw-backdrop-invert: ;
+            --tw-backdrop-opacity: ;
+            --tw-backdrop-saturate: ;
+            --tw-backdrop-sepia: ;
+            --tw-contain-size: ;
+            --tw-contain-layout: ;
+            --tw-contain-paint: ;
+            --tw-contain-style:
+        }
+
+        /* ! tailwindcss v3.4.16 | MIT License | https://tailwindcss.com */
+        *,
+        ::after,
+        ::before {
+            box-sizing: border-box;
+            border-width: 0;
+            border-style: solid;
+            border-color: #e5e7eb
+        }
+
+        ::after,
+        ::before {
+            --tw-content: ''
+        }
+
+        :host,
+        html {
+            line-height: 1.5;
+            -webkit-text-size-adjust: 100%;
+            -moz-tab-size: 4;
+            tab-size: 4;
+            font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            font-feature-settings: normal;
+            font-variation-settings: normal;
+            -webkit-tap-highlight-color: transparent
+        }
+
+        body {
+            margin: 0;
+            line-height: inherit
+        }
+
+        hr {
+            height: 0;
+            color: inherit;
+            border-top-width: 1px
+        }
+
+        abbr:where([title]) {
+            -webkit-text-decoration: underline dotted;
+            text-decoration: underline dotted
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-size: inherit;
+            font-weight: inherit
+        }
+
+        a {
+            color: inherit;
+            text-decoration: inherit
+        }
+
+        b,
+        strong {
+            font-weight: bolder
+        }
+
+        code,
+        kbd,
+        pre,
+        samp {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-feature-settings: normal;
+            font-variation-settings: normal;
+            font-size: 1em
+        }
+
+        small {
+            font-size: 80%
+        }
+
+        sub,
+        sup {
+            font-size: 75%;
+            line-height: 0;
+            position: relative;
+            vertical-align: baseline
+        }
+
+        sub {
+            bottom: -.25em
+        }
+
+        sup {
+            top: -.5em
+        }
+
+        table {
+            text-indent: 0;
+            border-color: inherit;
+            border-collapse: collapse
+        }
+
+        button,
+        input,
+        optgroup,
+        select,
+        textarea {
+            font-family: inherit;
+            font-feature-settings: inherit;
+            font-variation-settings: inherit;
+            font-size: 100%;
+            font-weight: inherit;
+            line-height: inherit;
+            letter-spacing: inherit;
+            color: inherit;
+            margin: 0;
+            padding: 0
+        }
+
+        button,
+        select {
+            text-transform: none
+        }
+
+        button,
+        input:where([type=button]),
+        input:where([type=reset]),
+        input:where([type=submit]) {
+            -webkit-appearance: button;
+            background-color: transparent;
+            background-image: none
+        }
+
+        :-moz-focusring {
+            outline: auto
+        }
+
+        :-moz-ui-invalid {
+            box-shadow: none
+        }
+
+        progress {
+            vertical-align: baseline
+        }
+
+        ::-webkit-inner-spin-button,
+        ::-webkit-outer-spin-button {
+            height: auto
+        }
+
+        [type=search] {
+            -webkit-appearance: textfield;
+            outline-offset: -2px
+        }
+
+        ::-webkit-search-decoration {
+            -webkit-appearance: none
+        }
+
+        ::-webkit-file-upload-button {
+            -webkit-appearance: button;
+            font: inherit
+        }
+
+        summary {
+            display: list-item
+        }
+
+        blockquote,
+        dd,
+        dl,
+        figure,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        hr,
+        p,
+        pre {
+            margin: 0
+        }
+
+        fieldset {
+            margin: 0;
+            padding: 0
+        }
+
+        legend {
+            padding: 0
+        }
+
+        menu,
+        ol,
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0
+        }
+
+        dialog {
+            padding: 0
+        }
+
+        textarea {
+            resize: vertical
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            opacity: 1;
+            color: #9ca3af
+        }
+
+        [role=button],
+        button {
+            cursor: pointer
+        }
+
+        :disabled {
+            cursor: default
+        }
+
+        audio,
+        canvas,
+        embed,
+        iframe,
+        img,
+        object,
+        svg,
+        video {
+            display: block;
+            vertical-align: middle
+        }
+
+        img,
+        video {
+            max-width: 100%;
+            height: auto
+        }
+
+        [hidden]:where(:not([hidden=until-found])) {
+            display: none
+        }
+
+        .mb-1 {
+            margin-bottom: 0.25rem
+        }
+
+        .mb-3 {
+            margin-bottom: 0.75rem
+        }
+
+        .ml-2 {
+            margin-left: 0.5rem
+        }
+
+        .mr-2 {
+            margin-right: 0.5rem
+        }
+
+        .mt-1 {
+            margin-top: 0.25rem
+        }
+
+        .block {
+            display: block
+        }
+
+        .flex {
+            display: flex
+        }
+
+        .grid {
+            display: grid
+        }
+
+        .hidden {
+            display: none
+        }
+
+        .h-4 {
+            height: 1rem
+        }
+
+        .h-5 {
+            height: 1.25rem
+        }
+
+        .max-h-40 {
+            max-height: 10rem
+        }
+
+        .w-4 {
+            width: 1rem
+        }
+
+        .w-5 {
+            width: 1.25rem
+        }
+
+        .w-full {
+            width: 100%
+        }
+
+        .cursor-pointer {
+            cursor: pointer
+        }
+
+        .grid-cols-1 {
+            grid-template-columns: repeat(1, minmax(0, 1fr))
+        }
+
+        .items-center {
+            align-items: center
+        }
+
+        .justify-end {
+            justify-content: flex-end
+        }
+
+        .justify-center {
+            justify-content: center
+        }
+
+        .gap-4 {
+            gap: 1rem
+        }
+
+        .gap-6 {
+            gap: 1.5rem
+        }
+
+        .space-y-2> :not([hidden])~ :not([hidden]) {
+            --tw-space-y-reverse: 0;
+            margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
+            margin-bottom: calc(0.5rem * var(--tw-space-y-reverse))
+        }
+
+        .space-y-6> :not([hidden])~ :not([hidden]) {
+            --tw-space-y-reverse: 0;
+            margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
+            margin-bottom: calc(1.5rem * var(--tw-space-y-reverse))
+        }
+
+        .overflow-y-auto {
+            overflow-y: auto
+        }
+
+        .rounded {
+            border-radius: 0.25rem
+        }
+
+        .rounded-lg {
+            border-radius: 0.5rem
+        }
+
+        .rounded-md {
+            border-radius: 0.375rem
+        }
+
+        .border {
+            border-width: 1px
+        }
+
+        .border-gray-200 {
+            --tw-border-opacity: 1;
+            border-color: rgb(229 231 235 / var(--tw-border-opacity, 1))
+        }
+
+        .border-gray-300 {
+            --tw-border-opacity: 1;
+            border-color: rgb(209 213 219 / var(--tw-border-opacity, 1))
+        }
+
+        .border-indigo-100 {
+            --tw-border-opacity: 1;
+            border-color: rgb(224 231 255 / var(--tw-border-opacity, 1))
+        }
+
+        .bg-gray-50 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1))
+        }
+
+        .bg-indigo-50 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(238 242 255 / var(--tw-bg-opacity, 1))
+        }
+
+        .bg-indigo-600 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(79 70 229 / var(--tw-bg-opacity, 1))
+        }
+
+        .p-4 {
+            padding: 1rem
+        }
+
+        .p-6 {
+            padding: 1.5rem
+        }
+
+        .px-4 {
+            padding-left: 1rem;
+            padding-right: 1rem
+        }
+
+        .px-6 {
+            padding-left: 1.5rem;
+            padding-right: 1.5rem
+        }
+
+        .py-2 {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem
+        }
+
+        .py-3 {
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem
+        }
+
+        .py-8 {
+            padding-top: 2rem;
+            padding-bottom: 2rem
+        }
+
+        .text-2xl {
+            font-size: 1.5rem;
+            line-height: 2rem
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+            line-height: 1.25rem
+        }
+
+        .font-bold {
+            font-weight: 700
+        }
+
+        .font-medium {
+            font-weight: 500
+        }
+
+        .text-gray-500 {
+            --tw-text-opacity: 1;
+            color: rgb(107 114 128 / var(--tw-text-opacity, 1))
+        }
+
+        .text-gray-600 {
+            --tw-text-opacity: 1;
+            color: rgb(75 85 99 / var(--tw-text-opacity, 1))
+        }
+
+        .text-gray-700 {
+            --tw-text-opacity: 1;
+            color: rgb(55 65 81 / var(--tw-text-opacity, 1))
+        }
+
+        .text-green-600 {
+            --tw-text-opacity: 1;
+            color: rgb(22 163 74 / var(--tw-text-opacity, 1))
+        }
+
+        .text-indigo-100 {
+            --tw-text-opacity: 1;
+            color: rgb(224 231 255 / var(--tw-text-opacity, 1))
+        }
+
+        .text-indigo-600 {
+            --tw-text-opacity: 1;
+            color: rgb(79 70 229 / var(--tw-text-opacity, 1))
+        }
+
+        .text-indigo-800 {
+            --tw-text-opacity: 1;
+            color: rgb(55 48 163 / var(--tw-text-opacity, 1))
+        }
+
+        .text-red-600 {
+            --tw-text-opacity: 1;
+            color: rgb(220 38 38 / var(--tw-text-opacity, 1))
+        }
+
+        .text-white {
+            --tw-text-opacity: 1;
+            color: rgb(255 255 255 / var(--tw-text-opacity, 1))
+        }
+
+        .text-yellow-600 {
+            --tw-text-opacity: 1;
+            color: rgb(202 138 4 / var(--tw-text-opacity, 1))
+        }
+
+        .transition-colors {
+            transition-property: color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms
+        }
+
+        .hover\:bg-indigo-700:hover {
+            --tw-bg-opacity: 1;
+            background-color: rgb(67 56 202 / var(--tw-bg-opacity, 1))
+        }
+
+        .focus\:border-indigo-500:focus {
+            --tw-border-opacity: 1;
+            border-color: rgb(99 102 241 / var(--tw-border-opacity, 1))
+        }
+
+        .focus\:outline-none:focus {
+            outline: 2px solid transparent;
+            outline-offset: 2px
+        }
+
+        .focus\:ring-2:focus {
+            --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+            --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+            box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)
+        }
+
+        .focus\:ring-indigo-500:focus {
+            --tw-ring-opacity: 1;
+            --tw-ring-color: rgb(99 102 241 / var(--tw-ring-opacity, 1))
+        }
+
+        .focus\:ring-offset-2:focus {
+            --tw-ring-offset-width: 2px
+        }
+
+        @media (min-width: 768px) {
+            .md\:grid-cols-2 {
+                grid-template-columns: repeat(2, minmax(0, 1fr))
+            }
+
+            .md\:grid-cols-3 {
+                grid-template-columns: repeat(3, minmax(0, 1fr))
+            }
+        }
+    </style>
+</head>
+
+<body class="py-8 px-4">
+    <div class="form-container">
+        <div class="form-header p-6">
+            <h1 class="text-2xl font-bold">Create Task</h1>
+            <p class="text-indigo-100 mt-1">Fill in the details below to create an adhoc or scheduled task</p>
+        </div>
+
+        <form class="p-6 space-y-6">
+            <!-- Contract ID and Task Name -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="contract-id" class="block text-sm font-medium text-gray-700 mb-1">Contract ID</label>
+                    <input type="text" id="contract-id" name="contract-id" value="PA10749" disabled="true" required=""
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+                <div>
+                    <label for="task-name" class="block text-sm font-medium text-gray-700 mb-1">Task Name</label>
+                    <input type="text" id="task-name" name="task-name" required=""
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+            </div>
+
+            <!-- Task Type and Location -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="task-type" class="block text-sm font-medium text-gray-700 mb-1">Task Type</label>
+                    <select id="task-type" name="task-type" required=""
+                        class="custom-select w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="" disabled="" selected="">Select task type</option>
+                        <option value="adhoc">Ad Hoc</option>
+                        <option value="scheduled">Scheduled</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="location" class="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                    <div class="relative">
+                        <input type="text" id="location" name="location" required="" placeholder="Search for a location..." class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" autocomplete="off">
+                        <div id="location-dropdown" class="absolute z-10 w-full mt-1 bg-white shadow-lg rounded-md border border-gray-200 max-h-60 overflow-y-auto hidden">
+                            <div class="p-2 hover:bg-indigo-50 cursor-pointer location-option" style="">Building A - Floor 1</div>
+                            <div class="p-2 hover:bg-indigo-50 cursor-pointer location-option" style="">Building A - Floor 2</div>
+                            <div class="p-2 hover:bg-indigo-50 cursor-pointer location-option" style="">Building B - Reception</div>
+                            <div class="p-2 hover:bg-indigo-50 cursor-pointer location-option" style="">Building B - Conference Room</div>
+                            <div class="p-2 hover:bg-indigo-50 cursor-pointer location-option" style="">Building C - Cafeteria</div>
+                            <div class="p-2 hover:bg-indigo-50 cursor-pointer location-option" style="">Building C - Office Space</div>
+                            <div class="p-2 hover:bg-indigo-50 cursor-pointer location-option" style="">Parking Lot - Section A</div>
+                            <div class="p-2 hover:bg-indigo-50 cursor-pointer location-option" style="">Parking Lot - Section B</div>
+                            <div class="p-2 hover:bg-indigo-50 cursor-pointer location-option" style="">Warehouse - Storage Area</div>
+                            <div class="p-2 hover:bg-indigo-50 cursor-pointer location-option" style="">Warehouse - Loading Dock</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scheduled Time Options (Hidden by default) -->
+            <div id="scheduled-options" class="bg-indigo-50 p-4 rounded-lg border border-indigo-100 hidden">
+                <h3 class="font-medium text-indigo-800 mb-3">Schedule Details</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label for="date-range" class="block text-sm font-medium text-gray-700 mb-1">Date Range</label>
+                        <input type="date" id="date-range" name="date-range"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label for="start-time" class="block text-sm font-medium text-gray-700 mb-1">Start Time</label>
+                        <input type="time" id="start-time" name="start-time"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label for="end-time" class="block text-sm font-medium text-gray-700 mb-1">End Time</label>
+                        <input type="time" id="end-time" name="end-time"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Checklist and Document Upload -->
+            <div>
+                <div>
+                    <label for="checklist" class="block text-sm font-medium text-gray-700 mb-1">Checklist</label>
+                    <select id="checklist" name="checklist" required=""
+                        class="custom-select w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="" selected="">Not required</option>
+                        <option value="checklist-1">Concoarse A</option>
+                        <option value="checklist-2">Concoarse B</option>
+                        <option value="checklist-3">Belt A to F</option>
+                        <option value="checklist-4">Belt G to M</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Document Selection -->
+            <div>
+                <label for="document" class="block text-sm font-medium text-gray-700 mb-1">Select Document</label>
+                <div class="flex items-center justify-center w-full">
+                    <label for="document" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                            <svg class="w-8 h-8 mb-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                            </svg>
+                            <p class="mb-2 text-sm text-gray-500"><span class="font-semibold">Click to select</span> multiple documents</p>
+                            <p class="text-xs text-gray-500">PDF, DOC, DOCX, XLS, XLSX (MAX. 10MB each)</p>
+                        </div>
+                        <input id="document" type="file" multiple="" class="hidden">
+                    </label>
+                </div>
+                <div id="fileInfo" class="mt-2 text-sm text-gray-500 hidden">
+                    <p>Selected files: <span id="fileCount">0</span></p>
+                    <ul id="fileList" class="mt-1 list-disc pl-5"></ul>
+                </div>
+            </div>
+
+            <!-- Priority and Incident Number -->
+            <div>
+                <div>
+                    <label for="incident-number" class="block text-sm font-medium text-gray-700 mb-1">Incident
+                        Number</label>
+                    <input type="text" id="incident-number" name="incident-number"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+            </div>
+
+            <!-- Incident Document/Photo -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Incident Attachment (Document/Photo)</label>
+                <label for="incident-attachment"
+                    class="file-upload-label flex justify-center items-center px-4 py-2 rounded-md cursor-pointer">
+                    <span class="text-indigo-600 mr-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                    </span>
+                    <span class="text-gray-600">Upload incident document or photo</span>
+                    <input id="incident-attachment" name="incident-attachment" type="file"
+                        accept="image/*,.pdf,.doc,.docx" class="hidden">
+                </label>
+                <p id="incident-file-name" class="mt-1 text-sm text-gray-500"></p>
+            </div>
+
+            <!-- Staff Assignment -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Assign Staff</label>
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <div class="mb-3">
+                        <input type="text" id="staff-search" placeholder="Search staff members..."
+                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div class="space-y-2 max-h-40 overflow-y-auto">
+                        <div class="flex items-center" style="">
+                            <input id="staff-1" name="staff[]" type="checkbox" value="staff-1"
+                                class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                            <label for="staff-1" class="ml-2 block text-sm text-gray-700">John Smith
+                                (Technician)</label>
+                        </div>
+                        <div class="flex items-center" style="">
+                            <input id="staff-2" name="staff[]" type="checkbox" value="staff-2"
+                                class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                            <label for="staff-2" class="ml-2 block text-sm text-gray-700">Sarah Johnson
+                                (Engineer)</label>
+                        </div>
+                        <div class="flex items-center" style="">
+                            <input id="staff-3" name="staff[]" type="checkbox" value="staff-3"
+                                class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                            <label for="staff-3" class="ml-2 block text-sm text-gray-700">Michael Brown
+                                (Supervisor)</label>
+                        </div>
+                        <div class="flex items-center" style="">
+                            <input id="staff-4" name="staff[]" type="checkbox" value="staff-4"
+                                class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                            <label for="staff-4" class="ml-2 block text-sm text-gray-700">Emily Davis
+                                (Inspector)</label>
+                        </div>
+                        <div class="flex items-center" style="">
+                            <input id="staff-5" name="staff[]" type="checkbox" value="staff-5"
+                                class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                            <label for="staff-5" class="ml-2 block text-sm text-gray-700">Robert Wilson
+                                (Maintenance)</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex justify-end">
+                <button type="submit"
+                    class="px-6 py-3 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+                    Create Task
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Show/hide scheduled options based on task type selection
+        document.getElementById('task-type').addEventListener('change', function () {
+            const scheduledOptions = document.getElementById('scheduled-options');
+            if (this.value === 'scheduled') {
+                scheduledOptions.classList.remove('hidden');
+            } else {
+                scheduledOptions.classList.add('hidden');
+            }
+        });
+
+        // Display file name for document upload
+        document.getElementById('document-upload').addEventListener('change', function () {
+            const fileName = this.files[0] ? this.files[0].name : '';
+            document.getElementById('file-name').textContent = fileName;
+        });
+
+        // Display file name for incident attachment
+        document.getElementById('incident-attachment').addEventListener('change', function () {
+            const fileName = this.files[0] ? this.files[0].name : '';
+            document.getElementById('incident-file-name').textContent = fileName;
+        });
+
+        // Simple staff search functionality
+        document.getElementById('staff-search').addEventListener('input', function () {
+            const searchTerm = this.value.toLowerCase();
+            const staffItems = document.querySelectorAll('[id^="staff-"]');
+
+            staffItems.forEach(item => {
+                if (item.type === 'checkbox') {
+                    const label = document.querySelector(`label[for="${item.id}"]`);
+                    const text = label.textContent.toLowerCase();
+
+                    if (text.includes(searchTerm)) {
+                        label.parentElement.style.display = '';
+                    } else {
+                        label.parentElement.style.display = 'none';
+                    }
+                }
+            });
+        });
+
+        // Form submission
+        document.querySelector('form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Validate form
+            const requiredFields = document.querySelectorAll('[required]');
+            let isValid = true;
+
+            requiredFields.forEach(field => {
+                if (!field.value) {
+                    isValid = false;
+                    field.classList.add('border-red-500');
+                } else {
+                    field.classList.remove('border-red-500');
+                }
+            });
+
+            // If task type is scheduled, validate schedule fields
+            if (document.getElementById('task-type').value === 'scheduled') {
+                const dateRange = document.getElementById('date-range').value;
+                const startTime = document.getElementById('start-time').value;
+                const endTime = document.getElementById('end-time').value;
+
+                if (!dateRange || !startTime || !endTime) {
+                    isValid = false;
+                    if (!dateRange) document.getElementById('date-range').classList.add('border-red-500');
+                    if (!startTime) document.getElementById('start-time').classList.add('border-red-500');
+                    if (!endTime) document.getElementById('end-time').classList.add('border-red-500');
+                }
+            }
+
+            if (isValid) {
+                // Show success message
+                alert('Task created successfully!');
+                this.reset();
+                document.getElementById('scheduled-options').classList.add('hidden');
+                document.getElementById('file-name').textContent = '';
+                document.getElementById('incident-file-name').textContent = '';
+            } else {
+                alert('Please fill in all required fields.');
+            }
+        });
+    </script>
+    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'95cd17fcd01c4a3a',t:'MTc1MjExOTM5My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+    <iframe height="1" width="1"
+        style="position: absolute; top: 0px; left: 0px; border: none; visibility: hidden;"></iframe>
+
+</body>
+
+</html>
