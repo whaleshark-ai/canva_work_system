@@ -1,0 +1,1456 @@
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Summary Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+      body {
+          font-family: 'Inter', sans-serif;
+          background-color: #f5f7fa;
+      }
+      .stats-card {
+          transition: all 0.3s ease;
+          cursor: pointer;
+      }
+      .stats-card:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      }
+      .stats-card.active {
+          border-width: 4px;
+          transform: translateY(-3px);
+      }
+      .task-item {
+          transition: all 0.2s ease;
+      }
+      .task-item:hover {
+          background-color: #f0f9ff;
+      }
+      .task-item.active {
+          background-color: #e0f2fe;
+          border-left: 4px solid #0284c7;
+      }
+      .status-tracker .step {
+          position: relative;
+      }
+      .status-tracker .step::after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 100%;
+          width: 100%;
+          height: 2px;
+          background-color: #e5e7eb;
+          transform: translateY(-50%);
+      }
+      .status-tracker .step:last-child::after {
+          display: none;
+      }
+      .status-tracker .step.completed .step-icon {
+          background-color: #10b981;
+          color: white;
+      }
+      .status-tracker .step.completed::after {
+          background-color: #10b981;
+      }
+      .status-tracker .step.current .step-icon {
+          background-color: #3b82f6;
+          color: white;
+          box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3);
+      }
+      .status-tracker .step.rejected .step-icon {
+          background-color: #ef4444;
+          color: white;
+      }
+      .assignee-item {
+          transition: all 0.2s ease;
+      }
+      .assignee-item:hover {
+          background-color: #f0f9ff;
+      }
+      .assignee-item.pinned {
+          background-color: #fef3c7;
+          border-left: 3px solid #f59e0b;
+      }
+  </style>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.16 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.container{width:100%}@media (min-width: 640px){.container{max-width:640px}}@media (min-width: 768px){.container{max-width:768px}}@media (min-width: 1024px){.container{max-width:1024px}}@media (min-width: 1280px){.container{max-width:1280px}}@media (min-width: 1536px){.container{max-width:1536px}}.absolute{position:absolute}.relative{position:relative}.right-0{right:0px}.right-3{right:0.75rem}.top-2\.5{top:0.625rem}.z-10{z-index:10}.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:0.25rem}.mb-10{margin-bottom:2.5rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.mt-2{margin-top:0.5rem}.mb-2{margin-bottom:0.5rem}.ml-3{margin-left:0.75rem}.ml-4{margin-left:1rem}.mt-1{margin-top:0.25rem}.block{display:block}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-16{height:4rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-10{height:2.5rem}.min-h-screen{min-height:100vh}.w-16{width:4rem}.w-4{width:1rem}.w-48{width:12rem}.w-5{width:1.25rem}.w-full{width:100%}.w-10{width:2.5rem}.cursor-pointer{cursor:pointer}.grid-cols-1{grid-template-columns:repeat(1, minmax(0, 1fr))}.grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.flex-col{flex-direction:column}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-2{gap:0.5rem}.gap-6{gap:1.5rem}.gap-1{gap:0.25rem}.gap-4{gap:1rem}.gap-8{gap:2rem}.divide-y > :not([hidden]) ~ :not([hidden]){--tw-divide-y-reverse:0;border-top-width:calc(1px * calc(1 - var(--tw-divide-y-reverse)));border-bottom-width:calc(1px * var(--tw-divide-y-reverse))}.divide-gray-200 > :not([hidden]) ~ :not([hidden]){--tw-divide-opacity:1;border-color:rgb(229 231 235 / var(--tw-divide-opacity, 1))}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.rounded-lg{border-radius:0.5rem}.rounded-md{border-radius:0.375rem}.rounded-xl{border-radius:0.75rem}.rounded-full{border-radius:9999px}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-l-4{border-left-width:4px}.border-blue-500{--tw-border-opacity:1;border-color:rgb(59 130 246 / var(--tw-border-opacity, 1))}.border-gray-200{--tw-border-opacity:1;border-color:rgb(229 231 235 / var(--tw-border-opacity, 1))}.border-gray-300{--tw-border-opacity:1;border-color:rgb(209 213 219 / var(--tw-border-opacity, 1))}.border-green-500{--tw-border-opacity:1;border-color:rgb(34 197 94 / var(--tw-border-opacity, 1))}.border-red-500{--tw-border-opacity:1;border-color:rgb(239 68 68 / var(--tw-border-opacity, 1))}.border-yellow-500{--tw-border-opacity:1;border-color:rgb(234 179 8 / var(--tw-border-opacity, 1))}.bg-blue-50{--tw-bg-opacity:1;background-color:rgb(239 246 255 / var(--tw-bg-opacity, 1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-blue-100{--tw-bg-opacity:1;background-color:rgb(219 234 254 / var(--tw-bg-opacity, 1))}.bg-blue-500{--tw-bg-opacity:1;background-color:rgb(59 130 246 / var(--tw-bg-opacity, 1))}.bg-gray-100{--tw-bg-opacity:1;background-color:rgb(243 244 246 / var(--tw-bg-opacity, 1))}.bg-gray-200{--tw-bg-opacity:1;background-color:rgb(229 231 235 / var(--tw-bg-opacity, 1))}.bg-gray-400{--tw-bg-opacity:1;background-color:rgb(156 163 175 / var(--tw-bg-opacity, 1))}.bg-gray-50{--tw-bg-opacity:1;background-color:rgb(249 250 251 / var(--tw-bg-opacity, 1))}.bg-green-100{--tw-bg-opacity:1;background-color:rgb(220 252 231 / var(--tw-bg-opacity, 1))}.bg-indigo-100{--tw-bg-opacity:1;background-color:rgb(224 231 255 / var(--tw-bg-opacity, 1))}.bg-indigo-500{--tw-bg-opacity:1;background-color:rgb(99 102 241 / var(--tw-bg-opacity, 1))}.bg-pink-500{--tw-bg-opacity:1;background-color:rgb(236 72 153 / var(--tw-bg-opacity, 1))}.bg-purple-100{--tw-bg-opacity:1;background-color:rgb(243 232 255 / var(--tw-bg-opacity, 1))}.bg-purple-500{--tw-bg-opacity:1;background-color:rgb(168 85 247 / var(--tw-bg-opacity, 1))}.bg-red-100{--tw-bg-opacity:1;background-color:rgb(254 226 226 / var(--tw-bg-opacity, 1))}.bg-yellow-100{--tw-bg-opacity:1;background-color:rgb(254 249 195 / var(--tw-bg-opacity, 1))}.bg-yellow-500{--tw-bg-opacity:1;background-color:rgb(234 179 8 / var(--tw-bg-opacity, 1))}.bg-gradient-to-br{background-image:linear-gradient(to bottom right, var(--tw-gradient-stops))}.from-blue-50{--tw-gradient-from:#eff6ff var(--tw-gradient-from-position);--tw-gradient-to:rgb(239 246 255 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.to-indigo-50{--tw-gradient-to:#eef2ff var(--tw-gradient-to-position)}.p-4{padding:1rem}.p-6{padding:1.5rem}.p-2{padding:0.5rem}.p-3{padding:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-12{padding-top:3rem;padding-bottom:3rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-8{padding-top:2rem;padding-bottom:2rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.py-0\.5{padding-top:0.125rem;padding-bottom:0.125rem}.text-center{text-align:center}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xs{font-size:0.75rem;line-height:1rem}.text-2xl{font-size:1.5rem;line-height:2rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-semibold{font-weight:600}.text-blue-600{--tw-text-opacity:1;color:rgb(37 99 235 / var(--tw-text-opacity, 1))}.text-gray-300{--tw-text-opacity:1;color:rgb(209 213 219 / var(--tw-text-opacity, 1))}.text-gray-400{--tw-text-opacity:1;color:rgb(156 163 175 / var(--tw-text-opacity, 1))}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity, 1))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity, 1))}.text-gray-700{--tw-text-opacity:1;color:rgb(55 65 81 / var(--tw-text-opacity, 1))}.text-gray-800{--tw-text-opacity:1;color:rgb(31 41 55 / var(--tw-text-opacity, 1))}.text-blue-800{--tw-text-opacity:1;color:rgb(30 64 175 / var(--tw-text-opacity, 1))}.text-gray-900{--tw-text-opacity:1;color:rgb(17 24 39 / var(--tw-text-opacity, 1))}.text-green-800{--tw-text-opacity:1;color:rgb(22 101 52 / var(--tw-text-opacity, 1))}.text-indigo-800{--tw-text-opacity:1;color:rgb(55 48 163 / var(--tw-text-opacity, 1))}.text-purple-800{--tw-text-opacity:1;color:rgb(107 33 168 / var(--tw-text-opacity, 1))}.text-red-800{--tw-text-opacity:1;color:rgb(153 27 27 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.text-yellow-800{--tw-text-opacity:1;color:rgb(133 77 14 / var(--tw-text-opacity, 1))}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-md{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.hover\:bg-blue-100:hover{--tw-bg-opacity:1;background-color:rgb(219 234 254 / var(--tw-bg-opacity, 1))}.hover\:bg-gray-100:hover{--tw-bg-opacity:1;background-color:rgb(243 244 246 / var(--tw-bg-opacity, 1))}.focus\:border-blue-500:focus{--tw-border-opacity:1;border-color:rgb(59 130 246 / var(--tw-border-opacity, 1))}.focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px}.focus\:ring-2:focus{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)}.focus\:ring-blue-500:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(59 130 246 / var(--tw-ring-opacity, 1))}@media (min-width: 768px){.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}}@media (min-width: 1024px){.lg\:col-span-1{grid-column:span 1 / span 1}.lg\:col-span-2{grid-column:span 2 / span 2}.lg\:w-2\/5{width:40%}.lg\:w-3\/5{width:60%}.lg\:grid-cols-4{grid-template-columns:repeat(4, minmax(0, 1fr))}.lg\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.lg\:flex-row{flex-direction:row}}</style></head>
+<body>
+  <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
+      <div class="container mx-auto px-4 py-8">
+          <!-- Header -->
+          <div class="flex justify-between items-center mb-8">
+              <h1 class="text-3xl font-bold text-gray-800">Task Summary</h1>
+              <div class="text-gray-600 font-medium" id="current-date">Wednesday, July 16, 2025</div>
+          </div>
+          
+          <!-- Stats Area -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+              <div class="stats-card bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500" data-filter="all">
+                  <div class="text-sm font-medium text-gray-500 mb-1">Total Tasks Assigned</div>
+                  <div class="text-3xl font-bold text-gray-800" id="total-tasks">14</div>
+              </div>
+              
+              <div class="stats-card bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500" data-filter="location">
+                  <div class="text-sm font-medium text-gray-500 mb-1">Locations Covered</div>
+                  <div class="text-3xl font-bold text-gray-800" id="locations-count">5</div>
+                  <div class="text-xs text-gray-500 mt-2" id="locations-list">Gate 75, Terminal B, Security, Food Court, Baggage Claim</div>
+              </div>
+              
+              <div class="stats-card bg-white rounded-xl shadow-md p-6 border-l-4 border-yellow-500" data-filter="open-queued">
+                  <div class="text-sm font-medium text-gray-500 mb-1">Open/Queued Tasks</div>
+                  <div class="text-3xl font-bold text-gray-800" id="open-tasks">5</div>
+              </div>
+              
+              <div class="stats-card bg-white rounded-xl shadow-md p-6 border-l-4 border-red-500" data-filter="reject">
+                  <div class="text-sm font-medium text-gray-500 mb-1">Rejected Tasks</div>
+                  <div class="text-3xl font-bold text-gray-800" id="rejected-tasks">1</div>
+              </div>
+          </div>
+          
+          <!-- Task Management Area -->
+          <div class="flex flex-col lg:flex-row gap-6">
+              <!-- Task List -->
+              <div class="w-full lg:w-2/5 bg-white rounded-xl shadow-md overflow-hidden">
+                  <div class="p-4 border-b border-gray-200">
+                      <div class="flex justify-between items-center">
+                          <h2 class="text-lg font-semibold text-gray-800">Task List</h2>
+                          <div class="flex gap-2">
+                              <div class="relative">
+                                  <button id="status-filter-btn" class="px-4 py-2 bg-blue-50 text-blue-600 rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-blue-100 transition-colors">
+                                      <span>Filter by Status</span>
+                                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                      </svg>
+                                  </button>
+                                  <div id="status-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 hidden">
+                                      <div class="py-1">
+                                          <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-status="all">All Tasks</a>
+                                          <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-status="open-queued">Open/Queued</a>
+                                          <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-status="assigned">Assigned</a>
+                                          <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-status="in-progress">In Progress</a>
+                                          <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-status="complete">Complete</a>
+                                          <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-status="reject">Rejected</a>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="overflow-y-auto" style="max-height: 600px;">
+                      <div id="task-list" class="divide-y divide-gray-200"><div class="task-item p-4 cursor-pointer active" data-task-id="1">
+                  <div class="flex justify-between items-start">
+                      <div>
+                          <div class="flex items-center gap-2">
+                              <h3 class="font-medium text-gray-900">Clean Gate 75 Seating Area</h3>
+                              <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-gray-100 text-gray-800">Normal</span>
+                          </div>
+                          <div class="text-sm text-gray-500 mt-1">
+                              <div class="flex items-center gap-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                  </svg>
+                                  Gate 75
+                              </div>
+                              <div class="flex items-center gap-1 mt-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                  </svg>
+                                  08:00 - 09:30
+                              </div>
+                          </div>
+                      </div>
+                      <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Complete</span>
+                  </div>
+              </div><div class="task-item p-4 cursor-pointer" data-task-id="2">
+                  <div class="flex justify-between items-start">
+                      <div>
+                          <div class="flex items-center gap-2">
+                              <h3 class="font-medium text-gray-900">Restock Bathroom Supplies</h3>
+                              <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-gray-100 text-gray-800">Normal</span>
+                          </div>
+                          <div class="text-sm text-gray-500 mt-1">
+                              <div class="flex items-center gap-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                  </svg>
+                                  Terminal B
+                              </div>
+                              <div class="flex items-center gap-1 mt-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                  </svg>
+                                  08:30 - 09:15
+                              </div>
+                          </div>
+                      </div>
+                      <span class="px-2 py-1 text-xs font-medium rounded-full bg-purple-100 text-purple-800">In/Progress</span>
+                  </div>
+              </div><div class="task-item p-4 cursor-pointer" data-task-id="3">
+                  <div class="flex justify-between items-start">
+                      <div>
+                          <div class="flex items-center gap-2">
+                              <h3 class="font-medium text-gray-900">Security Checkpoint Assistance</h3>
+                              <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-gray-100 text-gray-800">Normal</span>
+                          </div>
+                          <div class="text-sm text-gray-500 mt-1">
+                              <div class="flex items-center gap-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                  </svg>
+                                  Security
+                              </div>
+                              <div class="flex items-center gap-1 mt-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                  </svg>
+                                  09:00 - 11:00
+                              </div>
+                          </div>
+                      </div>
+                      <span class="px-2 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">Open/Queued</span>
+                  </div>
+              </div><div class="task-item p-4 cursor-pointer" data-task-id="11">
+                  <div class="flex justify-between items-start">
+                      <div>
+                          <div class="flex items-center gap-2">
+                              <h3 class="font-medium text-gray-900">Emergency Spill Cleanup</h3>
+                              <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-indigo-100 text-indigo-800">Adhoc</span>
+                          </div>
+                          <div class="text-sm text-gray-500 mt-1">
+                              <div class="flex items-center gap-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                  </svg>
+                                  Food Court
+                              </div>
+                              <div class="flex items-center gap-1 mt-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                  </svg>
+                                  09:45 - 10:15
+                              </div>
+                          </div>
+                      </div>
+                      <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Complete</span>
+                  </div>
+              </div><div class="task-item p-4 cursor-pointer" data-task-id="4">
+                  <div class="flex justify-between items-start">
+                      <div>
+                          <div class="flex items-center gap-2">
+                              <h3 class="font-medium text-gray-900">Food Court Cleanup</h3>
+                              <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-gray-100 text-gray-800">Normal</span>
+                          </div>
+                          <div class="text-sm text-gray-500 mt-1">
+                              <div class="flex items-center gap-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                  </svg>
+                                  Food Court
+                              </div>
+                              <div class="flex items-center gap-1 mt-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                  </svg>
+                                  10:00 - 11:30
+                              </div>
+                          </div>
+                      </div>
+                      <span class="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">Assigned</span>
+                  </div>
+              </div><div class="task-item p-4 cursor-pointer" data-task-id="5">
+                  <div class="flex justify-between items-start">
+                      <div>
+                          <div class="flex items-center gap-2">
+                              <h3 class="font-medium text-gray-900">Baggage Carousel Inspection</h3>
+                              <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-gray-100 text-gray-800">Normal</span>
+                          </div>
+                          <div class="text-sm text-gray-500 mt-1">
+                              <div class="flex items-center gap-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                  </svg>
+                                  Baggage Claim
+                              </div>
+                              <div class="flex items-center gap-1 mt-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                  </svg>
+                                  10:30 - 11:15
+                              </div>
+                          </div>
+                      </div>
+                      <span class="px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-800">Reject</span>
+                  </div>
+              </div><div class="task-item p-4 cursor-pointer" data-task-id="6">
+                  <div class="flex justify-between items-start">
+                      <div>
+                          <div class="flex items-center gap-2">
+                              <h3 class="font-medium text-gray-900">Information Desk Coverage</h3>
+                              <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-gray-100 text-gray-800">Normal</span>
+                          </div>
+                          <div class="text-sm text-gray-500 mt-1">
+                              <div class="flex items-center gap-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                  </svg>
+                                  Terminal B
+                              </div>
+                              <div class="flex items-center gap-1 mt-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                  </svg>
+                                  11:00 - 13:00
+                              </div>
+                          </div>
+                      </div>
+                      <span class="px-2 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">Open/Queued</span>
+                  </div>
+              </div><div class="task-item p-4 cursor-pointer" data-task-id="7">
+                  <div class="flex justify-between items-start">
+                      <div>
+                          <div class="flex items-center gap-2">
+                              <h3 class="font-medium text-gray-900">Lost &amp; Found Item Processing</h3>
+                              <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-gray-100 text-gray-800">Normal</span>
+                          </div>
+                          <div class="text-sm text-gray-500 mt-1">
+                              <div class="flex items-center gap-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                  </svg>
+                                  Security
+                              </div>
+                              <div class="flex items-center gap-1 mt-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                  </svg>
+                                  11:30 - 12:30
+                              </div>
+                          </div>
+                      </div>
+                      <span class="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">Assigned</span>
+                  </div>
+              </div><div class="task-item p-4 cursor-pointer" data-task-id="12">
+                  <div class="flex justify-between items-start">
+                      <div>
+                          <div class="flex items-center gap-2">
+                              <h3 class="font-medium text-gray-900">VIP Escort Service</h3>
+                              <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-indigo-100 text-indigo-800">Adhoc</span>
+                          </div>
+                          <div class="text-sm text-gray-500 mt-1">
+                              <div class="flex items-center gap-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                  </svg>
+                                  Gate 75
+                              </div>
+                              <div class="flex items-center gap-1 mt-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                  </svg>
+                                  11:45 - 12:30
+                              </div>
+                          </div>
+                      </div>
+                      <span class="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">Assigned</span>
+                  </div>
+              </div><div class="task-item p-4 cursor-pointer" data-task-id="8">
+                  <div class="flex justify-between items-start">
+                      <div>
+                          <div class="flex items-center gap-2">
+                              <h3 class="font-medium text-gray-900">Gate 75 Boarding Assistance</h3>
+                              <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-gray-100 text-gray-800">Normal</span>
+                          </div>
+                          <div class="text-sm text-gray-500 mt-1">
+                              <div class="flex items-center gap-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                  </svg>
+                                  Gate 75
+                              </div>
+                              <div class="flex items-center gap-1 mt-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                  </svg>
+                                  12:00 - 13:30
+                              </div>
+                          </div>
+                      </div>
+                      <span class="px-2 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">Open/Queued</span>
+                  </div>
+              </div><div class="task-item p-4 cursor-pointer" data-task-id="9">
+                  <div class="flex justify-between items-start">
+                      <div>
+                          <div class="flex items-center gap-2">
+                              <h3 class="font-medium text-gray-900">Terminal B Restroom Inspection</h3>
+                              <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-gray-100 text-gray-800">Normal</span>
+                          </div>
+                          <div class="text-sm text-gray-500 mt-1">
+                              <div class="flex items-center gap-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                  </svg>
+                                  Terminal B
+                              </div>
+                              <div class="flex items-center gap-1 mt-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                  </svg>
+                                  13:00 - 14:00
+                              </div>
+                          </div>
+                      </div>
+                      <span class="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">Assigned</span>
+                  </div>
+              </div><div class="task-item p-4 cursor-pointer" data-task-id="14">
+                  <div class="flex justify-between items-start">
+                      <div>
+                          <div class="flex items-center gap-2">
+                              <h3 class="font-medium text-gray-900">Lost Child Assistance</h3>
+                              <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-indigo-100 text-indigo-800">Adhoc</span>
+                          </div>
+                          <div class="text-sm text-gray-500 mt-1">
+                              <div class="flex items-center gap-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                  </svg>
+                                  Security
+                              </div>
+                              <div class="flex items-center gap-1 mt-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                  </svg>
+                                  13:15 - 13:45
+                              </div>
+                          </div>
+                      </div>
+                      <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Complete</span>
+                  </div>
+              </div><div class="task-item p-4 cursor-pointer" data-task-id="10">
+                  <div class="flex justify-between items-start">
+                      <div>
+                          <div class="flex items-center gap-2">
+                              <h3 class="font-medium text-gray-900">Security Line Management</h3>
+                              <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-gray-100 text-gray-800">Normal</span>
+                          </div>
+                          <div class="text-sm text-gray-500 mt-1">
+                              <div class="flex items-center gap-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                  </svg>
+                                  Security
+                              </div>
+                              <div class="flex items-center gap-1 mt-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                  </svg>
+                                  14:00 - 16:00
+                              </div>
+                          </div>
+                      </div>
+                      <span class="px-2 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">Open/Queued</span>
+                  </div>
+              </div><div class="task-item p-4 cursor-pointer" data-task-id="13">
+                  <div class="flex justify-between items-start">
+                      <div>
+                          <div class="flex items-center gap-2">
+                              <h3 class="font-medium text-gray-900">Broken Seat Repair</h3>
+                              <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-indigo-100 text-indigo-800">Adhoc</span>
+                          </div>
+                          <div class="text-sm text-gray-500 mt-1">
+                              <div class="flex items-center gap-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                  </svg>
+                                  Terminal B
+                              </div>
+                              <div class="flex items-center gap-1 mt-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                  </svg>
+                                  15:00 - 16:00
+                              </div>
+                          </div>
+                      </div>
+                      <span class="px-2 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">Open/Queued</span>
+                  </div>
+              </div></div>
+                  </div>
+              </div>
+              
+              <!-- Task Detail -->
+              <div class="w-full lg:w-3/5">
+                  <div class="bg-white rounded-xl shadow-md overflow-hidden mb-6">
+                      <div class="p-4 border-b border-gray-200">
+                          <h2 class="text-lg font-semibold text-gray-800">Task Details</h2>
+                      </div>
+                      <div id="task-detail" class="p-6">
+              <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  <div class="lg:col-span-2">
+                      <div class="flex justify-between items-start mb-4">
+                          <div>
+                              <h2 class="text-2xl font-bold text-gray-800">Clean Gate 75 Seating Area</h2>
+                              <div class="flex gap-2 mt-2">
+                                  <span class="px-3 py-1 text-sm font-medium rounded-full bg-red-100 text-red-800">High Priority</span>
+                                  <span class="px-3 py-1 text-sm font-medium rounded-full bg-gray-100 text-gray-800">Normal</span>
+                              </div>
+                          </div>
+                      </div>
+                      
+                      <div class="grid grid-cols-2 gap-4 mb-6">
+                          <div>
+                              <p class="text-sm font-medium text-gray-500">Location</p>
+                              <p class="text-gray-800">Gate 75</p>
+                          </div>
+                          <div>
+                              <p class="text-sm font-medium text-gray-500">Assignee</p>
+                              <p class="text-gray-800">John Smith</p>
+                          </div>
+                          <div>
+                              <p class="text-sm font-medium text-gray-500">Time</p>
+                              <p class="text-gray-800">08:00 - 09:30</p>
+                          </div>
+                          <div>
+                              <p class="text-sm font-medium text-gray-500">Created</p>
+                              <p class="text-gray-800">Jun 10, 07:30 AM</p>
+                          </div>
+                      </div>
+                      
+                      <div class="mb-6">
+                          <p class="text-sm font-medium text-gray-500 mb-2">Description</p>
+                          <p class="text-gray-800 bg-gray-50 p-4 rounded-lg">Clean all seating areas, empty trash bins, and wipe down surfaces at Gate 75.</p>
+                      </div>
+                      
+                      <div>
+                          <p class="text-sm font-medium text-gray-500 mb-2">Notes</p>
+                          <p class="text-gray-800 bg-gray-50 p-4 rounded-lg">Pay special attention to charging stations and table surfaces.</p>
+                      </div>
+                  </div>
+                  
+                  <div class="lg:col-span-1">
+                      <p class="text-sm font-medium text-gray-500 mb-4">Status Tracker</p>
+                      <div class="status-tracker flex flex-col gap-8">
+                          
+                  <div class="step completed flex items-center">
+                      <div class="step-icon w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 font-medium">
+                          1
+                      </div>
+                      <div class="ml-4">
+                          <p class="font-medium text-gray-800">Open/Queued</p>
+                      </div>
+                  </div>
+              
+                  <div class="step completed flex items-center">
+                      <div class="step-icon w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 font-medium">
+                          2
+                      </div>
+                      <div class="ml-4">
+                          <p class="font-medium text-gray-800">Assigned</p>
+                      </div>
+                  </div>
+              
+                  <div class="step completed flex items-center">
+                      <div class="step-icon w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 font-medium">
+                          3
+                      </div>
+                      <div class="ml-4">
+                          <p class="font-medium text-gray-800">In Progress</p>
+                      </div>
+                  </div>
+              
+                  <div class="step current flex items-center">
+                      <div class="step-icon w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 font-medium">
+                          4
+                      </div>
+                      <div class="ml-4">
+                          <p class="font-medium text-gray-800">Complete</p>
+                      </div>
+                  </div>
+              
+                      </div>
+                  </div>
+              </div>
+          </div>
+                  </div>
+                  
+                  <!-- Assignee List -->
+                  <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                      <div class="p-4 border-b border-gray-200">
+                          <h2 class="text-lg font-semibold text-gray-800">Assignees</h2>
+                      </div>
+                      <div class="p-4">
+                          <div class="relative mb-4">
+                              <input type="text" id="assignee-search" placeholder="Search assignees..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 absolute right-3 top-2.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                              </svg>
+                          </div>
+                          <div class="overflow-y-auto" style="max-height: 300px;">
+                              <div id="assignee-list" class="divide-y divide-gray-200"><div class="assignee-item p-3 ">
+                  <div class="flex items-center justify-between">
+                      <div class="flex items-center">
+                          <div class="w-10 h-10 rounded-full bg-yellow-500 flex items-center justify-center text-white font-medium">
+                              AW
+                          </div>
+                          <div class="ml-3">
+                              <p class="font-medium text-gray-800">Alex Wong</p>
+                              <p class="text-xs text-gray-500">2 tasks</p>
+                          </div>
+                      </div>
+                      <button class="pin-button p-2 rounded-full hover:bg-gray-100" data-assignee="Alex Wong">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                              </svg>
+                      </button>
+                  </div>
+              </div><div class="assignee-item p-3 ">
+                  <div class="flex items-center justify-between">
+                      <div class="flex items-center">
+                          <div class="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center text-white font-medium">
+                              DC
+                          </div>
+                          <div class="ml-3">
+                              <p class="font-medium text-gray-800">David Chen</p>
+                              <p class="text-xs text-gray-500">1 task</p>
+                          </div>
+                      </div>
+                      <button class="pin-button p-2 rounded-full hover:bg-gray-100" data-assignee="David Chen">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                              </svg>
+                      </button>
+                  </div>
+              </div><div class="assignee-item p-3 ">
+                  <div class="flex items-center justify-between">
+                      <div class="flex items-center">
+                          <div class="w-10 h-10 rounded-full bg-yellow-500 flex items-center justify-center text-white font-medium">
+                              ED
+                          </div>
+                          <div class="ml-3">
+                              <p class="font-medium text-gray-800">Emily Davis</p>
+                              <p class="text-xs text-gray-500">1 task</p>
+                          </div>
+                      </div>
+                      <button class="pin-button p-2 rounded-full hover:bg-gray-100" data-assignee="Emily Davis">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                              </svg>
+                      </button>
+                  </div>
+              </div><div class="assignee-item p-3 ">
+                  <div class="flex items-center justify-between">
+                      <div class="flex items-center">
+                          <div class="w-10 h-10 rounded-full bg-pink-500 flex items-center justify-center text-white font-medium">
+                              JS
+                          </div>
+                          <div class="ml-3">
+                              <p class="font-medium text-gray-800">John Smith</p>
+                              <p class="text-xs text-gray-500">2 tasks</p>
+                          </div>
+                      </div>
+                      <button class="pin-button p-2 rounded-full hover:bg-gray-100" data-assignee="John Smith">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                              </svg>
+                      </button>
+                  </div>
+              </div><div class="assignee-item p-3 ">
+                  <div class="flex items-center justify-between">
+                      <div class="flex items-center">
+                          <div class="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center text-white font-medium">
+                              LC
+                          </div>
+                          <div class="ml-3">
+                              <p class="font-medium text-gray-800">Lisa Chen</p>
+                              <p class="text-xs text-gray-500">1 task</p>
+                          </div>
+                      </div>
+                      <button class="pin-button p-2 rounded-full hover:bg-gray-100" data-assignee="Lisa Chen">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                              </svg>
+                      </button>
+                  </div>
+              </div><div class="assignee-item p-3 ">
+                  <div class="flex items-center justify-between">
+                      <div class="flex items-center">
+                          <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium">
+                              MR
+                          </div>
+                          <div class="ml-3">
+                              <p class="font-medium text-gray-800">Maria Rodriguez</p>
+                              <p class="text-xs text-gray-500">2 tasks</p>
+                          </div>
+                      </div>
+                      <button class="pin-button p-2 rounded-full hover:bg-gray-100" data-assignee="Maria Rodriguez">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                              </svg>
+                      </button>
+                  </div>
+              </div><div class="assignee-item p-3 ">
+                  <div class="flex items-center justify-between">
+                      <div class="flex items-center">
+                          <div class="w-10 h-10 rounded-full bg-pink-500 flex items-center justify-center text-white font-medium">
+                              RJ
+                          </div>
+                          <div class="ml-3">
+                              <p class="font-medium text-gray-800">Robert Johnson</p>
+                              <p class="text-xs text-gray-500">1 task</p>
+                          </div>
+                      </div>
+                      <button class="pin-button p-2 rounded-full hover:bg-gray-100" data-assignee="Robert Johnson">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                              </svg>
+                      </button>
+                  </div>
+              </div><div class="assignee-item p-3 ">
+                  <div class="flex items-center justify-between">
+                      <div class="flex items-center">
+                          <div class="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center text-white font-medium">
+                              SJ
+                          </div>
+                          <div class="ml-3">
+                              <p class="font-medium text-gray-800">Sarah Johnson</p>
+                              <p class="text-xs text-gray-500">1 task</p>
+                          </div>
+                      </div>
+                      <button class="pin-button p-2 rounded-full hover:bg-gray-100" data-assignee="Sarah Johnson">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                              </svg>
+                      </button>
+                  </div>
+              </div><div class="assignee-item p-3 ">
+                  <div class="flex items-center justify-between">
+                      <div class="flex items-center">
+                          <div class="w-10 h-10 rounded-full bg-gray-400 flex items-center justify-center text-white font-medium">
+                              U
+                          </div>
+                          <div class="ml-3">
+                              <p class="font-medium text-gray-800">Unassigned</p>
+                              <p class="text-xs text-gray-500">3 tasks</p>
+                          </div>
+                      </div>
+                      <button class="pin-button p-2 rounded-full hover:bg-gray-100" data-assignee="Unassigned">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                              </svg>
+                      </button>
+                  </div>
+              </div></div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <script>
+      // Sample task data
+      const tasks = [
+          {
+              id: 1,
+              title: "Clean Gate 75 Seating Area",
+              location: "Gate 75",
+              assignee: "John Smith",
+              startTime: "08:00",
+              endTime: "09:30",
+              status: "complete",
+              priority: "High",
+              type: "Normal",
+              description: "Clean all seating areas, empty trash bins, and wipe down surfaces at Gate 75.",
+              notes: "Pay special attention to charging stations and table surfaces.",
+              createdAt: "2023-06-10T07:30:00"
+          },
+          {
+              id: 2,
+              title: "Restock Bathroom Supplies",
+              location: "Terminal B",
+              assignee: "Maria Rodriguez",
+              startTime: "08:30",
+              endTime: "09:15",
+              status: "in-progress",
+              priority: "Medium",
+              type: "Normal",
+              description: "Restock paper towels, toilet paper, and soap dispensers in all Terminal B bathrooms.",
+              notes: "Check supply closet inventory after completion.",
+              createdAt: "2023-06-10T07:45:00"
+          },
+          {
+              id: 3,
+              title: "Security Checkpoint Assistance",
+              location: "Security",
+              assignee: "Unassigned",
+              startTime: "09:00",
+              endTime: "11:00",
+              status: "open-queued",
+              priority: "High",
+              type: "Normal",
+              description: "Assist passengers with bin organization and preparation at security checkpoint.",
+              notes: "Focus on peak hours from 9-11am.",
+              createdAt: "2023-06-10T08:00:00"
+          },
+          {
+              id: 4,
+              title: "Food Court Cleanup",
+              location: "Food Court",
+              assignee: "David Chen",
+              startTime: "10:00",
+              endTime: "11:30",
+              status: "assigned",
+              priority: "Medium",
+              type: "Normal",
+              description: "Clean tables, floors, and organize seating in the main food court area.",
+              notes: "Coordinate with food vendors for any specific needs.",
+              createdAt: "2023-06-10T08:15:00"
+          },
+          {
+              id: 5,
+              title: "Baggage Carousel Inspection",
+              location: "Baggage Claim",
+              assignee: "Sarah Johnson",
+              startTime: "10:30",
+              endTime: "11:15",
+              status: "reject",
+              priority: "Low",
+              type: "Normal",
+              description: "Inspect baggage carousel #3 for proper functioning and maintenance needs.",
+              notes: "Rejected due to maintenance team scheduling conflict.",
+              createdAt: "2023-06-10T08:30:00"
+          },
+          {
+              id: 6,
+              title: "Information Desk Coverage",
+              location: "Terminal B",
+              assignee: "Unassigned",
+              startTime: "11:00",
+              endTime: "13:00",
+              status: "open-queued",
+              priority: "High",
+              type: "Normal",
+              description: "Cover information desk during lunch break period.",
+              notes: "Must be fluent in English and Spanish.",
+              createdAt: "2023-06-10T09:00:00"
+          },
+          {
+              id: 7,
+              title: "Lost & Found Item Processing",
+              location: "Security",
+              assignee: "Alex Wong",
+              startTime: "11:30",
+              endTime: "12:30",
+              status: "assigned",
+              priority: "Medium",
+              type: "Normal",
+              description: "Process and catalog items in the lost & found collection from yesterday.",
+              notes: "Follow new digital tagging procedure.",
+              createdAt: "2023-06-10T09:15:00"
+          },
+          {
+              id: 8,
+              title: "Gate 75 Boarding Assistance",
+              location: "Gate 75",
+              assignee: "Emily Davis",
+              startTime: "12:00",
+              endTime: "13:30",
+              status: "open-queued",
+              priority: "High",
+              type: "Normal",
+              description: "Assist with boarding process for flight AA1234 to Chicago.",
+              notes: "Several passengers require wheelchair assistance.",
+              createdAt: "2023-06-10T09:30:00"
+          },
+          {
+              id: 9,
+              title: "Terminal B Restroom Inspection",
+              location: "Terminal B",
+              assignee: "Robert Johnson",
+              startTime: "13:00",
+              endTime: "14:00",
+              status: "assigned",
+              priority: "Medium",
+              type: "Normal",
+              description: "Conduct hourly inspection of all Terminal B restrooms.",
+              notes: "Report any maintenance issues immediately.",
+              createdAt: "2023-06-10T10:00:00"
+          },
+          {
+              id: 10,
+              title: "Security Line Management",
+              location: "Security",
+              assignee: "Lisa Chen",
+              startTime: "14:00",
+              endTime: "16:00",
+              status: "open-queued",
+              priority: "High",
+              type: "Normal",
+              description: "Manage security line flow during afternoon peak hours.",
+              notes: "Coordinate with TSA staff for optimal throughput.",
+              createdAt: "2023-06-10T10:15:00"
+          },
+          {
+              id: 11,
+              title: "Emergency Spill Cleanup",
+              location: "Food Court",
+              assignee: "John Smith",
+              startTime: "09:45",
+              endTime: "10:15",
+              status: "complete",
+              priority: "High",
+              type: "Adhoc",
+              description: "Clean up large beverage spill near the central seating area.",
+              notes: "Use caution signs and ensure area is completely dry before removing.",
+              createdAt: "2023-06-10T09:40:00"
+          },
+          {
+              id: 12,
+              title: "VIP Escort Service",
+              location: "Gate 75",
+              assignee: "Maria Rodriguez",
+              startTime: "11:45",
+              endTime: "12:30",
+              status: "assigned",
+              priority: "High",
+              type: "Adhoc",
+              description: "Escort VIP passenger from arrival gate to private lounge.",
+              notes: "Passenger arriving on flight DL789 from Paris.",
+              createdAt: "2023-06-10T10:30:00"
+          },
+          {
+              id: 13,
+              title: "Broken Seat Repair",
+              location: "Terminal B",
+              assignee: "Unassigned",
+              startTime: "15:00",
+              endTime: "16:00",
+              status: "open-queued",
+              priority: "Medium",
+              type: "Adhoc",
+              description: "Repair or cordon off broken seat in Terminal B waiting area.",
+              notes: "Located near gate B12, armrest is detached.",
+              createdAt: "2023-06-10T11:15:00"
+          },
+          {
+              id: 14,
+              title: "Lost Child Assistance",
+              location: "Security",
+              assignee: "Alex Wong",
+              startTime: "13:15",
+              endTime: "13:45",
+              status: "complete",
+              priority: "High",
+              type: "Adhoc",
+              description: "Assist in locating parent of lost child at security checkpoint.",
+              notes: "Child is approximately 6 years old, wearing red t-shirt.",
+              createdAt: "2023-06-10T13:10:00"
+          }
+      ];
+
+      // Extract unique assignees
+      const assignees = [...new Set(tasks.map(task => task.assignee))].filter(assignee => assignee !== "Unassigned").map(name => {
+          return {
+              name: name,
+              pinned: false,
+              tasks: tasks.filter(task => task.assignee === name).length
+          };
+      });
+
+      // Add "Unassigned" at the end
+      assignees.push({
+          name: "Unassigned",
+          pinned: false,
+          tasks: tasks.filter(task => task.assignee === "Unassigned").length
+      });
+
+      // Sort tasks by start time
+      tasks.sort((a, b) => {
+          return a.startTime.localeCompare(b.startTime);
+      });
+
+      // Update stats counters
+      function updateStatsCounters() {
+          // Total tasks
+          document.getElementById('total-tasks').textContent = tasks.length;
+          
+          // Open/queued tasks
+          const openTasks = tasks.filter(task => task.status === 'open-queued').length;
+          document.getElementById('open-tasks').textContent = openTasks;
+          
+          // Rejected tasks
+          const rejectedTasks = tasks.filter(task => task.status === 'reject').length;
+          document.getElementById('rejected-tasks').textContent = rejectedTasks;
+          
+          // Locations
+          const uniqueLocations = [...new Set(tasks.map(task => task.location))];
+          document.getElementById('locations-count').textContent = uniqueLocations.length;
+          document.getElementById('locations-list').textContent = uniqueLocations.join(', ');
+      }
+
+      // Set current date
+      function setCurrentDate() {
+          const now = new Date();
+          const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+          document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', options);
+      }
+
+      // Render task list
+      function renderTaskList(filteredTasks = tasks) {
+          const taskListElement = document.getElementById('task-list');
+          taskListElement.innerHTML = '';
+          
+          if (filteredTasks.length === 0) {
+              taskListElement.innerHTML = `
+                  <div class="p-4 text-center text-gray-500">
+                      No tasks match your filter criteria
+                  </div>
+              `;
+              return;
+          }
+          
+          filteredTasks.forEach(task => {
+              const taskElement = document.createElement('div');
+              taskElement.className = 'task-item p-4 cursor-pointer';
+              taskElement.dataset.taskId = task.id;
+              
+              // Status badge color
+              let statusColor = '';
+              switch(task.status) {
+                  case 'open-queued':
+                      statusColor = 'bg-yellow-100 text-yellow-800';
+                      break;
+                  case 'assigned':
+                      statusColor = 'bg-blue-100 text-blue-800';
+                      break;
+                  case 'in-progress':
+                      statusColor = 'bg-purple-100 text-purple-800';
+                      break;
+                  case 'complete':
+                      statusColor = 'bg-green-100 text-green-800';
+                      break;
+                  case 'reject':
+                      statusColor = 'bg-red-100 text-red-800';
+                      break;
+              }
+              
+              // Format status text
+              let statusText = task.status.replace('-', '/').replace(/\b\w/g, l => l.toUpperCase());
+              
+              // Type badge
+              const typeColor = task.type === 'Adhoc' ? 'bg-indigo-100 text-indigo-800' : 'bg-gray-100 text-gray-800';
+              
+              taskElement.innerHTML = `
+                  <div class="flex justify-between items-start">
+                      <div>
+                          <div class="flex items-center gap-2">
+                              <h3 class="font-medium text-gray-900">${task.title}</h3>
+                              <span class="px-2 py-0.5 text-xs font-medium rounded-full ${typeColor}">${task.type}</span>
+                          </div>
+                          <div class="text-sm text-gray-500 mt-1">
+                              <div class="flex items-center gap-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                  </svg>
+                                  ${task.location}
+                              </div>
+                              <div class="flex items-center gap-1 mt-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                  </svg>
+                                  ${task.startTime} - ${task.endTime}
+                              </div>
+                          </div>
+                      </div>
+                      <span class="px-2 py-1 text-xs font-medium rounded-full ${statusColor}">${statusText}</span>
+                  </div>
+              `;
+              
+              taskElement.addEventListener('click', () => {
+                  // Remove active class from all tasks
+                  document.querySelectorAll('.task-item').forEach(item => {
+                      item.classList.remove('active');
+                  });
+                  
+                  // Add active class to clicked task
+                  taskElement.classList.add('active');
+                  
+                  // Show task details
+                  showTaskDetails(task);
+              });
+              
+              taskListElement.appendChild(taskElement);
+          });
+      }
+
+      // Show task details
+      function showTaskDetails(task) {
+          const taskDetailElement = document.getElementById('task-detail');
+          
+          // Format status for display
+          let statusText = task.status.replace('-', '/').replace(/\b\w/g, l => l.toUpperCase());
+          
+          // Priority badge color
+          let priorityColor = '';
+          switch(task.priority) {
+              case 'High':
+                  priorityColor = 'bg-red-100 text-red-800';
+                  break;
+              case 'Medium':
+                  priorityColor = 'bg-yellow-100 text-yellow-800';
+                  break;
+              case 'Low':
+                  priorityColor = 'bg-green-100 text-green-800';
+                  break;
+          }
+          
+          // Type badge color
+          const typeColor = task.type === 'Adhoc' ? 'bg-indigo-100 text-indigo-800' : 'bg-gray-100 text-gray-800';
+          
+          // Format created date
+          const createdDate = new Date(task.createdAt);
+          const formattedDate = createdDate.toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
+          });
+          
+          taskDetailElement.innerHTML = `
+              <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  <div class="lg:col-span-2">
+                      <div class="flex justify-between items-start mb-4">
+                          <div>
+                              <h2 class="text-2xl font-bold text-gray-800">${task.title}</h2>
+                              <div class="flex gap-2 mt-2">
+                                  <span class="px-3 py-1 text-sm font-medium rounded-full ${priorityColor}">${task.priority} Priority</span>
+                                  <span class="px-3 py-1 text-sm font-medium rounded-full ${typeColor}">${task.type}</span>
+                              </div>
+                          </div>
+                      </div>
+                      
+                      <div class="grid grid-cols-2 gap-4 mb-6">
+                          <div>
+                              <p class="text-sm font-medium text-gray-500">Location</p>
+                              <p class="text-gray-800">${task.location}</p>
+                          </div>
+                          <div>
+                              <p class="text-sm font-medium text-gray-500">Assignee</p>
+                              <p class="text-gray-800">${task.assignee}</p>
+                          </div>
+                          <div>
+                              <p class="text-sm font-medium text-gray-500">Time</p>
+                              <p class="text-gray-800">${task.startTime} - ${task.endTime}</p>
+                          </div>
+                          <div>
+                              <p class="text-sm font-medium text-gray-500">Created</p>
+                              <p class="text-gray-800">${formattedDate}</p>
+                          </div>
+                      </div>
+                      
+                      <div class="mb-6">
+                          <p class="text-sm font-medium text-gray-500 mb-2">Description</p>
+                          <p class="text-gray-800 bg-gray-50 p-4 rounded-lg">${task.description}</p>
+                      </div>
+                      
+                      <div>
+                          <p class="text-sm font-medium text-gray-500 mb-2">Notes</p>
+                          <p class="text-gray-800 bg-gray-50 p-4 rounded-lg">${task.notes}</p>
+                      </div>
+                  </div>
+                  
+                  <div class="lg:col-span-1">
+                      <p class="text-sm font-medium text-gray-500 mb-4">Status Tracker</p>
+                      <div class="status-tracker flex flex-col gap-8">
+                          ${renderStatusTracker(task.status)}
+                      </div>
+                  </div>
+              </div>
+          `;
+      }
+
+      // Render status tracker
+      function renderStatusTracker(currentStatus) {
+          const statuses = ['open-queued', 'assigned', 'in-progress', 'complete', 'reject'];
+          const statusLabels = {
+              'open-queued': 'Open/Queued',
+              'assigned': 'Assigned',
+              'in-progress': 'In Progress',
+              'complete': 'Complete',
+              'reject': 'Rejected'
+          };
+          
+          let html = '';
+          let isRejected = currentStatus === 'reject';
+          
+          statuses.forEach((status, index) => {
+              if (status === 'reject' && currentStatus !== 'reject') {
+                  return; // Skip reject status if not rejected
+              }
+              
+              if (isRejected && status !== 'open-queued' && status !== 'reject') {
+                  return; // Skip middle statuses if rejected
+              }
+              
+              let stepClass = '';
+              
+              if (isRejected) {
+                  if (status === 'open-queued') {
+                      stepClass = 'completed';
+                  } else if (status === 'reject') {
+                      stepClass = 'rejected';
+                  }
+              } else {
+                  const statusIndex = statuses.indexOf(status);
+                  const currentStatusIndex = statuses.indexOf(currentStatus);
+                  
+                  if (statusIndex < currentStatusIndex) {
+                      stepClass = 'completed';
+                  } else if (statusIndex === currentStatusIndex) {
+                      stepClass = 'current';
+                  }
+              }
+              
+              html += `
+                  <div class="step ${stepClass} flex items-center">
+                      <div class="step-icon w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 font-medium">
+                          ${index + 1}
+                      </div>
+                      <div class="ml-4">
+                          <p class="font-medium text-gray-800">${statusLabels[status]}</p>
+                      </div>
+                  </div>
+              `;
+          });
+          
+          return html;
+      }
+
+      // Render assignee list
+      function renderAssigneeList(filteredAssignees = assignees) {
+          const assigneeListElement = document.getElementById('assignee-list');
+          assigneeListElement.innerHTML = '';
+          
+          // Sort assignees: pinned first, then alphabetically
+          const sortedAssignees = [...filteredAssignees].sort((a, b) => {
+              if (a.pinned && !b.pinned) return -1;
+              if (!a.pinned && b.pinned) return 1;
+              return a.name.localeCompare(b.name);
+          });
+          
+          if (sortedAssignees.length === 0) {
+              assigneeListElement.innerHTML = `
+                  <div class="p-4 text-center text-gray-500">
+                      No assignees match your search
+                  </div>
+              `;
+              return;
+          }
+          
+          sortedAssignees.forEach(assignee => {
+              const assigneeElement = document.createElement('div');
+              assigneeElement.className = `assignee-item p-3 ${assignee.pinned ? 'pinned' : ''}`;
+              
+              // Generate initials for avatar
+              const initials = assignee.name.split(' ').map(n => n[0]).join('').toUpperCase();
+              
+              // Random color for avatar (but consistent for same name)
+              const colors = ['bg-blue-500', 'bg-green-500', 'bg-purple-500', 'bg-pink-500', 'bg-yellow-500', 'bg-red-500', 'bg-indigo-500'];
+              const colorIndex = assignee.name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % colors.length;
+              const avatarColor = assignee.name === "Unassigned" ? "bg-gray-400" : colors[colorIndex];
+              
+              assigneeElement.innerHTML = `
+                  <div class="flex items-center justify-between">
+                      <div class="flex items-center">
+                          <div class="w-10 h-10 rounded-full ${avatarColor} flex items-center justify-center text-white font-medium">
+                              ${initials}
+                          </div>
+                          <div class="ml-3">
+                              <p class="font-medium text-gray-800">${assignee.name}</p>
+                              <p class="text-xs text-gray-500">${assignee.tasks} task${assignee.tasks !== 1 ? 's' : ''}</p>
+                          </div>
+                      </div>
+                      <button class="pin-button p-2 rounded-full hover:bg-gray-100" data-assignee="${assignee.name}">
+                          ${assignee.pinned ? 
+                              `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
+                                  <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                              </svg>` : 
+                              `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                              </svg>`
+                          }
+                      </button>
+                  </div>
+              `;
+              
+              // Add click event to filter tasks by assignee
+              assigneeElement.addEventListener('click', (e) => {
+                  // Ignore clicks on the pin button
+                  if (e.target.closest('.pin-button')) return;
+                  
+                  filterTasksByAssignee(assignee.name);
+              });
+              
+              assigneeListElement.appendChild(assigneeElement);
+          });
+          
+          // Add pin/unpin functionality
+          document.querySelectorAll('.pin-button').forEach(button => {
+              button.addEventListener('click', () => {
+                  const assigneeName = button.dataset.assignee;
+                  const assigneeIndex = assignees.findIndex(a => a.name === assigneeName);
+                  
+                  if (assigneeIndex !== -1) {
+                      assignees[assigneeIndex].pinned = !assignees[assigneeIndex].pinned;
+                      renderAssigneeList(getFilteredAssignees());
+                  }
+              });
+          });
+      }
+
+      // Filter tasks by status
+      function filterTasks(status) {
+          // Remove active class from all stats cards
+          document.querySelectorAll('.stats-card').forEach(card => {
+              card.classList.remove('active');
+          });
+          
+          // Add active class to clicked card
+          document.querySelector(`.stats-card[data-filter="${status}"]`)?.classList.add('active');
+          
+          if (status === 'all') {
+              renderTaskList();
+              // Update status filter button text
+              document.querySelector('#status-filter-btn span').textContent = "All Tasks";
+          } else if (status === 'location') {
+              // Show location filter dialog
+              const locationFilter = prompt("Enter location to filter by (Gate 75, Terminal B, Food Court, Baggage Claim, Security):");
+              if (locationFilter) {
+                  const filteredTasks = tasks.filter(task => 
+                      task.location.toLowerCase().includes(locationFilter.toLowerCase())
+                  );
+                  renderTaskList(filteredTasks);
+                  // Update status filter button text
+                  document.querySelector('#status-filter-btn span').textContent = `Location: ${locationFilter}`;
+              } else {
+                  // If canceled, remove active class
+                  document.querySelector(`.stats-card[data-filter="location"]`).classList.remove('active');
+              }
+          } else {
+              const filteredTasks = tasks.filter(task => task.status === status);
+              renderTaskList(filteredTasks);
+              
+              // Update status filter button text
+              let statusText = status.replace('-', '/').replace(/\b\w/g, l => l.toUpperCase());
+              document.querySelector('#status-filter-btn span').textContent = `${statusText} Tasks`;
+          }
+      }
+
+      // Filter tasks by assignee
+      function filterTasksByAssignee(assigneeName) {
+          const filteredTasks = tasks.filter(task => task.assignee === assigneeName);
+          renderTaskList(filteredTasks);
+          
+          // Update status filter button text
+          document.querySelector('#status-filter-btn span').textContent = `Assigned to: ${assigneeName}`;
+          
+          // Remove active class from all stats cards
+          document.querySelectorAll('.stats-card').forEach(card => {
+              card.classList.remove('active');
+          });
+      }
+
+      // Filter assignees by search term
+      function getFilteredAssignees() {
+          const searchTerm = document.getElementById('assignee-search').value.toLowerCase();
+          if (!searchTerm) return assignees;
+          
+          return assignees.filter(assignee => 
+              assignee.name.toLowerCase().includes(searchTerm)
+          );
+      }
+
+      // Initialize
+      document.addEventListener('DOMContentLoaded', () => {
+          setCurrentDate();
+          updateStatsCounters();
+          renderTaskList();
+          renderAssigneeList();
+          
+          // Status filter dropdown
+          const statusFilterBtn = document.getElementById('status-filter-btn');
+          const statusDropdown = document.getElementById('status-dropdown');
+          
+          statusFilterBtn.addEventListener('click', () => {
+              statusDropdown.classList.toggle('hidden');
+          });
+          
+          // Close dropdown when clicking outside
+          document.addEventListener('click', (event) => {
+              if (!statusFilterBtn.contains(event.target) && !statusDropdown.contains(event.target)) {
+                  statusDropdown.classList.add('hidden');
+              }
+          });
+          
+          // Status filter options
+          document.querySelectorAll('#status-dropdown a').forEach(option => {
+              option.addEventListener('click', (event) => {
+                  event.preventDefault();
+                  const status = event.target.dataset.status;
+                  filterTasks(status);
+                  statusDropdown.classList.add('hidden');
+              });
+          });
+          
+          // Stats cards filtering
+          document.querySelectorAll('.stats-card').forEach(card => {
+              card.addEventListener('click', () => {
+                  const filter = card.dataset.filter;
+                  filterTasks(filter);
+              });
+          });
+          
+          // Assignee search
+          const assigneeSearch = document.getElementById('assignee-search');
+          assigneeSearch.addEventListener('input', () => {
+              renderAssigneeList(getFilteredAssignees());
+          });
+          
+          // Select first task by default
+          if (tasks.length > 0) {
+              const firstTaskElement = document.querySelector('.task-item');
+              if (firstTaskElement) {
+                  firstTaskElement.click();
+              }
+          }
+      });
+  </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'95ffcea260940721',t:'MTc1MjY1MTE2Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border: none; visibility: hidden;"></iframe>
+
+</body></html>
