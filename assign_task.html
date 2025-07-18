@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Task Assignment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .task-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-right: 4px;
+            margin-bottom: 4px;
+        }
+        .task-badge.priority-high {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+        .task-badge.priority-medium {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        .task-badge.priority-low {
+            background-color: #e0f2fe;
+            color: #0369a1;
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-50">
+        <header class="bg-white shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center py-6">
+                    <h1 class="text-2xl font-bold text-gray-900">Team Task Assignment</h1>
+                    <div class="flex items-center space-x-4">
+                        <span class="text-sm text-gray-500">Marketing Team</span>
+                        <div class="flex items-center">
+                            <img class="h-8 w-8 rounded-full" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234f46e5'%3E%3Ccircle cx='12' cy='7' r='5' fill='%234f46e5'/%3E%3Cpath d='M17 14h.352a3 3 0 0 1 2.976 2.628l.391 3.124A2 2 0 0 1 18.734 22H5.266a2 2 0 0 1-1.985-2.248l.39-3.124A3 3 0 0 1 6.649 14H7' fill='%234f46e5'/%3E%3C/svg%3E" alt="User profile">
+                            <span class="ml-2 text-sm font-medium text-gray-700">Team Manager</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-lg font-semibold text-gray-900">Team Members</h2>
+                    <div class="flex space-x-3">
+                        <button id="bulk-assign-btn" class="px-3 py-2 bg-indigo-600 text-white rounded-md text-sm font-medium hover:bg-indigo-700 transition-colors flex items-center">
+                            <svg class="h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                            Bulk Assign
+                        </button>
+                        <div class="relative">
+                            <input type="text" placeholder="Search team members..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Team Member 1 -->
+                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow duration-200 cursor-pointer bg-white" onclick="selectEmployee('alex-rodriguez')">
+                        <div class="flex items-center">
+                            <div class="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-800 font-semibold text-lg">AR</div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-gray-900">Alex Rodriguez</h3>
+                                <p class="text-xs text-gray-500">Content Specialist</p>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <div class="flex items-center text-xs text-gray-500">
+                                <svg class="h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                <span>3 shifts this week</span>
+                            </div>
+                            <div class="flex items-center text-xs text-gray-500 mt-1">
+                                <svg class="h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                </svg>
+                                <span>4 tasks assigned</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Team Member 2 -->
+                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow duration-200 cursor-pointer bg-white" onclick="selectEmployee('sarah-johnson')">
+                        <div class="flex items-center">
+                            <div class="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-800 font-semibold text-lg">SJ</div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-gray-900">Sarah Johnson</h3>
+                                <p class="text-xs text-gray-500">Graphic Designer</p>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <div class="flex items-center text-xs text-gray-500">
+                                <svg class="h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                <span>4 shifts this week</span>
+                            </div>
+                            <div class="flex items-center text-xs text-gray-500 mt-1">
+                                <svg class="h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                </svg>
+                                <span>6 tasks assigned</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Team Member 3 -->
+                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow duration-200 cursor-pointer bg-white" onclick="selectEmployee('michael-chen')">
+                        <div class="flex items-center">
+                            <div class="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center text-green-800 font-semibold text-lg">MC</div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-gray-900">Michael Chen</h3>
+                                <p class="text-xs text-gray-500">Social Media Specialist</p>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <div class="flex items-center text-xs text-gray-500">
+                                <svg class="h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                <span>5 shifts this week</span>
+                            </div>
+                            <div class="flex items-center text-xs text-gray-500 mt-1">
+                                <svg class="h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                </svg>
+                                <span>3 tasks assigned</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Team Member 4 -->
+                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow duration-200 cursor-pointer bg-white" onclick="selectEmployee('priya-patel')">
+                        <div class="flex items-center">
+                            <div class="h-10 w-10 rounded-full bg-pink-100 flex items-center justify-center text-pink-800 font-semibold text-lg">PP</div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-gray-900">Priya Patel</h3>
+                                <p class="text-xs text-gray-500">Marketing Analyst</p>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <div class="flex items-center text-xs text-gray-500">
+                                <svg class="h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                <span>3 shifts this week</span>
+                            </div>
+                            <div class="flex items-center text-xs text-gray-500 mt-1">
+                                <svg class="h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                </svg>
+                                <span>5 tasks assigned</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Team Member 5 -->
+                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow duration-200 cursor-pointer bg-white" onclick="selectEmployee('james-wilson')">
+                        <div class="flex items-center">
+                            <div class="h-10 w-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-800 font-semibold text-lg">JW</div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-gray-900">James Wilson</h3>
+                                <p class="text-xs text-gray-500">SEO Specialist</p>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <div class="flex items-center text-xs text-gray-500">
+                                <svg class="h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                <span>4 shifts this week</span>
+                            </div>
+                            <div class="flex items-center text-xs text-gray-500 mt-1">
+                                <svg class="h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                </svg>
+                                <span>2 tasks assigned</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Team Member 6 -->
+                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow duration-200 cursor-pointer bg-white" onclick="selectEmployee('emma-garcia')">
+                        <div class="flex items-center">
+                            <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-800 font-semibold text-lg">EG</div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-gray-900">Emma Garcia</h3>
+                                <p class="text-xs text-gray-500">Content Writer</p>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <div class="flex items-center text-xs text-gray-500">
+                                <svg class="h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                <span>3 shifts this week</span>
+                            </div>
+                            <div class="flex items-center text-xs text-gray-500 mt-1">
+                                <svg class="h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                </svg>
+                                <span>4 tasks assigned</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="employee-schedule" class="bg-white rounded-lg shadow-md p-6 mb-8 hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <div class="flex items-center">
+                        <div id="employee-avatar" class="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-800 font-semibold text-lg">AR</div>
+                        <div class="ml-3">
+                            <h2 id="employee-name" class="text-lg font-semibold text-gray-900">Alex Rodriguez</h2>
+                            <p id="employee-position" class="text-sm text-gray-500">Content Specialist</p>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 bg-gray-100 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-200 transition-colors">
+                            <span>This Week</span>
+                            <svg class="inline-block ml-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                        <button class="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-md text-sm font-medium hover:bg-indigo-200 transition-colors">View All Shifts</button>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Shift Time</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tasks</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200" id="shifts-table-body">
+                            <!-- Shifts will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Task Assignment Modal -->
+            <div id="task-modal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50 hidden">
+                <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-medium text-gray-900">Assign Task</h3>
+                        <button onclick="closeTaskModal()" class="text-gray-400 hover:text-gray-500">
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="mb-4">
+                        <p id="modal-shift-info" class="text-sm text-gray-500">Monday, June 10 • 9:00 AM - 5:00 PM</p>
+                        <p id="modal-employee-info" class="text-sm font-medium text-gray-900">Alex Rodriguez</p>
+                    </div>
+                    <form id="task-form">
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Select Tasks</label>
+                            <div class="space-y-2 max-h-60 overflow-y-auto border border-gray-200 rounded-md p-3">
+                                <div class="flex items-center">
+                                    <input id="task-content-creation" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded task-checkbox">
+                                    <label for="task-content-creation" class="ml-2 block text-sm text-gray-700">Replenishment of Trolleys/Infant Strollers</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input id="task-social-media" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded task-checkbox">
+                                    <label for="task-social-media" class="ml-2 block text-sm text-gray-700">Retrieval of Trolleys/Infant Strollers </label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input id="task-email-marketing" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded task-checkbox">
+                                    <label for="task-email-marketing" class="ml-2 block text-sm text-gray-700">Cleaning of Trolleys/Infant Strollers</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="task-location" class="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                            <input type="text" id="task-location" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="Enter task location">
+                        </div>
+                        <div class="flex justify-end space-x-3">
+                            <button type="button" onclick="closeTaskModal()" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Cancel</button>
+                            <button type="button" onclick="assignTask()" class="px-4 py-2 bg-indigo-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Assign Task</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Bulk Assignment Modal -->
+            <div id="bulk-assign-modal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50 hidden">
+                <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-medium text-gray-900">Bulk Task Assignment</h3>
+                        <button onclick="closeBulkAssignModal()" class="text-gray-400 hover:text-gray-500">
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Select Date & Shift</label>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <select id="bulk-date" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" onchange="updateBulkEmployeeList()">
+                                <option value="">Select date...</option>
+                                <option value="Monday, June 10">Monday, June 10</option>
+                                <option value="Tuesday, June 11">Tuesday, June 11</option>
+                                <option value="Wednesday, June 12">Wednesday, June 12</option>
+                                <option value="Thursday, June 13">Thursday, June 13</option>
+                                <option value="Friday, June 14">Friday, June 14</option>
+                            </select>
+                            <select id="bulk-time" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" onchange="updateBulkEmployeeList()">
+                                <option value="">Select shift time...</option>
+                                <option value="8:00 AM - 4:00 PM">8:00 AM - 4:00 PM</option>
+                                <option value="9:00 AM - 5:00 PM">9:00 AM - 5:00 PM</option>
+                                <option value="10:00 AM - 6:00 PM">10:00 AM - 6:00 PM</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="block text-sm font-medium text-gray-700">Available Employees</label>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="select-all-employees" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" onchange="toggleAllEmployees()">
+                                <label for="select-all-employees" class="ml-2 text-sm text-gray-700">Select All</label>
+                            </div>
+                        </div>
+                        <div id="bulk-employee-list" class="border border-gray-200 rounded-md p-3 max-h-48 overflow-y-auto">
+                            <p class="text-gray-500 text-sm">Please select a date and shift time to see available employees.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h4 class="text-sm font-medium text-gray-700 mb-2">Select Tasks</h4>
+                        <div class="space-y-2 max-h-60 overflow-y-auto border border-gray-200 rounded-md p-3 mb-4">
+                            <div class="flex items-center">
+                                <input id="bulk-task-content-creation" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded bulk-task-checkbox">
+                                <label for="bulk-task-content-creation" class="ml-2 block text-sm text-gray-700">Replenishment of Trolleys/Infant Strollers</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="bulk-task-social-media" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded bulk-task-checkbox">
+                                <label for="bulk-task-social-media" class="ml-2 block text-sm text-gray-700">Retrieval of Trolleys/Infant Strollers  </label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="bulk-task-email-marketing" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded bulk-task-checkbox">
+                                <label for="bulk-task-email-marketing" class="ml-2 block text-sm text-gray-700">Cleaning of Trolleys/Infant Strollers</label>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="bulk-task-location" class="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                            <input type="text" id="bulk-task-location" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="Enter task location">
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end space-x-3">
+                        <button type="button" onclick="closeBulkAssignModal()" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Cancel</button>
+                        <button type="button" onclick="bulkAssignTask()" class="px-4 py-2 bg-indigo-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Assign to Selected</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Task List Modal -->
+            <div id="task-list-modal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50 hidden">
+                <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-medium text-gray-900">Shift Tasks</h3>
+                        <button onclick="closeTaskListModal()" class="text-gray-400 hover:text-gray-500">
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="mb-4">
+                        <p id="task-list-shift-info" class="text-sm text-gray-500">Monday, June 10 • 9:00 AM - 5:00 PM</p>
+                        <p id="task-list-employee-info" class="text-sm font-medium text-gray-900">Alex Rodriguez</p>
+                    </div>
+                    
+                    <div id="task-list-container" class="space-y-3 max-h-96 overflow-y-auto">
+                        <!-- Tasks will be populated here -->
+                    </div>
+                    
+                    <div class="mt-6 flex justify-between">
+                        <button type="button" onclick="openTaskModal(currentViewingShiftId)" class="px-4 py-2 bg-indigo-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            <svg class="inline-block h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                            Add New Task
+                        </button>
+                        <button type="button" onclick="closeTaskListModal()" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Close</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Sample data for employees and shifts
+        const employees = {
+            'alex-rodriguez': {
+                name: 'Alex Rodriguez',
+                position: 'Content Specialist',
+                avatar: 'AR',
+                avatarBg: 'bg-indigo-100',
+                avatarText: 'text-indigo-800',
+                shifts: [
+                    { id: 1, date: 'Monday, June 10', time: '9:00 AM - 5:00 PM', location: 'Main Office', tasks: [] },
+                    { id: 2, date: 'Wednesday, June 12', time: '9:00 AM - 5:00 PM', location: 'Main Office', tasks: [] },
+                    { id: 3, date: 'Friday, June 14', time: '10:00 AM - 6:00 PM', location: 'Remote', tasks: [] }
+                ]
+            },
+            'sarah-johnson': {
+                name: 'Sarah Johnson',
+                position: 'Graphic Designer',
+                avatar: 'SJ',
+                avatarBg: 'bg-purple-100',
+                avatarText: 'text-purple-800',
+                shifts: [
+                    { id: 4, date: 'Monday, June 10', time: '8:00 AM - 4:00 PM', location: 'Design Studio', tasks: [] },
+                    { id: 5, date: 'Tuesday, June 11', time: '8:00 AM - 4:00 PM', location: 'Design Studio', tasks: [] },
+                    { id: 6, date: 'Thursday, June 13', time: '8:00 AM - 4:00 PM', location: 'Design Studio', tasks: [] },
+                    { id: 7, date: 'Friday, June 14', time: '8:00 AM - 4:00 PM', location: 'Remote', tasks: [] }
+                ]
+            },
+            'michael-chen': {
+                name: 'Michael Chen',
+                position: 'Social Media Specialist',
+                avatar: 'MC',
+                avatarBg: 'bg-green-100',
+                avatarText: 'text-green-800',
+                shifts: [
+                    { id: 8, date: 'Monday, June 10', time: '10:00 AM - 6:00 PM', location: 'Main Office', tasks: [] },
+                    { id: 9, date: 'Tuesday, June 11', time: '10:00 AM - 6:00 PM', location: 'Main Office', tasks: [] },
+                    { id: 10, date: 'Wednesday, June 12', time: '10:00 AM - 6:00 PM', location: 'Remote', tasks: [] },
+                    { id: 11, date: 'Thursday, June 13', time: '10:00 AM - 6:00 PM', location: 'Main Office', tasks: [] },
+                    { id: 12, date: 'Friday, June 14', time: '10:00 AM - 6:00 PM', location: 'Remote', tasks: [] }
+                ]
+            },
+            'priya-patel': {
+                name: 'Priya Patel',
+                position: 'Marketing Analyst',
+                avatar: 'PP',
+                avatarBg: 'bg-pink-100',
+                avatarText: 'text-pink-800',
+                shifts: [
+                    { id: 13, date: 'Tuesday, June 11', time: '9:00 AM - 5:00 PM', location: 'Main Office', tasks: [] },
+                    { id: 14, date: 'Wednesday, June 12', time: '9:00 AM - 5:00 PM', location: 'Main Office', tasks: [] },
+                    { id: 15, date: 'Friday, June 14', time: '9:00 AM - 5:00 PM', location: 'Main Office', tasks: [] }
+                ]
+            },
+            'james-wilson': {
+                name: 'James Wilson',
+                position: 'SEO Specialist',
+                avatar: 'JW',
+                avatarBg: 'bg-amber-100',
+                avatarText: 'text-amber-800',
+                shifts: [
+                    { id: 16, date: 'Monday, June 10', time: '9:00 AM - 5:00 PM', location: 'Main Office', tasks: [] },
+                    { id: 17, date: 'Wednesday, June 12', time: '9:00 AM - 5:00 PM', location: 'Remote', tasks: [] },
+                    { id: 18, date: 'Thursday, June 13', time: '9:00 AM - 5:00 PM', location: 'Main Office', tasks: [] },
+                    { id: 19, date: 'Friday, June 14', time: '9:00 AM - 5:00 PM', location: 'Main Office', tasks: [] }
+                ]
+            },
+            'emma-garcia': {
+                name: 'Emma Garcia',
+                position: 'Content Writer',
+                avatar: 'EG',
+                avatarBg: 'bg-blue-100',
+                avatarText: 'text-blue-800',
+                shifts: [
+                    { id: 20, date: 'Monday, June 10', time: '8:00 AM - 4:00 PM', location: 'Remote', tasks: [] },
+                    { id: 21, date: 'Wednesday, June 12', time: '8:00 AM - 4:00 PM', location: 'Main Office', tasks: [] },
+                    { id: 22, date: 'Friday, June 14', time: '8:00 AM - 4:00 PM', location: 'Main Office', tasks: [] }
+                ]
+            }
+        };
+
+        let currentEmployee = null;
+        let currentShiftId = null;
+        let currentViewingShiftId = null;
+
+        function selectEmployee(employeeId) {
+            currentEmployee = employeeId;
+            const employee = employees[employeeId];
+            
+            // Update employee info
+            document.getElementById('employee-avatar').className = `h-10 w-10 rounded-full ${employee.avatarBg} flex items-center justify-center ${employee.avatarText} font-semibold text-lg`;
+            document.getElementById('employee-avatar').textContent = employee.avatar;
+            document.getElementById('employee-name').textContent = employee.name;
+            document.getElementById('employee-position').textContent = employee.position;
+            
+            // Show employee schedule section
+            document.getElementById('employee-schedule').classList.remove('hidden');
+            
+            // Populate shifts table
+            const tableBody = document.getElementById('shifts-table-body');
+            tableBody.innerHTML = '';
+            
+            employee.shifts.forEach(shift => {
+                const row = document.createElement('tr');
+                
+                // Date column
+                const dateCell = document.createElement('td');
+                dateCell.className = 'px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900';
+                dateCell.textContent = shift.date;
+                row.appendChild(dateCell);
+                
+                // Time column
+                const timeCell = document.createElement('td');
+                timeCell.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-500';
+                timeCell.textContent = shift.time;
+                row.appendChild(timeCell);
+                
+                // Location column
+                const locationCell = document.createElement('td');
+                locationCell.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-500';
+                locationCell.textContent = shift.location;
+                row.appendChild(locationCell);
+                
+                // Tasks column
+                const tasksCell = document.createElement('td');
+                tasksCell.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-500';
+                
+                if (shift.tasks.length === 0) {
+                    tasksCell.innerHTML = '<span class="text-gray-400">No tasks assigned</span>';
+                } else {
+                    const taskContainer = document.createElement('div');
+                    taskContainer.className = 'flex flex-wrap';
+                    
+                    // Show only up to 3 tasks with a "+X more" indicator if needed
+                    const displayTasks = shift.tasks.slice(0, 3);
+                    const remainingCount = shift.tasks.length - 3;
+                    
+                    displayTasks.forEach(task => {
+                        const taskBadge = document.createElement('span');
+                        taskBadge.className = `task-badge priority-${task.priority}`;
+                        taskBadge.textContent = task.title;
+                        taskBadge.title = task.description;
+                        taskContainer.appendChild(taskBadge);
+                    });
+                    
+                    if (remainingCount > 0) {
+                        const moreBadge = document.createElement('span');
+                        moreBadge.className = 'task-badge bg-gray-100 text-gray-700';
+                        moreBadge.textContent = `+${remainingCount} more`;
+                        taskContainer.appendChild(moreBadge);
+                    }
+                    
+                    // Make the task cell clickable to view all tasks
+                    taskContainer.style.cursor = 'pointer';
+                    taskContainer.onclick = (e) => {
+                        e.stopPropagation();
+                        openTaskListModal(shift.id);
+                    };
+                    
+                    tasksCell.appendChild(taskContainer);
+                }
+                row.appendChild(tasksCell);
+                
+                // Actions column
+                const actionsCell = document.createElement('td');
+                actionsCell.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-500';
+                
+                const actionsContainer = document.createElement('div');
+                actionsContainer.className = 'flex space-x-3';
+                
+                const assignButton = document.createElement('button');
+                assignButton.className = 'text-indigo-600 hover:text-indigo-900 font-medium';
+                assignButton.textContent = 'Assign Task';
+                assignButton.onclick = (e) => {
+                    e.stopPropagation();
+                    openTaskModal(shift.id);
+                };
+                
+                const viewButton = document.createElement('button');
+                viewButton.className = 'text-gray-600 hover:text-gray-900 font-medium';
+                viewButton.textContent = 'View Tasks';
+                viewButton.onclick = (e) => {
+                    e.stopPropagation();
+                    openTaskListModal(shift.id);
+                };
+                
+                actionsContainer.appendChild(assignButton);
+                actionsContainer.appendChild(viewButton);
+                actionsCell.appendChild(actionsContainer);
+                row.appendChild(actionsCell);
+                
+                tableBody.appendChild(row);
+            });
+            
+            // Scroll to the employee schedule section
+            document.getElementById('employee-schedule').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function openTaskModal(shiftId) {
+            currentShiftId = shiftId;
+            
+            // Find the employee and shift
+            let employee, shift;
+            for (const empId in employees) {
+                const emp = employees[empId];
+                const foundShift = emp.shifts.find(s => s.id === shiftId);
+                if (foundShift) {
+                    employee = emp;
+                    shift = foundShift;
+                    if (currentEmployee !== empId) {
+                        currentEmployee = empId;
+                    }
+                    break;
+                }
+            }
+            
+            if (employee && shift) {
+                document.getElementById('modal-shift-info').textContent = `${shift.date} • ${shift.time}`;
+                document.getElementById('modal-employee-info').textContent = employee.name;
+                
+                // Clear form
+                document.getElementById('task-form').reset();
+                
+                // Show modal
+                document.getElementById('task-modal').classList.remove('hidden');
+            }
+        }
+
+        function closeTaskModal() {
+            document.getElementById('task-modal').classList.add('hidden');
+            document.getElementById('task-form').reset();
+        }
+
+        function assignTask() {
+            const location = document.getElementById('task-location').value.trim();
+            const checkboxes = document.querySelectorAll('.task-checkbox:checked');
+            
+            if (checkboxes.length === 0) {
+                alert('Please select at least one task');
+                return;
+            }
+            
+            // Find the employee and shift
+            let employee, shiftIndex;
+            for (const empId in employees) {
+                const emp = employees[empId];
+                const index = emp.shifts.findIndex(s => s.id === currentShiftId);
+                if (index !== -1) {
+                    employee = emp;
+                    shiftIndex = index;
+                    break;
+                }
+            }
+            
+            if (employee && shiftIndex !== -1) {
+                // Add each selected task
+                checkboxes.forEach(checkbox => {
+                    const taskId = checkbox.id.replace('task-', '');
+                    const taskTitle = document.querySelector(`label[for="${checkbox.id}"]`).textContent;
+                    
+                    employee.shifts[shiftIndex].tasks.push({
+                        id: Date.now() + Math.random(),
+                        title: taskTitle,
+                        description: '',
+                        location,
+                        priority: 'medium',
+                        duration: '1h'
+                    });
+                });
+                
+                // Refresh the shifts table if we're viewing this employee
+                if (currentEmployee === Object.keys(employees).find(id => employees[id] === employee)) {
+                    selectEmployee(currentEmployee);
+                }
+                
+                // Close the modal
+                closeTaskModal();
+                
+                // Show success notification
+                const taskCount = checkboxes.length;
+                const taskText = taskCount === 1 ? 'task' : 'tasks';
+                showNotification(`${taskCount} ${taskText} assigned to ${employee.name}`);
+            }
+        }
+
+        function openTaskListModal(shiftId) {
+            currentViewingShiftId = shiftId;
+            
+            // Find the employee and shift
+            let employee, shift;
+            for (const empId in employees) {
+                const emp = employees[empId];
+                const foundShift = emp.shifts.find(s => s.id === shiftId);
+                if (foundShift) {
+                    employee = emp;
+                    shift = foundShift;
+                    break;
+                }
+            }
+            
+            if (employee && shift) {
+                document.getElementById('task-list-shift-info').textContent = `${shift.date} • ${shift.time}`;
+                document.getElementById('task-list-employee-info').textContent = employee.name;
+                
+                // Populate task list
+                const taskListContainer = document.getElementById('task-list-container');
+                taskListContainer.innerHTML = '';
+                
+                if (shift.tasks.length === 0) {
+                    const emptyMessage = document.createElement('p');
+                    emptyMessage.className = 'text-gray-500 text-center py-4';
+                    emptyMessage.textContent = 'No tasks assigned to this shift yet.';
+                    taskListContainer.appendChild(emptyMessage);
+                } else {
+                    shift.tasks.forEach(task => {
+                        const taskCard = document.createElement('div');
+                        taskCard.className = 'bg-gray-50 rounded-md p-3 border-l-4';
+                        
+                        // Set border color based on priority
+                        if (task.priority === 'high') {
+                            taskCard.classList.add('border-red-500');
+                        } else if (task.priority === 'medium') {
+                            taskCard.classList.add('border-amber-500');
+                        } else {
+                            taskCard.classList.add('border-blue-500');
+                        }
+                        
+                        const taskHeader = document.createElement('div');
+                        taskHeader.className = 'flex justify-between items-start mb-2';
+                        
+                        const taskTitle = document.createElement('h4');
+                        taskTitle.className = 'text-sm font-medium text-gray-900';
+                        taskTitle.textContent = task.title;
+                        
+                        const priorityBadge = document.createElement('span');
+                        priorityBadge.className = `text-xs px-2 py-1 rounded-full`;
+                        
+                        if (task.priority === 'high') {
+                            priorityBadge.classList.add('bg-red-100', 'text-red-800');
+                            priorityBadge.textContent = 'High';
+                        } else if (task.priority === 'medium') {
+                            priorityBadge.classList.add('bg-amber-100', 'text-amber-800');
+                            priorityBadge.textContent = 'Medium';
+                        } else {
+                            priorityBadge.classList.add('bg-blue-100', 'text-blue-800');
+                            priorityBadge.textContent = 'Low';
+                        }
+                        
+                        taskHeader.appendChild(taskTitle);
+                        taskHeader.appendChild(priorityBadge);
+                        taskCard.appendChild(taskHeader);
+                        
+                        if (task.description) {
+                            const taskDesc = document.createElement('p');
+                            taskDesc.className = 'text-xs text-gray-600 mb-2';
+                            taskDesc.textContent = task.description;
+                            taskCard.appendChild(taskDesc);
+                        }
+                        
+                        const taskDetails = document.createElement('div');
+                        taskDetails.className = 'flex flex-wrap gap-2 text-xs text-gray-500';
+                        
+                        if (task.location) {
+                            const locationSpan = document.createElement('span');
+                            locationSpan.className = 'flex items-center';
+                            locationSpan.innerHTML = `
+                                <svg class="h-3 w-3 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                                ${task.location}
+                            `;
+                            taskDetails.appendChild(locationSpan);
+                        }
+                        
+                        const durationSpan = document.createElement('span');
+                        durationSpan.className = 'flex items-center';
+                        durationSpan.innerHTML = `
+                            <svg class="h-3 w-3 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            ${task.duration}
+                        `;
+                        taskDetails.appendChild(durationSpan);
+                        
+                        taskCard.appendChild(taskDetails);
+                        taskListContainer.appendChild(taskCard);
+                    });
+                }
+                
+                // Show modal
+                document.getElementById('task-list-modal').classList.remove('hidden');
+            }
+        }
+
+        function closeTaskListModal() {
+            document.getElementById('task-list-modal').classList.add('hidden');
+        }
+
+        function openBulkAssignModal() {
+            // Reset form
+            document.getElementById('bulk-date').value = '';
+            document.getElementById('bulk-time').value = '';
+            document.getElementById('bulk-employee-list').innerHTML = '<p class="text-gray-500 text-sm">Please select a date and shift time to see available employees.</p>';
+            document.getElementById('select-all-employees').checked = false;
+            document.getElementById('bulk-task-location').value = '';
+            
+            // Reset all task checkboxes
+            document.querySelectorAll('.bulk-task-checkbox').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            
+            // Show modal
+            document.getElementById('bulk-assign-modal').classList.remove('hidden');
+        }
+
+        function closeBulkAssignModal() {
+            document.getElementById('bulk-assign-modal').classList.add('hidden');
+        }
+
+        function updateBulkEmployeeList() {
+            const date = document.getElementById('bulk-date').value;
+            const time = document.getElementById('bulk-time').value;
+            const employeeListContainer = document.getElementById('bulk-employee-list');
+            
+            // Clear the container
+            employeeListContainer.innerHTML = '';
+            
+            if (!date || !time) {
+                employeeListContainer.innerHTML = '<p class="text-gray-500 text-sm">Please select both date and shift time to see available employees.</p>';
+                return;
+            }
+            
+            // Find employees with matching shifts
+            const matchingEmployees = [];
+            
+            for (const empId in employees) {
+                const employee = employees[empId];
+                const matchingShift = employee.shifts.find(shift => shift.date === date && shift.time === time);
+                
+                if (matchingShift) {
+                    matchingEmployees.push({
+                        id: empId,
+                        name: employee.name,
+                        position: employee.position,
+                        avatar: employee.avatar,
+                        avatarBg: employee.avatarBg,
+                        avatarText: employee.avatarText,
+                        shiftId: matchingShift.id
+                    });
+                }
+            }
+            
+            if (matchingEmployees.length === 0) {
+                employeeListContainer.innerHTML = '<p class="text-gray-500 text-sm">No employees found with this shift.</p>';
+                return;
+            }
+            
+            // Create checkboxes for each matching employee
+            matchingEmployees.forEach(emp => {
+                const employeeItem = document.createElement('div');
+                employeeItem.className = 'flex items-center py-2 border-b border-gray-100 last:border-0';
+                
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = `emp-${emp.id}`;
+                checkbox.className = 'h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded employee-checkbox';
+                checkbox.dataset.employeeId = emp.id;
+                checkbox.dataset.shiftId = emp.shiftId;
+                
+                const label = document.createElement('label');
+                label.htmlFor = `emp-${emp.id}`;
+                label.className = 'ml-3 flex items-center';
+                
+                const avatar = document.createElement('div');
+                avatar.className = `h-6 w-6 rounded-full ${emp.avatarBg} flex items-center justify-center ${emp.avatarText} text-xs font-medium`;
+                avatar.textContent = emp.avatar;
+                
+                const nameContainer = document.createElement('div');
+                nameContainer.className = 'ml-2';
+                
+                const name = document.createElement('div');
+                name.className = 'text-sm font-medium text-gray-700';
+                name.textContent = emp.name;
+                
+                const position = document.createElement('div');
+                position.className = 'text-xs text-gray-500';
+                position.textContent = emp.position;
+                
+                nameContainer.appendChild(name);
+                nameContainer.appendChild(position);
+                
+                label.appendChild(avatar);
+                label.appendChild(nameContainer);
+                
+                employeeItem.appendChild(checkbox);
+                employeeItem.appendChild(label);
+                
+                employeeListContainer.appendChild(employeeItem);
+            });
+        }
+
+        function toggleAllEmployees() {
+            const selectAll = document.getElementById('select-all-employees').checked;
+            const checkboxes = document.querySelectorAll('.employee-checkbox');
+            
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectAll;
+            });
+        }
+
+        function bulkAssignTask() {
+            const location = document.getElementById('bulk-task-location').value.trim();
+            const taskCheckboxes = document.querySelectorAll('.bulk-task-checkbox:checked');
+            
+            if (taskCheckboxes.length === 0) {
+                alert('Please select at least one task');
+                return;
+            }
+            
+            // Get selected employees
+            const selectedEmployeeCheckboxes = document.querySelectorAll('.employee-checkbox:checked');
+            
+            if (selectedEmployeeCheckboxes.length === 0) {
+                alert('Please select at least one employee');
+                return;
+            }
+            
+            // Get selected tasks
+            const selectedTasks = [];
+            taskCheckboxes.forEach(checkbox => {
+                const taskId = checkbox.id.replace('bulk-task-', '');
+                const taskTitle = document.querySelector(`label[for="${checkbox.id}"]`).textContent;
+                selectedTasks.push({
+                    title: taskTitle,
+                    description: '',
+                    location,
+                    priority: 'medium',
+                    duration: '1h'
+                });
+            });
+            
+            // Assign tasks to each selected employee
+            const assignedEmployees = [];
+            
+            selectedEmployeeCheckboxes.forEach(checkbox => {
+                const employeeId = checkbox.dataset.employeeId;
+                const shiftId = parseInt(checkbox.dataset.shiftId);
+                
+                const employee = employees[employeeId];
+                const shiftIndex = employee.shifts.findIndex(s => s.id === shiftId);
+                
+                if (shiftIndex !== -1) {
+                    // Add each selected task to this employee
+                    selectedTasks.forEach(task => {
+                        employee.shifts[shiftIndex].tasks.push({
+                            id: Date.now() + Math.random(),
+                            ...task
+                        });
+                    });
+                    
+                    assignedEmployees.push(employee.name);
+                }
+            });
+            
+            // Refresh the shifts table if we're viewing an affected employee
+            if (currentEmployee && assignedEmployees.includes(employees[currentEmployee].name)) {
+                selectEmployee(currentEmployee);
+            }
+            
+            // Close the modal
+            closeBulkAssignModal();
+            
+            // Show success notification
+            const taskCount = selectedTasks.length;
+            const employeeCount = assignedEmployees.length;
+            const taskText = taskCount === 1 ? 'task' : 'tasks';
+            const employeeText = employeeCount === 1 ? 'employee' : 'employees';
+            showNotification(`${taskCount} ${taskText} assigned to ${employeeCount} ${employeeText}`);
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg z-50 flex items-center';
+            
+            const icon = document.createElement('span');
+            icon.innerHTML = `
+                <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+            `;
+            
+            const text = document.createElement('span');
+            text.textContent = message;
+            
+            notification.appendChild(icon);
+            notification.appendChild(text);
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 500);
+            }, 3000);
+        }
+
+        // Initialize with the first employee selected
+        window.onload = function() {
+            selectEmployee('alex-rodriguez');
+            
+            // Add event listener for bulk assign button
+            document.getElementById('bulk-assign-btn').addEventListener('click', function() {
+                openBulkAssignModal();
+            });
+        };
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'960efdf7c7bb055c',t:'MTc1MjgxMDM4Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

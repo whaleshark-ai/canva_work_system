@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Shift Schedule</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .schedule-cell {
+            transition: all 0.2s ease;
+        }
+        .schedule-cell:hover {
+            background-color: #e0e7ff;
+            cursor: pointer;
+            transform: scale(1.02);
+        }
+        .modal {
+            transition: opacity 0.3s ease;
+        }
+        .shift-option {
+            transition: all 0.2s ease;
+        }
+        .shift-option:hover {
+            transform: translateY(-2px);
+        }
+        .shift-morning {
+            background-color: #bfdbfe;
+            border-left: 4px solid #3b82f6;
+        }
+        .shift-afternoon {
+            background-color: #fef3c7;
+            border-left: 4px solid #f59e0b;
+        }
+        .shift-night {
+            background-color: #ddd6fe;
+            border-left: 4px solid #8b5cf6;
+        }
+        .shift-off {
+            background-color: #e5e7eb;
+            border-left: 4px solid #6b7280;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-6">
+    <div class="max-w-6xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+        <div class="p-6 bg-indigo-600 text-white">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <h1 class="text-2xl font-bold">Weekly Shift Schedule</h1>
+                    <p class="text-indigo-100">Click on a cell to assign shifts</p>
+                </div>
+                <div class="flex flex-col md:flex-row items-end md:items-center gap-4">
+                    <div class="bg-indigo-700 rounded-lg px-3 py-1.5">
+                        <label for="teamSelector" class="text-xs text-indigo-200 block mb-1">Select Team</label>
+                        <select id="teamSelector" class="bg-indigo-700 text-white border-none focus:ring-2 focus:ring-white focus:ring-opacity-50 rounded cursor-pointer w-full">
+                            <option value="development">Development Team</option>
+                            <option value="marketing">Marketing Team</option>
+                            <option value="support">Customer Support</option>
+                        </select>
+                    </div>
+                    <button id="assignAllBtn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
+                        Assign All
+                    </button>
+                    <div class="flex flex-col items-end gap-2">
+                        <div class="flex items-center bg-indigo-700 rounded-lg overflow-hidden">
+                            <button id="prevWeek" class="p-2 hover:bg-indigo-800 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                            <div class="px-3 py-1">
+                                <input type="date" id="weekSelector" class="bg-indigo-700 text-white border-none focus:ring-2 focus:ring-white focus:ring-opacity-50 rounded cursor-pointer">
+                            </div>
+                            <button id="nextWeek" class="p-2 hover:bg-indigo-800 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div id="weekRange" class="text-xs text-indigo-100 font-medium"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Schedule Table -->
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="bg-gray-100">
+                        <th class="py-4 px-6 text-left">Employee</th>
+                        <th class="py-4 px-6 text-center">Mon<br><span class="text-xs text-gray-500">May 1</span></th>
+                        <th class="py-4 px-6 text-center">Tue<br><span class="text-xs text-gray-500">May 2</span></th>
+                        <th class="py-4 px-6 text-center">Wed<br><span class="text-xs text-gray-500">May 3</span></th>
+                        <th class="py-4 px-6 text-center">Thu<br><span class="text-xs text-gray-500">May 4</span></th>
+                        <th class="py-4 px-6 text-center">Fri<br><span class="text-xs text-gray-500">May 5</span></th>
+                        <th class="py-4 px-6 text-center">Sat<br><span class="text-xs text-gray-500">May 6</span></th>
+                        <th class="py-4 px-6 text-center">Sun<br><span class="text-xs text-gray-500">May 7</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Employee rows will be dynamically generated -->
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Legend -->
+        <div class="p-4 bg-gray-50 border-t border-gray-200">
+            <h3 class="font-medium mb-2">Shift Legend:</h3>
+            <div class="flex flex-wrap gap-4">
+                <div class="flex items-center">
+                    <div class="w-4 h-4 bg-blue-300 mr-2"></div>
+                    <span>Morning (6AM-2PM)</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-4 h-4 bg-amber-200 mr-2"></div>
+                    <span>Afternoon (2PM-10PM)</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-4 h-4 bg-purple-200 mr-2"></div>
+                    <span>Night (10PM-6AM)</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-4 h-4 bg-gray-200 mr-2"></div>
+                    <span>Day Off</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Shift Selection -->
+    <div id="shiftModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden modal z-50">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 overflow-hidden">
+            <div class="p-6 bg-indigo-600 text-white">
+                <h2 id="modalTitle" class="text-xl font-bold">Assign Shift</h2>
+                <p id="modalSubtitle" class="text-indigo-100">Employee and Day</p>
+            </div>
+            
+            <div class="p-6">
+                <div class="grid grid-cols-1 gap-4 mb-6">
+                    <div class="shift-option shift-morning p-4 rounded-lg cursor-pointer" data-shift="morning">
+                        <h3 class="font-bold text-blue-800">Morning Shift</h3>
+                        <p class="text-sm text-blue-600">6:00 AM - 2:00 PM</p>
+                    </div>
+                    
+                    <div class="shift-option shift-afternoon p-4 rounded-lg cursor-pointer" data-shift="afternoon">
+                        <h3 class="font-bold text-amber-800">Afternoon Shift</h3>
+                        <p class="text-sm text-amber-600">2:00 PM - 10:00 PM</p>
+                    </div>
+                    
+                    <div class="shift-option shift-night p-4 rounded-lg cursor-pointer" data-shift="night">
+                        <h3 class="font-bold text-purple-800">Night Shift</h3>
+                        <p class="text-sm text-purple-600">10:00 PM - 6:00 AM</p>
+                    </div>
+                    
+                    <div class="shift-option shift-off p-4 rounded-lg cursor-pointer" data-shift="off">
+                        <h3 class="font-bold text-gray-800">Day Off</h3>
+                        <p class="text-sm text-gray-600">Not scheduled to work</p>
+                    </div>
+                </div>
+                
+                <!-- Shift Details Section (initially hidden) -->
+                <div id="shiftDetails" class="border-t border-gray-200 pt-4 mt-4 hidden">
+                    <h3 class="font-bold mb-2">Shift Details</h3>
+                    <div id="shiftDetailsContent" class="text-sm"></div>
+                </div>
+                
+                <div class="flex justify-end gap-2 mt-6">
+                    <button id="cancelBtn" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors">
+                        Cancel
+                    </button>
+                    <button id="saveBtn" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors">
+                        Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal for Assign All -->
+    <div id="assignAllModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden modal z-50">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 overflow-hidden">
+            <div class="p-6 bg-green-600 text-white">
+                <h2 class="text-xl font-bold">Assign Shifts for All Employees</h2>
+                <p class="text-green-100">Select day and shift type</p>
+            </div>
+            
+            <div class="p-6">
+                <div class="mb-6">
+                    <label for="daySelector" class="block text-sm font-medium text-gray-700 mb-1">Select Day</label>
+                    <select id="daySelector" class="w-full border-gray-300 rounded-md shadow-sm focus:border-green-500 focus:ring-green-500">
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Friday">Friday</option>
+                        <option value="Saturday">Saturday</option>
+                        <option value="Sunday">Sunday</option>
+                    </select>
+                </div>
+                
+                <div class="grid grid-cols-1 gap-4 mb-6">
+                    <div class="shift-option shift-morning p-4 rounded-lg cursor-pointer" data-shift="morning">
+                        <h3 class="font-bold text-blue-800">Morning Shift</h3>
+                        <p class="text-sm text-blue-600">6:00 AM - 2:00 PM</p>
+                    </div>
+                    
+                    <div class="shift-option shift-afternoon p-4 rounded-lg cursor-pointer" data-shift="afternoon">
+                        <h3 class="font-bold text-amber-800">Afternoon Shift</h3>
+                        <p class="text-sm text-amber-600">2:00 PM - 10:00 PM</p>
+                    </div>
+                    
+                    <div class="shift-option shift-night p-4 rounded-lg cursor-pointer" data-shift="night">
+                        <h3 class="font-bold text-purple-800">Night Shift</h3>
+                        <p class="text-sm text-purple-600">10:00 PM - 6:00 AM</p>
+                    </div>
+                    
+                    <div class="shift-option shift-off p-4 rounded-lg cursor-pointer" data-shift="off">
+                        <h3 class="font-bold text-gray-800">Day Off</h3>
+                        <p class="text-sm text-gray-600">Not scheduled to work</p>
+                    </div>
+                </div>
+                
+                <div class="flex justify-end gap-2 mt-6">
+                    <button id="cancelAllBtn" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors">
+                        Cancel
+                    </button>
+                    <button id="saveAllBtn" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors">
+                        Assign to All
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('shiftModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalSubtitle = document.getElementById('modalSubtitle');
+            const shiftDetails = document.getElementById('shiftDetails');
+            const shiftDetailsContent = document.getElementById('shiftDetailsContent');
+            const cancelBtn = document.getElementById('cancelBtn');
+            const saveBtn = document.getElementById('saveBtn');
+            const prevWeekBtn = document.getElementById('prevWeek');
+            const nextWeekBtn = document.getElementById('nextWeek');
+            const weekSelector = document.getElementById('weekSelector');
+            
+            let currentCell = null;
+            let selectedShift = null;
+            let currentWeekStart = new Date();
+            
+            // Set to the beginning of the week (Monday)
+            currentWeekStart.setDate(currentWeekStart.getDate() - currentWeekStart.getDay() + 1);
+            
+            // Initialize the date picker with current week's Monday
+            const formatDateForInput = (date) => {
+                return date.toISOString().split('T')[0];
+            };
+            
+            weekSelector.value = formatDateForInput(currentWeekStart);
+            
+            // Update the table headers with the correct dates
+            function updateWeekDates() {
+                const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+                const headerCells = document.querySelectorAll('thead th:not(:first-child)');
+                const weekRangeElement = document.getElementById('weekRange');
+                
+                // Calculate end of week date
+                const weekEndDate = new Date(currentWeekStart);
+                weekEndDate.setDate(currentWeekStart.getDate() + 6);
+                
+                // Format dates for the week range display
+                const startMonth = currentWeekStart.toLocaleString('default', { month: 'short' });
+                const startDay = currentWeekStart.getDate();
+                const endMonth = weekEndDate.toLocaleString('default', { month: 'short' });
+                const endDay = weekEndDate.getDate();
+                const startYear = currentWeekStart.getFullYear();
+                const endYear = weekEndDate.getFullYear();
+                
+                // Update the week range text
+                if (startYear === endYear) {
+                    if (startMonth === endMonth) {
+                        weekRangeElement.textContent = `${startMonth} ${startDay} - ${endDay}, ${startYear}`;
+                    } else {
+                        weekRangeElement.textContent = `${startMonth} ${startDay} - ${endMonth} ${endDay}, ${startYear}`;
+                    }
+                } else {
+                    weekRangeElement.textContent = `${startMonth} ${startDay}, ${startYear} - ${endMonth} ${endDay}, ${endYear}`;
+                }
+                
+                // Update table headers
+                for (let i = 0; i < 7; i++) {
+                    const date = new Date(currentWeekStart);
+                    date.setDate(currentWeekStart.getDate() + i);
+                    
+                    const month = date.toLocaleString('default', { month: 'short' });
+                    const day = date.getDate();
+                    
+                    headerCells[i].innerHTML = `${weekdays[i]}<br><span class="text-xs text-gray-500">${month} ${day}</span>`;
+                }
+            }
+            
+            // Team data
+            const teamData = {
+                development: {
+                    name: "Development Team",
+                    employees: [
+                        "Sarah Johnson", 
+                        "Michael Chen", 
+                        "Jessica Williams", 
+                        "David Rodriguez", 
+                        "Emma Thompson"
+                    ],
+                    supervisor: "Jennifer Lee"
+                },
+                marketing: {
+                    name: "Marketing Team",
+                    employees: [
+                        "Alex Turner", 
+                        "Olivia Martinez", 
+                        "Daniel Kim", 
+                        "Sophia Patel", 
+                        "Ethan Wilson"
+                    ],
+                    supervisor: "Robert Martinez"
+                },
+                support: {
+                    name: "Customer Support",
+                    employees: [
+                        "Mia Garcia", 
+                        "Noah Brown", 
+                        "Isabella Clark", 
+                        "Liam Taylor", 
+                        "Ava Lewis"
+                    ],
+                    supervisor: "Thomas Wilson"
+                }
+            };
+            
+            // Shift details information
+            const shiftInfo = {
+                morning: {
+                    title: "Morning Shift Details",
+                    details: [
+                        "Hours: 6:00 AM - 2:00 PM",
+                        "Break: 30 minutes at 10:00 AM",
+                        "Supervisor: Jennifer Lee",
+                        "Tasks: Opening procedures, morning inventory check"
+                    ]
+                },
+                afternoon: {
+                    title: "Afternoon Shift Details",
+                    details: [
+                        "Hours: 2:00 PM - 10:00 PM",
+                        "Break: 30 minutes at 6:00 PM",
+                        "Supervisor: Robert Martinez",
+                        "Tasks: Closing procedures, evening reports"
+                    ]
+                },
+                night: {
+                    title: "Night Shift Details",
+                    details: [
+                        "Hours: 10:00 PM - 6:00 AM",
+                        "Break: 30 minutes at 2:00 AM",
+                        "Supervisor: Thomas Wilson",
+                        "Tasks: Overnight maintenance, security checks"
+                    ]
+                },
+                off: {
+                    title: "Day Off",
+                    details: [
+                        "Employee is not scheduled to work on this day",
+                        "Contact HR for any schedule change requests"
+                    ]
+                }
+            };
+            
+            // Function to update the table with employees from the selected team
+            function updateEmployeeTable(teamId) {
+                const team = teamData[teamId];
+                const tbody = document.querySelector('tbody');
+                
+                // Clear existing rows
+                tbody.innerHTML = '';
+                
+                // Create new rows for each employee in the team
+                team.employees.forEach(employee => {
+                    const row = document.createElement('tr');
+                    row.className = 'border-b border-gray-200';
+                    
+                    // Add employee name cell
+                    const nameCell = document.createElement('td');
+                    nameCell.className = 'py-4 px-6 font-medium';
+                    nameCell.textContent = employee;
+                    row.appendChild(nameCell);
+                    
+                    // Add schedule cells for each day of the week
+                    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+                    days.forEach(day => {
+                        const cell = document.createElement('td');
+                        cell.className = 'py-4 px-2 text-center schedule-cell';
+                        cell.dataset.employee = employee;
+                        cell.dataset.day = day;
+                        row.appendChild(cell);
+                    });
+                    
+                    tbody.appendChild(row);
+                });
+                
+                // Update shift supervisor information based on team
+                shiftInfo.morning.details[2] = `Supervisor: ${team.supervisor}`;
+                shiftInfo.afternoon.details[2] = `Supervisor: ${team.supervisor}`;
+                shiftInfo.night.details[2] = `Supervisor: ${team.supervisor}`;
+                
+                // Add click events to the new cells
+                addCellClickEvents();
+            }
+            
+            // Function to add click events to schedule cells
+            function addCellClickEvents() {
+                document.querySelectorAll('.schedule-cell').forEach(cell => {
+                    cell.addEventListener('click', function() {
+                        currentCell = this;
+                        const employee = this.dataset.employee;
+                        const day = this.dataset.day;
+                        
+                        // Get the actual date for the cell based on current week
+                        const dayIndex = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].indexOf(day);
+                        const cellDate = new Date(currentWeekStart);
+                        cellDate.setDate(currentWeekStart.getDate() + dayIndex);
+                        
+                        const formattedDate = cellDate.toLocaleDateString('en-US', { 
+                            weekday: 'long', 
+                            month: 'short', 
+                            day: 'numeric' 
+                        });
+                        
+                        modalTitle.textContent = "Assign Shift";
+                        modalSubtitle.textContent = `${employee} - ${formattedDate}`;
+                        
+                        // Reset selection
+                        selectedShift = null;
+                        document.querySelectorAll('.shift-option').forEach(option => {
+                            option.classList.remove('ring-2', 'ring-offset-2', 'ring-indigo-500');
+                        });
+                        shiftDetails.classList.add('hidden');
+                        
+                        // Show modal
+                        modal.classList.remove('hidden');
+                    });
+                });
+            }
+            
+            // Handle shift option selection
+            document.querySelectorAll('.shift-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove previous selection
+                    document.querySelectorAll('.shift-option').forEach(opt => {
+                        opt.classList.remove('ring-2', 'ring-offset-2', 'ring-indigo-500');
+                    });
+                    
+                    // Add selection to current option
+                    this.classList.add('ring-2', 'ring-offset-2', 'ring-indigo-500');
+                    selectedShift = this.dataset.shift;
+                    
+                    // Show shift details
+                    const info = shiftInfo[selectedShift];
+                    shiftDetailsContent.innerHTML = `
+                        <h4 class="font-medium mb-1">${info.title}</h4>
+                        <ul class="list-disc pl-5">
+                            ${info.details.map(detail => `<li>${detail}</li>`).join('')}
+                        </ul>
+                    `;
+                    shiftDetails.classList.remove('hidden');
+                });
+            });
+            
+            // Close modal on cancel
+            cancelBtn.addEventListener('click', function() {
+                modal.classList.add('hidden');
+            });
+            
+            // Save shift assignment
+            saveBtn.addEventListener('click', function() {
+                if (selectedShift && currentCell) {
+                    // Clear previous content
+                    currentCell.innerHTML = '';
+                    
+                    // Add shift indicator based on selection
+                    let shiftLabel, shiftClass;
+                    
+                    switch(selectedShift) {
+                        case 'morning':
+                            shiftLabel = 'M';
+                            shiftClass = 'bg-blue-300';
+                            break;
+                        case 'afternoon':
+                            shiftLabel = 'A';
+                            shiftClass = 'bg-amber-200';
+                            break;
+                        case 'night':
+                            shiftLabel = 'N';
+                            shiftClass = 'bg-purple-200';
+                            break;
+                        case 'off':
+                            shiftLabel = 'OFF';
+                            shiftClass = 'bg-gray-200';
+                            break;
+                    }
+                    
+                    currentCell.innerHTML = `
+                        <div class="w-full h-full flex items-center justify-center">
+                            <span class="${shiftClass} px-3 py-1 rounded-full font-medium text-xs">
+                                ${shiftLabel}
+                            </span>
+                        </div>
+                    `;
+                    
+                    // Close modal
+                    modal.classList.add('hidden');
+                }
+            });
+            
+            // Close modal when clicking outside
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.classList.add('hidden');
+                }
+            });
+            
+            // Initialize the week dates
+            updateWeekDates();
+            
+            // Previous week button
+            prevWeekBtn.addEventListener('click', function() {
+                currentWeekStart.setDate(currentWeekStart.getDate() - 7);
+                weekSelector.value = formatDateForInput(currentWeekStart);
+                updateWeekDates();
+            });
+            
+            // Next week button
+            nextWeekBtn.addEventListener('click', function() {
+                currentWeekStart.setDate(currentWeekStart.getDate() + 7);
+                weekSelector.value = formatDateForInput(currentWeekStart);
+                updateWeekDates();
+            });
+            
+            // Date picker change
+            weekSelector.addEventListener('change', function() {
+                const selectedDate = new Date(this.value);
+                // Adjust to the Monday of the selected week
+                const day = selectedDate.getDay() || 7; // Convert Sunday (0) to 7
+                if (day !== 1) { // If not Monday
+                    selectedDate.setDate(selectedDate.getDate() - (day - 1)); // Go back to Monday
+                }
+                currentWeekStart = selectedDate;
+                updateWeekDates();
+            });
+            
+            // Team selector change
+            const teamSelector = document.getElementById('teamSelector');
+            teamSelector.addEventListener('change', function() {
+                updateEmployeeTable(this.value);
+            });
+            
+            // Assign All button functionality
+            const assignAllBtn = document.getElementById('assignAllBtn');
+            const assignAllModal = document.getElementById('assignAllModal');
+            const cancelAllBtn = document.getElementById('cancelAllBtn');
+            const saveAllBtn = document.getElementById('saveAllBtn');
+            const daySelector = document.getElementById('daySelector');
+            
+            let selectedAllShift = null;
+            
+            // Show Assign All modal
+            assignAllBtn.addEventListener('click', function() {
+                // Reset selection
+                selectedAllShift = null;
+                document.querySelectorAll('#assignAllModal .shift-option').forEach(option => {
+                    option.classList.remove('ring-2', 'ring-offset-2', 'ring-green-500');
+                });
+                
+                // Show modal
+                assignAllModal.classList.remove('hidden');
+            });
+            
+            // Handle shift option selection in Assign All modal
+            document.querySelectorAll('#assignAllModal .shift-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove previous selection
+                    document.querySelectorAll('#assignAllModal .shift-option').forEach(opt => {
+                        opt.classList.remove('ring-2', 'ring-offset-2', 'ring-green-500');
+                    });
+                    
+                    // Add selection to current option
+                    this.classList.add('ring-2', 'ring-offset-2', 'ring-green-500');
+                    selectedAllShift = this.dataset.shift;
+                });
+            });
+            
+            // Close Assign All modal on cancel
+            cancelAllBtn.addEventListener('click', function() {
+                assignAllModal.classList.add('hidden');
+            });
+            
+            // Close Assign All modal when clicking outside
+            assignAllModal.addEventListener('click', function(e) {
+                if (e.target === assignAllModal) {
+                    assignAllModal.classList.add('hidden');
+                }
+            });
+            
+            // Save all shift assignments
+            saveAllBtn.addEventListener('click', function() {
+                if (selectedAllShift) {
+                    const selectedDay = daySelector.value;
+                    
+                    // Get all cells for the selected day
+                    const dayCells = document.querySelectorAll(`.schedule-cell[data-day="${selectedDay}"]`);
+                    
+                    // Add shift indicator to all cells for the selected day
+                    dayCells.forEach(cell => {
+                        // Clear previous content
+                        cell.innerHTML = '';
+                        
+                        // Add shift indicator based on selection
+                        let shiftLabel, shiftClass;
+                        
+                        switch(selectedAllShift) {
+                            case 'morning':
+                                shiftLabel = 'M';
+                                shiftClass = 'bg-blue-300';
+                                break;
+                            case 'afternoon':
+                                shiftLabel = 'A';
+                                shiftClass = 'bg-amber-200';
+                                break;
+                            case 'night':
+                                shiftLabel = 'N';
+                                shiftClass = 'bg-purple-200';
+                                break;
+                            case 'off':
+                                shiftLabel = 'OFF';
+                                shiftClass = 'bg-gray-200';
+                                break;
+                        }
+                        
+                        cell.innerHTML = `
+                            <div class="w-full h-full flex items-center justify-center">
+                                <span class="${shiftClass} px-3 py-1 rounded-full font-medium text-xs">
+                                    ${shiftLabel}
+                                </span>
+                            </div>
+                        `;
+                    });
+                    
+                    // Close modal
+                    assignAllModal.classList.add('hidden');
+                }
+            });
+            
+            // Initialize with the default team
+            updateEmployeeTable('development');
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'960e82c6d4269b87',t:'MTc1MjgwNTM0MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
