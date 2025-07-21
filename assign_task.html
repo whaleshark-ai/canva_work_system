@@ -301,6 +301,34 @@
                             <label for="task-location" class="block text-sm font-medium text-gray-700 mb-1">Location</label>
                             <input type="text" id="task-location" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="Enter task location">
                         </div>
+                        
+                        <!-- Hourly Repeat Options -->
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Hourly Repeat</label>
+                            <div class="space-y-2">
+                                <div class="flex items-center">
+                                    <input id="task-repeat-none" type="radio" name="task-repeat" value="none" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300" checked>
+                                    <label for="task-repeat-none" class="ml-2 block text-sm text-gray-700">No repeat</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input id="task-repeat-hourly" type="radio" name="task-repeat" value="hourly" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300">
+                                    <label for="task-repeat-hourly" class="ml-2 block text-sm text-gray-700">Every hour</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input id="task-repeat-2hours" type="radio" name="task-repeat" value="2hours" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300">
+                                    <label for="task-repeat-2hours" class="ml-2 block text-sm text-gray-700">Every 2 hours</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input id="task-repeat-custom" type="radio" name="task-repeat" value="custom" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300">
+                                    <div class="ml-2 flex items-center">
+                                        <label for="task-repeat-custom-hours" class="block text-sm text-gray-700 mr-2">Every</label>
+                                        <input type="number" id="task-repeat-custom-hours" class="w-16 px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" min="1" max="12" value="3">
+                                        <span class="ml-2 text-sm text-gray-700">hours</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <div class="flex justify-end space-x-3">
                             <button type="button" onclick="closeTaskModal()" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Cancel</button>
                             <button type="button" onclick="assignTask()" class="px-4 py-2 bg-indigo-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Assign Task</button>
@@ -373,6 +401,33 @@
                         <div class="mb-4">
                             <label for="bulk-task-location" class="block text-sm font-medium text-gray-700 mb-1">Location</label>
                             <input type="text" id="bulk-task-location" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="Enter task location">
+                        </div>
+                        
+                        <!-- Bulk Hourly Repeat Options -->
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Hourly Repeat</label>
+                            <div class="space-y-2">
+                                <div class="flex items-center">
+                                    <input id="bulk-repeat-none" type="radio" name="bulk-repeat" value="none" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300" checked>
+                                    <label for="bulk-repeat-none" class="ml-2 block text-sm text-gray-700">No repeat</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input id="bulk-repeat-hourly" type="radio" name="bulk-repeat" value="hourly" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300">
+                                    <label for="bulk-repeat-hourly" class="ml-2 block text-sm text-gray-700">Every hour</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input id="bulk-repeat-2hours" type="radio" name="bulk-repeat" value="2hours" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300">
+                                    <label for="bulk-repeat-2hours" class="ml-2 block text-sm text-gray-700">Every 2 hours</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input id="bulk-repeat-custom" type="radio" name="bulk-repeat" value="custom" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300">
+                                    <div class="ml-2 flex items-center">
+                                        <label for="bulk-repeat-custom-hours" class="block text-sm text-gray-700 mr-2">Every</label>
+                                        <input type="number" id="bulk-repeat-custom-hours" class="w-16 px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" min="1" max="12" value="3">
+                                        <span class="ml-2 text-sm text-gray-700">hours</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
@@ -650,9 +705,28 @@
             document.getElementById('task-form').reset();
         }
 
+        function getRepeatOption(prefix) {
+            const noneRadio = document.getElementById(`${prefix}-repeat-none`);
+            const hourlyRadio = document.getElementById(`${prefix}-repeat-hourly`);
+            const twoHoursRadio = document.getElementById(`${prefix}-repeat-2hours`);
+            const customRadio = document.getElementById(`${prefix}-repeat-custom`);
+            
+            if (hourlyRadio.checked) {
+                return { type: 'hourly', hours: 1 };
+            } else if (twoHoursRadio.checked) {
+                return { type: 'hourly', hours: 2 };
+            } else if (customRadio.checked) {
+                const hours = parseInt(document.getElementById(`${prefix}-repeat-custom-hours`).value) || 3;
+                return { type: 'hourly', hours: hours };
+            } else {
+                return { type: 'none' };
+            }
+        }
+
         function assignTask() {
             const location = document.getElementById('task-location').value.trim();
             const checkboxes = document.querySelectorAll('.task-checkbox:checked');
+            const repeatOption = getRepeatOption('task');
             
             if (checkboxes.length === 0) {
                 alert('Please select at least one task');
@@ -683,7 +757,8 @@
                         description: '',
                         location,
                         priority: 'medium',
-                        duration: '1h'
+                        duration: '1h',
+                        repeat: repeatOption
                     });
                 });
                 
@@ -698,7 +773,13 @@
                 // Show success notification
                 const taskCount = checkboxes.length;
                 const taskText = taskCount === 1 ? 'task' : 'tasks';
-                showNotification(`${taskCount} ${taskText} assigned to ${employee.name}`);
+                let message = `${taskCount} ${taskText} assigned to ${employee.name}`;
+                
+                if (repeatOption.type === 'hourly') {
+                    message += ` (repeats every ${repeatOption.hours} hour${repeatOption.hours > 1 ? 's' : ''})`;
+                }
+                
+                showNotification(message);
             }
         }
 
@@ -802,6 +883,19 @@
                         `;
                         taskDetails.appendChild(durationSpan);
                         
+                        // Add repeat information if applicable
+                        if (task.repeat && task.repeat.type === 'hourly') {
+                            const repeatSpan = document.createElement('span');
+                            repeatSpan.className = 'flex items-center';
+                            repeatSpan.innerHTML = `
+                                <svg class="h-3 w-3 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                </svg>
+                                Every ${task.repeat.hours} hour${task.repeat.hours > 1 ? 's' : ''}
+                            `;
+                            taskDetails.appendChild(repeatSpan);
+                        }
+                        
                         taskCard.appendChild(taskDetails);
                         taskListContainer.appendChild(taskCard);
                     });
@@ -823,6 +917,7 @@
             document.getElementById('bulk-employee-list').innerHTML = '<p class="text-gray-500 text-sm">Please select a date and shift time to see available employees.</p>';
             document.getElementById('select-all-employees').checked = false;
             document.getElementById('bulk-task-location').value = '';
+            document.getElementById('bulk-repeat-none').checked = true;
             
             // Reset all task checkboxes
             document.querySelectorAll('.bulk-task-checkbox').forEach(checkbox => {
@@ -931,6 +1026,7 @@
         function bulkAssignTask() {
             const location = document.getElementById('bulk-task-location').value.trim();
             const taskCheckboxes = document.querySelectorAll('.bulk-task-checkbox:checked');
+            const repeatOption = getRepeatOption('bulk');
             
             if (taskCheckboxes.length === 0) {
                 alert('Please select at least one task');
@@ -955,7 +1051,8 @@
                     description: '',
                     location,
                     priority: 'medium',
-                    duration: '1h'
+                    duration: '1h',
+                    repeat: repeatOption
                 });
             });
             
@@ -995,7 +1092,13 @@
             const employeeCount = assignedEmployees.length;
             const taskText = taskCount === 1 ? 'task' : 'tasks';
             const employeeText = employeeCount === 1 ? 'employee' : 'employees';
-            showNotification(`${taskCount} ${taskText} assigned to ${employeeCount} ${employeeText}`);
+            let message = `${taskCount} ${taskText} assigned to ${employeeCount} ${employeeText}`;
+            
+            if (repeatOption.type === 'hourly') {
+                message += ` (repeats every ${repeatOption.hours} hour${repeatOption.hours > 1 ? 's' : ''})`;
+            }
+            
+            showNotification(message);
         }
 
         function showNotification(message) {
@@ -1032,7 +1135,20 @@
             document.getElementById('bulk-assign-btn').addEventListener('click', function() {
                 openBulkAssignModal();
             });
+            
+            // Add event listeners for custom repeat hours fields
+            document.getElementById('task-repeat-custom').addEventListener('change', function() {
+                if (this.checked) {
+                    document.getElementById('task-repeat-custom-hours').focus();
+                }
+            });
+            
+            document.getElementById('bulk-repeat-custom').addEventListener('change', function() {
+                if (this.checked) {
+                    document.getElementById('bulk-repeat-custom-hours').focus();
+                }
+            });
         };
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'960efdf7c7bb055c',t:'MTc1MjgxMDM4Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'962811acf478ddbe',t:'MTc1MzA3MzMzOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
