@@ -32,6 +32,15 @@
             background-color: #e0f2fe;
             color: #0369a1;
         }
+        /* Only allow numbers in duration inputs */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
     </style>
 </head>
 <body>
@@ -285,21 +294,81 @@
                             <div class="space-y-2 max-h-60 overflow-y-auto border border-gray-200 rounded-md p-3">
                                 <div class="flex items-center">
                                     <input id="task-content-creation" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded task-checkbox">
-                                    <label for="task-content-creation" class="ml-2 block text-sm text-gray-700">Replenishment of Trolleys/Infant Strollers</label>
+                                    <label for="task-content-creation" class="ml-2 block text-sm text-gray-700">Content Creation</label>
                                 </div>
                                 <div class="flex items-center">
                                     <input id="task-social-media" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded task-checkbox">
-                                    <label for="task-social-media" class="ml-2 block text-sm text-gray-700">Retrieval of Trolleys/Infant Strollers </label>
+                                    <label for="task-social-media" class="ml-2 block text-sm text-gray-700">Social Media Management</label>
                                 </div>
                                 <div class="flex items-center">
                                     <input id="task-email-marketing" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded task-checkbox">
-                                    <label for="task-email-marketing" class="ml-2 block text-sm text-gray-700">Cleaning of Trolleys/Infant Strollers</label>
+                                    <label for="task-email-marketing" class="ml-2 block text-sm text-gray-700">Email Marketing</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input id="task-seo" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded task-checkbox">
+                                    <label for="task-seo" class="ml-2 block text-sm text-gray-700">SEO Optimization</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input id="task-analytics" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded task-checkbox">
+                                    <label for="task-analytics" class="ml-2 block text-sm text-gray-700">Analytics Review</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input id="task-graphic-design" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded task-checkbox">
+                                    <label for="task-graphic-design" class="ml-2 block text-sm text-gray-700">Graphic Design</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input id="task-content-planning" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded task-checkbox">
+                                    <label for="task-content-planning" class="ml-2 block text-sm text-gray-700">Content Planning</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input id="task-competitor-research" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded task-checkbox">
+                                    <label for="task-competitor-research" class="ml-2 block text-sm text-gray-700">Competitor Research</label>
                                 </div>
                             </div>
                         </div>
                         <div class="mb-4">
                             <label for="task-location" class="block text-sm font-medium text-gray-700 mb-1">Location</label>
                             <input type="text" id="task-location" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="Enter task location">
+                        </div>
+                        
+                        <!-- Duration Field -->
+                        <div class="mb-4">
+                            <label for="task-duration" class="block text-sm font-medium text-gray-700 mb-1">Duration (minutes)</label>
+                            <div class="flex items-center">
+                                <input type="number" id="task-duration" min="1" max="480" value="60" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="Enter duration in minutes">
+                            </div>
+                        </div>
+                        
+                        <!-- Start Time Field -->
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Start Time</label>
+                            <div class="flex space-x-2">
+                                <select id="task-start-hour" class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9" selected>9</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                                <span class="flex items-center">:</span>
+                                <select id="task-start-minute" class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                    <option value="00" selected>00</option>
+                                    <option value="15">15</option>
+                                    <option value="30">30</option>
+                                    <option value="45">45</option>
+                                </select>
+                                <select id="task-start-ampm" class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                    <option value="AM" selected>AM</option>
+                                    <option value="PM">PM</option>
+                                </select>
+                            </div>
                         </div>
                         
                         <!-- Hourly Repeat Options -->
@@ -387,20 +456,80 @@
                         <div class="space-y-2 max-h-60 overflow-y-auto border border-gray-200 rounded-md p-3 mb-4">
                             <div class="flex items-center">
                                 <input id="bulk-task-content-creation" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded bulk-task-checkbox">
-                                <label for="bulk-task-content-creation" class="ml-2 block text-sm text-gray-700">Replenishment of Trolleys/Infant Strollers</label>
+                                <label for="bulk-task-content-creation" class="ml-2 block text-sm text-gray-700">Content Creation</label>
                             </div>
                             <div class="flex items-center">
                                 <input id="bulk-task-social-media" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded bulk-task-checkbox">
-                                <label for="bulk-task-social-media" class="ml-2 block text-sm text-gray-700">Retrieval of Trolleys/Infant Strollers  </label>
+                                <label for="bulk-task-social-media" class="ml-2 block text-sm text-gray-700">Social Media Management</label>
                             </div>
                             <div class="flex items-center">
                                 <input id="bulk-task-email-marketing" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded bulk-task-checkbox">
-                                <label for="bulk-task-email-marketing" class="ml-2 block text-sm text-gray-700">Cleaning of Trolleys/Infant Strollers</label>
+                                <label for="bulk-task-email-marketing" class="ml-2 block text-sm text-gray-700">Email Marketing</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="bulk-task-seo" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded bulk-task-checkbox">
+                                <label for="bulk-task-seo" class="ml-2 block text-sm text-gray-700">SEO Optimization</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="bulk-task-analytics" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded bulk-task-checkbox">
+                                <label for="bulk-task-analytics" class="ml-2 block text-sm text-gray-700">Analytics Review</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="bulk-task-graphic-design" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded bulk-task-checkbox">
+                                <label for="bulk-task-graphic-design" class="ml-2 block text-sm text-gray-700">Graphic Design</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="bulk-task-content-planning" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded bulk-task-checkbox">
+                                <label for="bulk-task-content-planning" class="ml-2 block text-sm text-gray-700">Content Planning</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="bulk-task-competitor-research" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded bulk-task-checkbox">
+                                <label for="bulk-task-competitor-research" class="ml-2 block text-sm text-gray-700">Competitor Research</label>
                             </div>
                         </div>
                         <div class="mb-4">
                             <label for="bulk-task-location" class="block text-sm font-medium text-gray-700 mb-1">Location</label>
                             <input type="text" id="bulk-task-location" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="Enter task location">
+                        </div>
+                        
+                        <!-- Bulk Duration Field -->
+                        <div class="mb-4">
+                            <label for="bulk-duration" class="block text-sm font-medium text-gray-700 mb-1">Duration (minutes)</label>
+                            <div class="flex items-center">
+                                <input type="number" id="bulk-duration" min="1" max="480" value="60" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="Enter duration in minutes">
+                            </div>
+                        </div>
+                        
+                        <!-- Bulk Start Time Field -->
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Start Time</label>
+                            <div class="flex space-x-2">
+                                <select id="bulk-start-hour" class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9" selected>9</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                                <span class="flex items-center">:</span>
+                                <select id="bulk-start-minute" class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                    <option value="00" selected>00</option>
+                                    <option value="15">15</option>
+                                    <option value="30">30</option>
+                                    <option value="45">45</option>
+                                </select>
+                                <select id="bulk-start-ampm" class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                    <option value="AM" selected>AM</option>
+                                    <option value="PM">PM</option>
+                                </select>
+                            </div>
                         </div>
                         
                         <!-- Bulk Hourly Repeat Options -->
@@ -695,6 +824,12 @@
                 // Clear form
                 document.getElementById('task-form').reset();
                 
+                // Set default start time based on shift time
+                setDefaultStartTime(shift.time, 'task');
+                
+                // Set default duration
+                document.getElementById('task-duration').value = 60;
+                
                 // Show modal
                 document.getElementById('task-modal').classList.remove('hidden');
             }
@@ -703,6 +838,47 @@
         function closeTaskModal() {
             document.getElementById('task-modal').classList.add('hidden');
             document.getElementById('task-form').reset();
+        }
+
+        function setDefaultStartTime(shiftTime, prefix) {
+            // Parse the shift start time (e.g., "9:00 AM - 5:00 PM" -> "9:00 AM")
+            const startTimeMatch = shiftTime.match(/(\d+):(\d+)\s+(AM|PM)/);
+            if (startTimeMatch) {
+                const hour = startTimeMatch[1];
+                const minute = startTimeMatch[2];
+                const ampm = startTimeMatch[3];
+                
+                document.getElementById(`${prefix}-start-hour`).value = hour;
+                document.getElementById(`${prefix}-start-minute`).value = minute;
+                document.getElementById(`${prefix}-start-ampm`).value = ampm;
+            }
+        }
+
+        function getStartTime(prefix) {
+            const hour = document.getElementById(`${prefix}-start-hour`).value;
+            const minute = document.getElementById(`${prefix}-start-minute`).value;
+            const ampm = document.getElementById(`${prefix}-start-ampm`).value;
+            
+            return `${hour}:${minute} ${ampm}`;
+        }
+
+        function getDuration(prefix) {
+            const durationMinutes = parseInt(document.getElementById(`${prefix}-duration`).value) || 60;
+            return durationMinutes;
+        }
+
+        function formatDuration(minutes) {
+            if (minutes < 60) {
+                return `${minutes}m`;
+            } else {
+                const hours = Math.floor(minutes / 60);
+                const remainingMinutes = minutes % 60;
+                if (remainingMinutes === 0) {
+                    return `${hours}h`;
+                } else {
+                    return `${hours}h ${remainingMinutes}m`;
+                }
+            }
         }
 
         function getRepeatOption(prefix) {
@@ -726,6 +902,8 @@
         function assignTask() {
             const location = document.getElementById('task-location').value.trim();
             const checkboxes = document.querySelectorAll('.task-checkbox:checked');
+            const startTime = getStartTime('task');
+            const durationMinutes = getDuration('task');
             const repeatOption = getRepeatOption('task');
             
             if (checkboxes.length === 0) {
@@ -756,8 +934,10 @@
                         title: taskTitle,
                         description: '',
                         location,
+                        startTime,
+                        durationMinutes,
+                        duration: formatDuration(durationMinutes),
                         priority: 'medium',
-                        duration: '1h',
                         repeat: repeatOption
                     });
                 });
@@ -773,7 +953,7 @@
                 // Show success notification
                 const taskCount = checkboxes.length;
                 const taskText = taskCount === 1 ? 'task' : 'tasks';
-                let message = `${taskCount} ${taskText} assigned to ${employee.name}`;
+                let message = `${taskCount} ${taskText} assigned to ${employee.name} starting at ${startTime} (${formatDuration(durationMinutes)})`;
                 
                 if (repeatOption.type === 'hourly') {
                     message += ` (repeats every ${repeatOption.hours} hour${repeatOption.hours > 1 ? 's' : ''})`;
@@ -873,6 +1053,19 @@
                             taskDetails.appendChild(locationSpan);
                         }
                         
+                        // Add start time if available
+                        if (task.startTime) {
+                            const startTimeSpan = document.createElement('span');
+                            startTimeSpan.className = 'flex items-center';
+                            startTimeSpan.innerHTML = `
+                                <svg class="h-3 w-3 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Starts at ${task.startTime}
+                            `;
+                            taskDetails.appendChild(startTimeSpan);
+                        }
+                        
                         const durationSpan = document.createElement('span');
                         durationSpan.className = 'flex items-center';
                         durationSpan.innerHTML = `
@@ -918,6 +1111,7 @@
             document.getElementById('select-all-employees').checked = false;
             document.getElementById('bulk-task-location').value = '';
             document.getElementById('bulk-repeat-none').checked = true;
+            document.getElementById('bulk-duration').value = 60;
             
             // Reset all task checkboxes
             document.querySelectorAll('.bulk-task-checkbox').forEach(checkbox => {
@@ -969,6 +1163,9 @@
                 employeeListContainer.innerHTML = '<p class="text-gray-500 text-sm">No employees found with this shift.</p>';
                 return;
             }
+            
+            // Set default start time based on shift time
+            setDefaultStartTime(time, 'bulk');
             
             // Create checkboxes for each matching employee
             matchingEmployees.forEach(emp => {
@@ -1026,6 +1223,8 @@
         function bulkAssignTask() {
             const location = document.getElementById('bulk-task-location').value.trim();
             const taskCheckboxes = document.querySelectorAll('.bulk-task-checkbox:checked');
+            const startTime = getStartTime('bulk');
+            const durationMinutes = getDuration('bulk');
             const repeatOption = getRepeatOption('bulk');
             
             if (taskCheckboxes.length === 0) {
@@ -1050,8 +1249,10 @@
                     title: taskTitle,
                     description: '',
                     location,
+                    startTime,
+                    durationMinutes,
+                    duration: formatDuration(durationMinutes),
                     priority: 'medium',
-                    duration: '1h',
                     repeat: repeatOption
                 });
             });
@@ -1092,7 +1293,7 @@
             const employeeCount = assignedEmployees.length;
             const taskText = taskCount === 1 ? 'task' : 'tasks';
             const employeeText = employeeCount === 1 ? 'employee' : 'employees';
-            let message = `${taskCount} ${taskText} assigned to ${employeeCount} ${employeeText}`;
+            let message = `${taskCount} ${taskText} assigned to ${employeeCount} ${employeeText} starting at ${startTime} (${formatDuration(durationMinutes)})`;
             
             if (repeatOption.type === 'hourly') {
                 message += ` (repeats every ${repeatOption.hours} hour${repeatOption.hours > 1 ? 's' : ''})`;
@@ -1148,7 +1349,22 @@
                     document.getElementById('bulk-repeat-custom-hours').focus();
                 }
             });
+            
+            // Add input validation for duration fields - only allow numbers
+            document.getElementById('task-duration').addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9]/g, '');
+                if (this.value === '') this.value = '60';
+                if (parseInt(this.value) < 1) this.value = '1';
+                if (parseInt(this.value) > 480) this.value = '480';
+            });
+            
+            document.getElementById('bulk-duration').addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9]/g, '');
+                if (this.value === '') this.value = '60';
+                if (parseInt(this.value) < 1) this.value = '1';
+                if (parseInt(this.value) > 480) this.value = '480';
+            });
         };
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'962811acf478ddbe',t:'MTc1MzA3MzMzOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9629c26b728c786c',t:'MTc1MzA5MTA2My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

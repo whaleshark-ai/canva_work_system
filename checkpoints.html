@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkpoint Settings</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f7fa;
+        }
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+            transition: opacity 0.3s ease;
+        }
+        .modal {
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background-color: #4f46e5;
+            transition: background-color 0.2s;
+        }
+        .btn-primary:hover {
+            background-color: #4338ca;
+        }
+        .btn-secondary {
+            background-color: #f3f4f6;
+            transition: background-color 0.2s;
+        }
+        .btn-secondary:hover {
+            background-color: #e5e7eb;
+        }
+        .btn-danger {
+            background-color: #ef4444;
+            transition: background-color 0.2s;
+        }
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+        .status-active {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        .status-inactive {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        .status-pending {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Checkpoint Settings</h1>
+            <p class="text-gray-600 mt-2">Manage your checkpoint locations and their status</p>
+        </header>
+
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-semibold text-gray-800">Checkpoints</h2>
+                <button id="addCheckpointBtn" class="btn-primary text-white px-4 py-2 rounded-md flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                    </svg>
+                    Add Checkpoint
+                </button>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="checkpointTableBody" class="bg-white divide-y divide-gray-200">
+                        <!-- Table content will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="emptyState" class="text-center py-8 hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                </svg>
+                <h3 class="mt-2 text-sm font-medium text-gray-900">No checkpoints</h3>
+                <p class="mt-1 text-sm text-gray-500">Get started by creating a new checkpoint.</p>
+                <div class="mt-6">
+                    <button id="emptyStateAddBtn" class="btn-primary text-white px-4 py-2 rounded-md flex items-center mx-auto">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                        </svg>
+                        Add Checkpoint
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Checkpoint Modal -->
+    <div id="checkpointModal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div class="modal absolute top-1/2 left-1/2 bg-white rounded-lg shadow-xl w-full max-w-md">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 id="modalTitle" class="text-lg font-semibold text-gray-900">Add New Checkpoint</h3>
+                    <button id="closeModal" class="text-gray-400 hover:text-gray-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <form id="checkpointForm">
+                    <input type="hidden" id="checkpointId">
+                    <div class="mb-4">
+                        <label for="checkpointName" class="block text-sm font-medium text-gray-700 mb-1">Checkpoint Name</label>
+                        <input type="text" id="checkpointName" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Locations</label>
+                        <div id="locationsList" class="space-y-2 mb-2 max-h-60 overflow-y-auto">
+                            <!-- Location items will be added here -->
+                        </div>
+                        
+                        <div id="addLocationContainer" class="flex items-center mt-3">
+                            <input type="text" id="newLocation" class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Enter location">
+                            <button type="button" id="addLocationBtn" class="ml-2 btn-primary text-white px-3 py-2 rounded-md">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
+                        <p id="locationLimit" class="text-sm text-red-500 mt-1 hidden">Maximum 10 locations allowed.</p>
+                        <p id="locationCount" class="text-sm text-gray-500 mt-1">0/10 locations added</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="checkpointStatus" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                        <select id="checkpointStatus" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                            <option value="pending">Pending</option>
+                        </select>
+                    </div>
+                    
+                    <div class="flex justify-end space-x-3 mt-6">
+                        <button type="button" id="cancelBtn" class="btn-secondary text-gray-700 px-4 py-2 rounded-md">Cancel</button>
+                        <button type="submit" id="saveBtn" class="btn-primary text-white px-4 py-2 rounded-md">Save Checkpoint</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Checkpoint Modal -->
+    <div id="viewModal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div class="modal absolute top-1/2 left-1/2 bg-white rounded-lg shadow-xl w-full max-w-md">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 id="viewModalTitle" class="text-lg font-semibold text-gray-900">Checkpoint Details</h3>
+                    <button id="closeViewModal" class="text-gray-400 hover:text-gray-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="text-sm font-medium text-gray-500">Name</h4>
+                        <p id="viewName" class="text-base text-gray-900 mt-1">-</p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-sm font-medium text-gray-500">Status</h4>
+                        <span id="viewStatus" class="inline-flex px-2 py-1 text-xs font-medium rounded-full mt-1">-</span>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-sm font-medium text-gray-500">Locations</h4>
+                        <ul id="viewLocations" class="list-disc pl-5 mt-1 text-gray-700 space-y-1">
+                            <!-- Locations will be added here -->
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="flex justify-end space-x-3 mt-6">
+                    <button type="button" id="editBtn" class="btn-secondary text-gray-700 px-4 py-2 rounded-md">Edit</button>
+                    <button type="button" id="closeViewBtn" class="btn-primary text-white px-4 py-2 rounded-md">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sample data
+            let checkpoints = [
+                {
+                    id: 1,
+                    name: "Downtown Route",
+                    locations: ["Main Street", "City Hall", "Central Park", "Library"],
+                    status: "active"
+                },
+                {
+                    id: 2,
+                    name: "Airport Shuttle",
+                    locations: ["Terminal 1", "Terminal 2", "Parking Lot A", "Hotel Zone"],
+                    status: "active"
+                },
+                {
+                    id: 3,
+                    name: "Campus Tour",
+                    locations: ["Admin Building", "Science Center", "Student Union", "Sports Complex"],
+                    status: "inactive"
+                }
+            ];
+            
+            // DOM elements
+            const checkpointTableBody = document.getElementById('checkpointTableBody');
+            const emptyState = document.getElementById('emptyState');
+            const checkpointModal = document.getElementById('checkpointModal');
+            const viewModal = document.getElementById('viewModal');
+            const checkpointForm = document.getElementById('checkpointForm');
+            const modalTitle = document.getElementById('modalTitle');
+            const checkpointId = document.getElementById('checkpointId');
+            const checkpointName = document.getElementById('checkpointName');
+            const checkpointStatus = document.getElementById('checkpointStatus');
+            const locationsList = document.getElementById('locationsList');
+            const newLocation = document.getElementById('newLocation');
+            const addLocationBtn = document.getElementById('addLocationBtn');
+            const locationLimit = document.getElementById('locationLimit');
+            const locationCount = document.getElementById('locationCount');
+            
+            // Buttons
+            const addCheckpointBtn = document.getElementById('addCheckpointBtn');
+            const emptyStateAddBtn = document.getElementById('emptyStateAddBtn');
+            const closeModal = document.getElementById('closeModal');
+            const cancelBtn = document.getElementById('cancelBtn');
+            const closeViewModal = document.getElementById('closeViewModal');
+            const closeViewBtn = document.getElementById('closeViewBtn');
+            const editBtn = document.getElementById('editBtn');
+            
+            // Initialize
+            renderCheckpoints();
+            
+            // Event listeners
+            addCheckpointBtn.addEventListener('click', openAddModal);
+            emptyStateAddBtn.addEventListener('click', openAddModal);
+            closeModal.addEventListener('click', closeCheckpointModal);
+            cancelBtn.addEventListener('click', closeCheckpointModal);
+            closeViewModal.addEventListener('click', closeViewCheckpointModal);
+            closeViewBtn.addEventListener('click', closeViewCheckpointModal);
+            checkpointForm.addEventListener('submit', saveCheckpoint);
+            addLocationBtn.addEventListener('click', addLocation);
+            editBtn.addEventListener('click', function() {
+                const id = parseInt(viewModal.dataset.checkpointId);
+                closeViewCheckpointModal();
+                openEditModal(id);
+            });
+            
+            // Functions
+            function renderCheckpoints() {
+                checkpointTableBody.innerHTML = '';
+                
+                if (checkpoints.length === 0) {
+                    emptyState.classList.remove('hidden');
+                    return;
+                }
+                
+                emptyState.classList.add('hidden');
+                
+                checkpoints.forEach(checkpoint => {
+                    const row = document.createElement('tr');
+                    
+                    // Status class
+                    let statusClass = '';
+                    let statusText = '';
+                    
+                    switch(checkpoint.status) {
+                        case 'active':
+                            statusClass = 'status-active';
+                            statusText = 'Active';
+                            break;
+                        case 'inactive':
+                            statusClass = 'status-inactive';
+                            statusText = 'Inactive';
+                            break;
+                        case 'pending':
+                            statusClass = 'status-pending';
+                            statusText = 'Pending';
+                            break;
+                    }
+                    
+                    row.innerHTML = `
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-medium text-gray-900">${checkpoint.name}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm text-gray-500">${checkpoint.locations[0]}${checkpoint.locations.length > 1 ? ` +${checkpoint.locations.length - 1} more` : ''}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">
+                                ${statusText}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <button class="text-indigo-600 hover:text-indigo-900 mr-3 view-btn" data-id="${checkpoint.id}">View</button>
+                            <button class="text-indigo-600 hover:text-indigo-900 mr-3 edit-btn" data-id="${checkpoint.id}">Edit</button>
+                            <button class="text-red-600 hover:text-red-900 delete-btn" data-id="${checkpoint.id}">Delete</button>
+                        </td>
+                    `;
+                    
+                    checkpointTableBody.appendChild(row);
+                });
+                
+                // Add event listeners to buttons
+                document.querySelectorAll('.view-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = parseInt(this.dataset.id);
+                        openViewModal(id);
+                    });
+                });
+                
+                document.querySelectorAll('.edit-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = parseInt(this.dataset.id);
+                        openEditModal(id);
+                    });
+                });
+                
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = parseInt(this.dataset.id);
+                        deleteCheckpoint(id);
+                    });
+                });
+            }
+            
+            function openAddModal() {
+                modalTitle.textContent = 'Add New Checkpoint';
+                checkpointId.value = '';
+                checkpointForm.reset();
+                locationsList.innerHTML = '';
+                updateLocationCount();
+                checkpointModal.classList.remove('hidden');
+            }
+            
+            function openEditModal(id) {
+                const checkpoint = checkpoints.find(cp => cp.id === id);
+                if (!checkpoint) return;
+                
+                modalTitle.textContent = 'Edit Checkpoint';
+                checkpointId.value = checkpoint.id;
+                checkpointName.value = checkpoint.name;
+                checkpointStatus.value = checkpoint.status;
+                
+                // Clear and populate locations
+                locationsList.innerHTML = '';
+                checkpoint.locations.forEach(location => {
+                    addLocationToList(location);
+                });
+                
+                updateLocationCount();
+                checkpointModal.classList.remove('hidden');
+            }
+            
+            function openViewModal(id) {
+                const checkpoint = checkpoints.find(cp => cp.id === id);
+                if (!checkpoint) return;
+                
+                // Set data attribute for edit button
+                viewModal.dataset.checkpointId = checkpoint.id;
+                
+                // Populate view modal
+                document.getElementById('viewName').textContent = checkpoint.name;
+                
+                const viewStatus = document.getElementById('viewStatus');
+                viewStatus.textContent = checkpoint.status.charAt(0).toUpperCase() + checkpoint.status.slice(1);
+                viewStatus.className = 'inline-flex px-2 py-1 text-xs font-medium rounded-full mt-1';
+                viewStatus.classList.add(`status-${checkpoint.status}`);
+                
+                const viewLocations = document.getElementById('viewLocations');
+                viewLocations.innerHTML = '';
+                checkpoint.locations.forEach(location => {
+                    const li = document.createElement('li');
+                    li.textContent = location;
+                    viewLocations.appendChild(li);
+                });
+                
+                viewModal.classList.remove('hidden');
+            }
+            
+            function closeCheckpointModal() {
+                checkpointModal.classList.add('hidden');
+            }
+            
+            function closeViewCheckpointModal() {
+                viewModal.classList.add('hidden');
+            }
+            
+            function saveCheckpoint(e) {
+                e.preventDefault();
+                
+                const id = checkpointId.value ? parseInt(checkpointId.value) : Date.now();
+                const name = checkpointName.value;
+                const status = checkpointStatus.value;
+                
+                // Get locations from the list
+                const locations = [];
+                document.querySelectorAll('.location-item').forEach(item => {
+                    locations.push(item.querySelector('.location-text').textContent);
+                });
+                
+                if (locations.length === 0) {
+                    alert('Please add at least one location.');
+                    return;
+                }
+                
+                const checkpoint = {
+                    id,
+                    name,
+                    locations,
+                    status
+                };
+                
+                if (checkpointId.value) {
+                    // Update existing checkpoint
+                    const index = checkpoints.findIndex(cp => cp.id === parseInt(checkpointId.value));
+                    if (index !== -1) {
+                        checkpoints[index] = checkpoint;
+                    }
+                } else {
+                    // Add new checkpoint
+                    checkpoints.push(checkpoint);
+                }
+                
+                renderCheckpoints();
+                closeCheckpointModal();
+            }
+            
+            function deleteCheckpoint(id) {
+                if (confirm('Are you sure you want to delete this checkpoint?')) {
+                    checkpoints = checkpoints.filter(cp => cp.id !== id);
+                    renderCheckpoints();
+                }
+            }
+            
+            function addLocation() {
+                const locationText = newLocation.value.trim();
+                if (!locationText) return;
+                
+                const currentLocations = document.querySelectorAll('.location-item').length;
+                if (currentLocations >= 10) {
+                    locationLimit.classList.remove('hidden');
+                    return;
+                }
+                
+                addLocationToList(locationText);
+                newLocation.value = '';
+                updateLocationCount();
+            }
+            
+            function addLocationToList(locationText) {
+                const locationItem = document.createElement('div');
+                locationItem.className = 'location-item flex items-center justify-between bg-gray-50 p-2 rounded-md';
+                locationItem.innerHTML = `
+                    <span class="location-text">${locationText}</span>
+                    <button type="button" class="text-gray-400 hover:text-red-500 remove-location">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                `;
+                
+                locationsList.appendChild(locationItem);
+                
+                // Add event listener to remove button
+                locationItem.querySelector('.remove-location').addEventListener('click', function() {
+                    locationItem.remove();
+                    updateLocationCount();
+                });
+            }
+            
+            function updateLocationCount() {
+                const currentLocations = document.querySelectorAll('.location-item').length;
+                locationCount.textContent = `${currentLocations}/10 locations added`;
+                
+                if (currentLocations >= 10) {
+                    locationLimit.classList.remove('hidden');
+                    document.getElementById('addLocationContainer').classList.add('opacity-50', 'pointer-events-none');
+                } else {
+                    locationLimit.classList.add('hidden');
+                    document.getElementById('addLocationContainer').classList.remove('opacity-50', 'pointer-events-none');
+                }
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9628f96b6334f548',t:'MTc1MzA4MjgzMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
