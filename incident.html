@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incident Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .incident-table {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .incident-header {
+            background: linear-gradient(90deg, #1e40af, #3b82f6);
+        }
+        .attachment-preview {
+            transition: all 0.3s ease;
+        }
+        .attachment-preview:hover {
+            transform: scale(1.05);
+        }
+        .task-button {
+            transition: all 0.2s ease;
+        }
+        .task-button:not(:disabled):hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <header class="mb-8">
+            <div class="incident-header text-white rounded-lg p-6 mb-6">
+                <h1 class="text-3xl font-bold">Incident Management System</h1>
+                <p class="opacity-80 mt-2">Track and manage incidents efficiently</p>
+            </div>
+            
+            <div class="bg-white p-4 rounded-lg shadow flex justify-between items-center">
+                <div class="flex gap-4">
+                    <div class="relative">
+                        <input type="text" placeholder="Search incidents..." class="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 absolute left-3 top-2.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                    <select class="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">All Statuses</option>
+                        <option value="open">Open</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="resolved">Resolved</option>
+                    </select>
+                </div>
+                <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    New Incident
+                </button>
+            </div>
+        </header>
+
+        <main class="bg-white rounded-lg shadow incident-table overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="bg-gray-100 text-left">
+                            <th class="px-6 py-4 font-semibold text-gray-700">Incident Code</th>
+                            <th class="px-6 py-4 font-semibold text-gray-700">Received Time</th>
+                            <th class="px-6 py-4 font-semibold text-gray-700">Attachment</th>
+                            <th class="px-6 py-4 font-semibold text-gray-700">Task</th>
+                            <th class="px-6 py-4 font-semibold text-gray-700">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="incident-table-body">
+                        <!-- Table rows will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="px-6 py-4 bg-gray-50 border-t flex justify-between items-center">
+                <div class="text-sm text-gray-600">Showing <span id="showing-count">0</span> incidents</div>
+                <div class="flex gap-2">
+                    <button class="px-3 py-1 border rounded bg-white hover:bg-gray-50 text-gray-600">Previous</button>
+                    <button class="px-3 py-1 border rounded bg-white hover:bg-gray-50 text-gray-600">Next</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for viewing attachments -->
+    <div id="attachment-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg max-w-2xl w-full p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold" id="modal-title">Attachment Preview</h3>
+                <button id="close-modal" class="text-gray-500 hover:text-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div id="modal-content" class="flex justify-center">
+                <!-- Content will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample incident data
+        const incidents = [
+            {
+                id: 'INC-2023-001',
+                receivedTime: '2023-10-15 09:23:45',
+                attachment: {
+                    type: 'image',
+                    content: createSampleSVG('#ff5722', 'Image')
+                },
+                taskLink: 'https://task-system.example/task/T-001'
+            },
+            {
+                id: 'INC-2023-002',
+                receivedTime: '2023-10-16 14:05:12',
+                attachment: {
+                    type: 'document',
+                    content: createSampleSVG('#2196f3', 'PDF')
+                },
+                taskLink: null
+            },
+            {
+                id: 'INC-2023-003',
+                receivedTime: '2023-10-17 11:30:00',
+                attachment: {
+                    type: 'image',
+                    content: createSampleSVG('#4caf50', 'Image')
+                },
+                taskLink: 'https://task-system.example/task/T-002'
+            },
+            {
+                id: 'INC-2023-004',
+                receivedTime: '2023-10-18 16:45:22',
+                attachment: {
+                    type: 'document',
+                    content: createSampleSVG('#9c27b0', 'DOC')
+                },
+                taskLink: null
+            },
+            {
+                id: 'INC-2023-005',
+                receivedTime: '2023-10-19 08:15:37',
+                attachment: null,
+                taskLink: 'https://task-system.example/task/T-003'
+            }
+        ];
+
+        // Function to create sample SVG for attachments
+        function createSampleSVG(color, text) {
+            return `<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100" height="100" fill="${color}" />
+                <text x="50%" y="50%" font-family="Arial" font-size="14" fill="white" text-anchor="middle" dominant-baseline="middle">${text}</text>
+            </svg>`;
+        }
+
+        // Populate the table with incident data
+        function populateTable() {
+            const tableBody = document.getElementById('incident-table-body');
+            tableBody.innerHTML = '';
+            
+            incidents.forEach(incident => {
+                const row = document.createElement('tr');
+                row.className = 'border-t hover:bg-gray-50';
+                
+                // Incident Code
+                const idCell = document.createElement('td');
+                idCell.className = 'px-6 py-4';
+                idCell.innerHTML = `<div class="font-medium text-blue-600">${incident.id}</div>`;
+                
+                // Received Time
+                const timeCell = document.createElement('td');
+                timeCell.className = 'px-6 py-4';
+                timeCell.textContent = incident.receivedTime;
+                
+                // Attachment
+                const attachmentCell = document.createElement('td');
+                attachmentCell.className = 'px-6 py-4';
+                if (incident.attachment) {
+                    const attachmentDiv = document.createElement('div');
+                    attachmentDiv.className = 'attachment-preview cursor-pointer w-10 h-10 rounded overflow-hidden';
+                    attachmentDiv.innerHTML = incident.attachment.content;
+                    attachmentDiv.addEventListener('click', () => showAttachment(incident));
+                    attachmentCell.appendChild(attachmentDiv);
+                } else {
+                    attachmentCell.innerHTML = '<span class="text-gray-400">No attachment</span>';
+                }
+                
+                // Task Link
+                const taskCell = document.createElement('td');
+                taskCell.className = 'px-6 py-4';
+                if (incident.taskLink) {
+                    taskCell.innerHTML = `
+                        <a href="${incident.taskLink}" target="_blank" class="text-blue-600 hover:underline flex items-center gap-1">
+                            View Task
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                        </a>
+                    `;
+                } else {
+                    taskCell.innerHTML = '<span class="text-gray-400">No task</span>';
+                }
+                
+                // Action Button
+                const actionCell = document.createElement('td');
+                actionCell.className = 'px-6 py-4';
+                const addTaskButton = document.createElement('button');
+                addTaskButton.className = 'task-button bg-green-600 text-white px-3 py-1 rounded-md text-sm flex items-center gap-1';
+                addTaskButton.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    Add Task
+                `;
+                
+                // Disable button if task already exists
+                if (incident.taskLink) {
+                    addTaskButton.disabled = true;
+                    addTaskButton.className += ' opacity-50 cursor-not-allowed';
+                } else {
+                    addTaskButton.addEventListener('click', () => addTask(incident));
+                }
+                
+                actionCell.appendChild(addTaskButton);
+                
+                // Append all cells to the row
+                row.appendChild(idCell);
+                row.appendChild(timeCell);
+                row.appendChild(attachmentCell);
+                row.appendChild(taskCell);
+                row.appendChild(actionCell);
+                
+                // Append the row to the table body
+                tableBody.appendChild(row);
+            });
+            
+            document.getElementById('showing-count').textContent = incidents.length;
+        }
+
+        // Function to show attachment in modal
+        function showAttachment(incident) {
+            if (!incident.attachment) return;
+            
+            const modal = document.getElementById('attachment-modal');
+            const modalContent = document.getElementById('modal-content');
+            const modalTitle = document.getElementById('modal-title');
+            
+            modalTitle.textContent = `Attachment for ${incident.id}`;
+            
+            // Set content based on attachment type
+            if (incident.attachment.type === 'image') {
+                modalContent.innerHTML = incident.attachment.content.replace('width="100" height="100"', 'width="400" height="400"');
+            } else {
+                modalContent.innerHTML = `
+                    <div class="p-8 bg-gray-100 rounded-lg flex flex-col items-center">
+                        ${incident.attachment.content.replace('width="100" height="100"', 'width="100" height="100"')}
+                        <p class="mt-4 text-gray-700">Document Preview</p>
+                        <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded">Download Document</button>
+                    </div>
+                `;
+            }
+            
+            modal.classList.remove('hidden');
+        }
+
+        // Function to close modal
+        function closeModal() {
+            const modal = document.getElementById('attachment-modal');
+            modal.classList.add('hidden');
+        }
+
+        // Function to add a task
+        function addTask(incident) {
+            // In a real application, this would create a task in the backend
+            // For this demo, we'll just update the local data
+            const index = incidents.findIndex(inc => inc.id === incident.id);
+            if (index !== -1) {
+                incidents[index].taskLink = `https://task-system.example/task/T-${Math.floor(Math.random() * 1000)}`;
+                populateTable();
+                
+                // Show success notification
+                showNotification(`Task created for incident ${incident.id}`);
+            }
+        }
+
+        // Function to show notification
+        function showNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = 'fixed bottom-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg transform transition-all duration-500 translate-y-20 opacity-0';
+            notification.textContent = message;
+            
+            // Add to DOM
+            document.body.appendChild(notification);
+            
+            // Trigger animation
+            setTimeout(() => {
+                notification.classList.remove('translate-y-20', 'opacity-0');
+            }, 10);
+            
+            // Remove after delay
+            setTimeout(() => {
+                notification.classList.add('translate-y-20', 'opacity-0');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 500);
+            }, 3000);
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            populateTable();
+            
+            // Set up event listeners
+            document.getElementById('close-modal').addEventListener('click', closeModal);
+            
+            // Close modal when clicking outside
+            document.getElementById('attachment-modal').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('attachment-modal')) {
+                    closeModal();
+                }
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'962758b386a5109e',t:'MTc1MzA2NTc2Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
+
