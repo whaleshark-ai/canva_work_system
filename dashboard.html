@@ -1,435 +1,553 @@
-<html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analytics Dashboard</title>
+    <title>Operations Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f0f4f8;
-        }
-        .dashboard-card {
-            background-color: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            transition: all 0.3s ease;
-        }
-        .dashboard-card:hover {
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        .stat-card {
-            background-color: white;
-            border-radius: 0.5rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-        select {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-            background-position: right 0.5rem center;
-            background-repeat: no-repeat;
-            background-size: 1.5em 1.5em;
-            padding-right: 2.5rem;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .chart-container { position: relative; height: 300px; }
+        .export-btn { transition: all 0.2s ease; }
+        .export-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
     </style>
-<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.16 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.mb-4{margin-bottom:1rem}.mb-8{margin-bottom:2rem}.flex{display:flex}.grid{display:grid}.h-64{height:16rem}.min-h-screen{min-height:100vh}.flex-1{flex:1 1 0%}.grid-cols-1{grid-template-columns:repeat(1, minmax(0, 1fr))}.flex-wrap{flex-wrap:wrap}.items-center{align-items:center}.justify-between{justify-content:space-between}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.rounded-md{border-radius:0.375rem}.border{border-width:1px}.border-gray-300{--tw-border-opacity:1;border-color:rgb(209 213 219 / var(--tw-border-opacity, 1))}.p-3{padding:0.75rem}.p-4{padding:1rem}.p-5{padding:1.25rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.text-2xl{font-size:1.5rem;line-height:2rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.font-bold{font-weight:700}.font-semibold{font-weight:600}.text-amber-600{--tw-text-opacity:1;color:rgb(217 119 6 / var(--tw-text-opacity, 1))}.text-blue-600{--tw-text-opacity:1;color:rgb(37 99 235 / var(--tw-text-opacity, 1))}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity, 1))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity, 1))}.text-gray-700{--tw-text-opacity:1;color:rgb(55 65 81 / var(--tw-text-opacity, 1))}.text-gray-800{--tw-text-opacity:1;color:rgb(31 41 55 / var(--tw-text-opacity, 1))}.text-green-600{--tw-text-opacity:1;color:rgb(22 163 74 / var(--tw-text-opacity, 1))}.text-indigo-600{--tw-text-opacity:1;color:rgb(79 70 229 / var(--tw-text-opacity, 1))}.text-purple-600{--tw-text-opacity:1;color:rgb(147 51 234 / var(--tw-text-opacity, 1))}.text-purple-800{--tw-text-opacity:1;color:rgb(107 33 168 / var(--tw-text-opacity, 1))}.text-teal-600{--tw-text-opacity:1;color:rgb(13 148 136 / var(--tw-text-opacity, 1))}.text-teal-800{--tw-text-opacity:1;color:rgb(17 94 89 / var(--tw-text-opacity, 1))}.focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px}.focus\:ring-2:focus{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)}.focus\:ring-blue-500:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(59 130 246 / var(--tw-ring-opacity, 1))}@media (min-width: 768px){.md\:p-8{padding:2rem}.md\:text-3xl{font-size:1.875rem;line-height:2.25rem}}@media (min-width: 1024px){.lg\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}}</style></head>
-<body>
-    <div class="min-h-screen p-4 md:p-8">
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
+    <div class="container mx-auto px-6 py-8">
         <!-- Header -->
-        <header class="mb-8">
-            <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Analytics Dashboard</h1>
-            <p class="text-gray-600">Real-time metrics and performance insights</p>
-        </header>
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Operations Dashboard</h1>
+            <p class="text-gray-600">Real-time overview of frontline operations and task management</p>
+            <div class="text-sm text-gray-500 mt-2">Last updated: <span id="lastUpdated"></span></div>
+        </div>
 
-        <!-- Main Dashboard -->
+        <!-- Dashboard Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             
-            <!-- User Availability Chart -->
-            <div class="dashboard-card p-5">
+            <!-- Frontline Staff Deployment -->
+            <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
                 <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-semibold text-gray-800">Available Users by Contract</h2>
-                    <select id="userContractSelect" class="border border-gray-300 rounded-md text-gray-700 text-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="all">All Contracts</option>
-                        <option value="contract1">Contract A</option>
-                        <option value="contract2">Contract B</option>
-                        <option value="contract3">Contract C</option>
-                    </select>
+                    <h2 class="text-xl font-semibold text-gray-800">Frontline Staff Deployment</h2>
+                    <button onclick="exportChart('staffChart')" class="export-btn bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        Export
+                    </button>
                 </div>
-                <div class="flex flex-wrap gap-4 mb-4">
-                    <div class="stat-card p-3 flex-1">
-                        <p class="text-sm text-gray-500">Current Available</p>
-                        <p class="text-xl font-bold text-blue-600">247</p>
+                <!-- Filter Controls -->
+                <div class="flex flex-wrap gap-3 mb-4 p-3 bg-gray-50 rounded-lg">
+                    <div class="flex items-center gap-2">
+                        <label class="text-sm font-medium text-gray-700">View:</label>
+                        <select id="staffTimeframe" onchange="updateStaffChart()" class="text-sm border border-gray-300 rounded px-2 py-1 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <option value="daily">Daily</option>
+                            <option value="weekly" selected>Weekly</option>
+                            <option value="monthly">Monthly</option>
+                        </select>
                     </div>
-                    <div class="stat-card p-3 flex-1">
-                        <p class="text-sm text-gray-500">In Tasks</p>
-                        <p class="text-xl font-bold text-indigo-600">183</p>
-                    </div>
-                    <div class="stat-card p-3 flex-1">
-                        <p class="text-sm text-gray-500">Total</p>
-                        <p class="text-xl font-bold text-gray-800">430</p>
+                    <div class="flex items-center gap-2">
+                        <label class="text-sm font-medium text-gray-700">Date:</label>
+                        <input type="date" id="staffDate" onchange="updateStaffChart()" class="text-sm border border-gray-300 rounded px-2 py-1 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                     </div>
                 </div>
-                <div class="h-64">
-                    <canvas id="userChart" height="512" style="display: block; box-sizing: border-box; height: 256px; width: 785px;" width="1570"></canvas>
+                <div class="chart-container">
+                    <canvas id="staffChart"></canvas>
+                </div>
+                <div class="grid grid-cols-3 gap-4 mt-4">
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-blue-600">156</div>
+                        <div class="text-sm text-gray-600">Total</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-green-600">124</div>
+                        <div class="text-sm text-gray-600">In-Task</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-orange-600">32</div>
+                        <div class="text-sm text-gray-600">Off-Time</div>
+                    </div>
+                </div>
+                <!-- Trend Insight -->
+                <div class="mt-4 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+                    <div class="flex items-start">
+                        <svg class="w-5 h-5 text-blue-500 mt-0.5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                        </svg>
+                        <div>
+                            <h4 class="text-sm font-semibold text-blue-800 mb-1">7-Day Trend Analysis</h4>
+                            <p class="text-sm text-blue-700">Staff utilization increased by <span class="font-semibold text-green-600">+8.2%</span> compared to last week. In-task ratio improved from 76% to 79.5%, indicating better resource allocation and reduced idle time.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Routine Tasks -->
+            <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold text-gray-800">Routine Tasks</h2>
+                    <button onclick="exportChart('routineChart')" class="export-btn bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        Export
+                    </button>
+                </div>
+                <!-- Filter Controls -->
+                <div class="flex flex-wrap gap-3 mb-4 p-3 bg-gray-50 rounded-lg">
+                    <div class="flex items-center gap-2">
+                        <label class="text-sm font-medium text-gray-700">View:</label>
+                        <select id="routineTimeframe" onchange="updateRoutineChart()" class="text-sm border border-gray-300 rounded px-2 py-1 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <option value="daily">Daily</option>
+                            <option value="weekly" selected>Weekly</option>
+                            <option value="monthly">Monthly</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <label class="text-sm font-medium text-gray-700">Date:</label>
+                        <input type="date" id="routineDate" onchange="updateRoutineChart()" class="text-sm border border-gray-300 rounded px-2 py-1 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="routineChart"></canvas>
+                </div>
+                <div class="grid grid-cols-4 gap-2 mt-4">
+                    <div class="text-center">
+                        <div class="text-xl font-bold text-green-600">89</div>
+                        <div class="text-xs text-gray-600">Completed</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-xl font-bold text-blue-600">34</div>
+                        <div class="text-xs text-gray-600">In-Progress</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-xl font-bold text-red-600">12</div>
+                        <div class="text-xs text-gray-600">Overdue</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-xl font-bold text-gray-600">45</div>
+                        <div class="text-xs text-gray-600">Yet to Complete</div>
+                    </div>
+                </div>
+                <!-- Trend Insight -->
+                <div class="mt-4 p-4 bg-green-50 rounded-lg border-l-4 border-green-400">
+                    <div class="flex items-start">
+                        <svg class="w-5 h-5 text-green-500 mt-0.5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <div>
+                            <h4 class="text-sm font-semibold text-green-800 mb-1">7-Day Performance Insight</h4>
+                            <p class="text-sm text-green-700">Task completion rate improved by <span class="font-semibold text-green-600">+12%</span> this week. Overdue tasks decreased by 35% while completion efficiency increased, showing strong operational improvements.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ad Hoc/Reservation Tasks -->
+            <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold text-gray-800">Ad Hoc/Reservation Tasks</h2>
+                    <button onclick="exportChart('adhocChart')" class="export-btn bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        Export
+                    </button>
+                </div>
+                <!-- Filter Controls -->
+                <div class="flex flex-wrap gap-3 mb-4 p-3 bg-gray-50 rounded-lg">
+                    <div class="flex items-center gap-2">
+                        <label class="text-sm font-medium text-gray-700">View:</label>
+                        <select id="adhocTimeframe" onchange="updateAdhocChart()" class="text-sm border border-gray-300 rounded px-2 py-1 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="monthly" selected>Monthly</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <label class="text-sm font-medium text-gray-700">Date:</label>
+                        <input type="month" id="adhocDate" onchange="updateAdhocChart()" class="text-sm border border-gray-300 rounded px-2 py-1 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="adhocChart"></canvas>
+                </div>
+                <div class="grid grid-cols-3 gap-4 mt-4">
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-green-600">67</div>
+                        <div class="text-sm text-gray-600">Completed</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-red-600">8</div>
+                        <div class="text-sm text-gray-600">Overdue</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-blue-600">23</div>
+                        <div class="text-sm text-gray-600">In-Progress</div>
+                    </div>
+                </div>
+                <!-- Trend Insight -->
+                <div class="mt-4 p-4 bg-purple-50 rounded-lg border-l-4 border-purple-400">
+                    <div class="flex items-start">
+                        <svg class="w-5 h-5 text-purple-500 mt-0.5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd"></path>
+                        </svg>
+                        <div>
+                            <h4 class="text-sm font-semibold text-purple-800 mb-1">Monthly Trend Analysis</h4>
+                            <p class="text-sm text-purple-700">Ad hoc task volume increased by <span class="font-semibold text-orange-600">+18%</span> this month, but completion rate maintained at 68%. Response time improved by 15 minutes on average, showing better agility in handling urgent requests.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Daily Ad Hoc Numbers -->
+            <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold text-gray-800">Daily Ad Hoc Numbers</h2>
+                    <button onclick="exportChart('dailyChart')" class="export-btn bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        Export
+                    </button>
+                </div>
+                <!-- Filter Controls -->
+                <div class="flex flex-wrap gap-3 mb-4 p-3 bg-gray-50 rounded-lg">
+                    <div class="flex items-center gap-2">
+                        <label class="text-sm font-medium text-gray-700">View:</label>
+                        <select id="dailyTimeframe" onchange="updateDailyChart()" class="text-sm border border-gray-300 rounded px-2 py-1 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <option value="daily">Daily</option>
+                            <option value="weekly" selected>Weekly</option>
+                            <option value="monthly">Monthly</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <label class="text-sm font-medium text-gray-700">Date:</label>
+                        <input type="date" id="dailyDate" onchange="updateDailyChart()" class="text-sm border border-gray-300 rounded px-2 py-1 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="dailyChart"></canvas>
+                </div>
+                <div class="mt-4 text-center">
+                    <div class="text-3xl font-bold text-purple-600">98</div>
+                    <div class="text-sm text-gray-600">Total Ad Hoc Tasks Today</div>
+                </div>
+                <!-- Trend Insight -->
+                <div class="mt-4 p-4 bg-orange-50 rounded-lg border-l-4 border-orange-400">
+                    <div class="flex items-start">
+                        <svg class="w-5 h-5 text-orange-500 mt-0.5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.293l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clip-rule="evenodd"></path>
+                        </svg>
+                        <div>
+                            <h4 class="text-sm font-semibold text-orange-800 mb-1">Weekly Pattern Analysis</h4>
+                            <p class="text-sm text-orange-700">Daily ad hoc requests peaked on <span class="font-semibold">Saturday (103)</span> and are <span class="font-semibold text-blue-600">+14%</span> higher than last week's average. Weekend demand shows consistent upward trend, suggesting need for enhanced weekend staffing.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+            <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl p-6 text-white">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-blue-100 text-sm">Total Staff Active</p>
+                        <p class="text-3xl font-bold">124</p>
+                    </div>
+                    <div class="bg-white bg-opacity-20 rounded-full p-3">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
                 </div>
             </div>
             
-            <!-- Task Completion Chart -->
-            <div class="dashboard-card p-5">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-semibold text-gray-800">Task Completion Metrics</h2>
-                </div>
-                <div class="flex flex-wrap gap-4 mb-4">
-                    <div class="stat-card p-3 flex-1">
-                        <p class="text-sm text-gray-500">Completed Tasks</p>
-                        <p class="text-xl font-bold text-green-600">1,247</p>
+            <div class="bg-gradient-to-r from-green-500 to-green-600 rounded-xl p-6 text-white">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-green-100 text-sm">Tasks Completed</p>
+                        <p class="text-3xl font-bold">156</p>
                     </div>
-                    <div class="stat-card p-3 flex-1">
-                        <p class="text-sm text-gray-500">Completed Ad Hoc</p>
-                        <p class="text-xl font-bold text-amber-600">583</p>
+                    <div class="bg-white bg-opacity-20 rounded-full p-3">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
                     </div>
-                </div>
-                <div class="h-64">
-                    <canvas id="taskChart" height="512" style="display: block; box-sizing: border-box; height: 256px; width: 785px;" width="1570"></canvas>
                 </div>
             </div>
             
-            <!-- Mobile Users Chart -->
-            <div class="dashboard-card p-5">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-semibold text-gray-800">Daily Mobile Users</h2>
-                    <select id="mobileContractSelect" class="border border-gray-300 rounded-md text-gray-700 text-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="all">All Contracts</option>
-                        <option value="contract1">Contract A</option>
-                        <option value="contract2">Contract B</option>
-                        <option value="contract3">Contract C</option>
-                    </select>
-                </div>
-                <div class="flex flex-wrap gap-4 mb-4">
-                    <div class="stat-card p-3 flex-1">
-                        <p class="text-sm text-gray-500">Today's Users</p>
-                        <p class="text-xl font-bold text-purple-600">1,842</p>
+            <div class="bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl p-6 text-white">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-orange-100 text-sm">Pending Tasks</p>
+                        <p class="text-3xl font-bold">20</p>
                     </div>
-                    <div class="stat-card p-3 flex-1">
-                        <p class="text-sm text-gray-500">Weekly Average</p>
-                        <p class="text-xl font-bold text-purple-800">1,756</p>
+                    <div class="bg-white bg-opacity-20 rounded-full p-3">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                        </svg>
                     </div>
-                </div>
-                <div class="h-64">
-                    <canvas id="mobileChart" height="512" style="display: block; box-sizing: border-box; height: 256px; width: 785px;" width="1570"></canvas>
-                </div>
-            </div>
-            
-            <!-- Desktop Users Chart -->
-            <div class="dashboard-card p-5">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-semibold text-gray-800">Daily Desktop Users</h2>
-                    <select id="desktopContractSelect" class="border border-gray-300 rounded-md text-gray-700 text-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="all">All Contracts</option>
-                        <option value="contract1">Contract A</option>
-                        <option value="contract2">Contract B</option>
-                        <option value="contract3">Contract C</option>
-                    </select>
-                </div>
-                <div class="flex flex-wrap gap-4 mb-4">
-                    <div class="stat-card p-3 flex-1">
-                        <p class="text-sm text-gray-500">Today's Users</p>
-                        <p class="text-xl font-bold text-teal-600">2,371</p>
-                    </div>
-                    <div class="stat-card p-3 flex-1">
-                        <p class="text-sm text-gray-500">Weekly Average</p>
-                        <p class="text-xl font-bold text-teal-800">2,489</p>
-                    </div>
-                </div>
-                <div class="h-64">
-                    <canvas id="desktopChart" height="512" style="display: block; box-sizing: border-box; height: 256px; width: 785px;" width="1570"></canvas>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Sample data - in a real application, this would come from an API
-        const contractData = {
-            'all': {
-                users: {
-                    available: 247,
-                    inTasks: 183,
-                    total: 430
-                },
-                tasks: {
-                    completed: 1247,
-                    adhoc: 583,
-                    totalCompleted: 1830,
-                    totalAdhoc: 720
-                },
-                mobile: {
-                    daily: [1842, 1756, 1890, 1923, 1845, 1756, 1690],
-                    average: 1756
-                },
-                desktop: {
-                    daily: [2371, 2489, 2510, 2390, 2450, 2380, 2420],
-                    average: 2489
-                }
+        // Set last updated time and initialize dates
+        document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
+        
+        // Set default dates
+        const today = new Date().toISOString().split('T')[0];
+        const thisMonth = new Date().toISOString().slice(0, 7);
+        document.getElementById('staffDate').value = today;
+        document.getElementById('routineDate').value = today;
+        document.getElementById('adhocDate').value = thisMonth;
+        document.getElementById('dailyDate').value = today;
+
+        // Sample data for different timeframes
+        const sampleData = {
+            staff: {
+                daily: { inTask: [124], offTime: [32] },
+                weekly: { inTask: [124], offTime: [32] },
+                monthly: { inTask: [3720], offTime: [960] }
             },
-            'contract1': {
-                users: {
-                    available: 98,
-                    inTasks: 72,
-                    total: 170
-                },
-                tasks: {
-                    completed: 520,
-                    adhoc: 210,
-                    totalCompleted: 730,
-                    totalAdhoc: 280
-                },
-                mobile: {
-                    daily: [720, 680, 710, 750, 730, 690, 670],
-                    average: 707
-                },
-                desktop: {
-                    daily: [980, 1020, 1050, 990, 1010, 970, 1000],
-                    average: 1003
-                }
+            routine: {
+                daily: { completed: [89], inProgress: [34], overdue: [12], yetToComplete: [45] },
+                weekly: { completed: [623], inProgress: [238], overdue: [84], yetToComplete: [315] },
+                monthly: { completed: [2492], inProgress: [952], overdue: [336], yetToComplete: [1260] }
             },
-            'contract2': {
-                users: {
-                    available: 85,
-                    inTasks: 65,
-                    total: 150
-                },
-                tasks: {
-                    completed: 427,
-                    adhoc: 213,
-                    totalCompleted: 640,
-                    totalAdhoc: 280
-                },
-                mobile: {
-                    daily: [620, 590, 640, 670, 630, 600, 580],
-                    average: 619
-                },
-                desktop: {
-                    daily: [780, 810, 830, 790, 800, 770, 790],
-                    average: 796
-                }
+            adhoc: {
+                daily: { completed: [67], overdue: [8], inProgress: [23] },
+                weekly: { completed: [469], overdue: [56], inProgress: [161] },
+                monthly: { completed: [1876], overdue: [224], inProgress: [644] }
             },
-            'contract3': {
-                users: {
-                    available: 64,
-                    inTasks: 46,
-                    total: 110
-                },
-                tasks: {
-                    completed: 300,
-                    adhoc: 160,
-                    totalCompleted: 460,
-                    totalAdhoc: 200
-                },
-                mobile: {
-                    daily: [502, 486, 540, 503, 485, 466, 440],
-                    average: 489
-                },
-                desktop: {
-                    daily: [611, 659, 630, 610, 640, 640, 630],
-                    average: 631
+            daily: {
+                daily: { labels: ['Today'], data: [98] },
+                weekly: { labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], data: [85, 92, 78, 96, 89, 103, 98] },
+                monthly: { labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'], data: [645, 672, 598, 689] }
+            }
+        };
+
+        // Chart configurations
+        const chartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 20,
+                        usePointStyle: true
+                    }
                 }
             }
         };
 
-        // Chart instances
-        let userChart, taskChart, mobileChart, desktopChart;
-        
-        // Initialize charts
-        document.addEventListener('DOMContentLoaded', function() {
-            initCharts('all');
-            
-            // Add event listeners to dropdowns
-            document.getElementById('userContractSelect').addEventListener('change', function() {
-                updateUserChart(this.value);
-            });
-            
-            document.getElementById('mobileContractSelect').addEventListener('change', function() {
-                updateMobileChart(this.value);
-            });
-            
-            document.getElementById('desktopContractSelect').addEventListener('change', function() {
-                updateDesktopChart(this.value);
-            });
+        // Staff Deployment Chart
+        const staffCtx = document.getElementById('staffChart').getContext('2d');
+        const staffChart = new Chart(staffCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['In-Task', 'Off-Time'],
+                datasets: [{
+                    data: [124, 32],
+                    backgroundColor: ['#10B981', '#F59E0B'],
+                    borderWidth: 0,
+                    cutout: '60%'
+                }]
+            },
+            options: chartOptions
         });
-        
-        function initCharts(contract) {
-            // User Chart
-            const userCtx = document.getElementById('userChart').getContext('2d');
-            userChart = new Chart(userCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Available Users', 'Users in Tasks'],
-                    datasets: [{
-                        label: 'Number of Users',
-                        data: [
-                            contractData[contract].users.available,
-                            contractData[contract].users.inTasks
-                        ],
-                        backgroundColor: [
-                            'rgba(59, 130, 246, 0.7)',
-                            'rgba(79, 70, 229, 0.7)'
-                        ],
-                        borderColor: [
-                            'rgba(59, 130, 246, 1)',
-                            'rgba(79, 70, 229, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-            
-            // Task Chart
-            const taskCtx = document.getElementById('taskChart').getContext('2d');
-            taskChart = new Chart(taskCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Completed Tasks', 'Total Completed', 'Completed Ad Hoc', 'Total Ad Hoc'],
-                    datasets: [{
-                        label: 'Number of Tasks',
-                        data: [
-                            contractData[contract].tasks.completed,
-                            contractData[contract].tasks.totalCompleted,
-                            contractData[contract].tasks.adhoc,
-                            contractData[contract].tasks.totalAdhoc
-                        ],
-                        backgroundColor: [
-                            'rgba(16, 185, 129, 0.7)',
-                            'rgba(16, 185, 129, 0.4)',
-                            'rgba(245, 158, 11, 0.7)',
-                            'rgba(245, 158, 11, 0.4)'
-                        ],
-                        borderColor: [
-                            'rgba(16, 185, 129, 1)',
-                            'rgba(16, 185, 129, 0.6)',
-                            'rgba(245, 158, 11, 1)',
-                            'rgba(245, 158, 11, 0.6)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-            
-            // Mobile Chart
-            const mobileCtx = document.getElementById('mobileChart').getContext('2d');
-            mobileChart = new Chart(mobileCtx, {
-                type: 'line',
-                data: {
-                    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-                    datasets: [{
-                        label: 'Mobile Users',
-                        data: contractData[contract].mobile.daily,
-                        fill: false,
-                        backgroundColor: 'rgba(139, 92, 246, 0.7)',
-                        borderColor: 'rgba(139, 92, 246, 1)',
-                        tension: 0.3,
-                        pointBackgroundColor: 'rgba(139, 92, 246, 1)',
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: 'rgba(139, 92, 246, 1)'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-            
-            // Desktop Chart
-            const desktopCtx = document.getElementById('desktopChart').getContext('2d');
-            desktopChart = new Chart(desktopCtx, {
-                type: 'line',
-                data: {
-                    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-                    datasets: [{
-                        label: 'Desktop Users',
-                        data: contractData[contract].desktop.daily,
-                        fill: false,
-                        backgroundColor: 'rgba(20, 184, 166, 0.7)',
-                        borderColor: 'rgba(20, 184, 166, 1)',
-                        tension: 0.3,
-                        pointBackgroundColor: 'rgba(20, 184, 166, 1)',
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: 'rgba(20, 184, 166, 1)'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        }
-        
-        function updateUserChart(contract) {
-            // Update stats
-            document.querySelector('.stat-card:nth-child(1) .text-xl').textContent = contractData[contract].users.available;
-            document.querySelector('.stat-card:nth-child(2) .text-xl').textContent = contractData[contract].users.inTasks;
-            document.querySelector('.stat-card:nth-child(3) .text-xl').textContent = contractData[contract].users.total;
-            
-            // Update chart
-            userChart.data.datasets[0].data = [
-                contractData[contract].users.available,
-                contractData[contract].users.inTasks
-            ];
-            userChart.update();
-        }
-        
-        function updateMobileChart(contract) {
-            // Update stats
-            document.querySelector('#mobileChart').closest('.dashboard-card').querySelector('.stat-card:nth-child(1) .text-xl').textContent = contractData[contract].mobile.daily[0];
-            document.querySelector('#mobileChart').closest('.dashboard-card').querySelector('.stat-card:nth-child(2) .text-xl').textContent = contractData[contract].mobile.average;
-            
-            // Update chart
-            mobileChart.data.datasets[0].data = contractData[contract].mobile.daily;
-            mobileChart.update();
-        }
-        
-        function updateDesktopChart(contract) {
-            // Update stats
-            document.querySelector('#desktopChart').closest('.dashboard-card').querySelector('.stat-card:nth-child(1) .text-xl').textContent = contractData[contract].desktop.daily[0];
-            document.querySelector('#desktopChart').closest('.dashboard-card').querySelector('.stat-card:nth-child(2) .text-xl').textContent = contractData[contract].desktop.average;
-            
-            // Update chart
-            desktopChart.data.datasets[0].data = contractData[contract].desktop.daily;
-            desktopChart.update();
-        }
-    </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'95f61e5d7017b46d',t:'MTc1MjU0OTU3MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border: none; visibility: hidden;"></iframe>
 
-</body></html>
+        // Routine Tasks Chart
+        const routineCtx = document.getElementById('routineChart').getContext('2d');
+        const routineChart = new Chart(routineCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Completed', 'In-Progress', 'Overdue', 'Yet to Complete'],
+                datasets: [{
+                    data: [89, 34, 12, 45],
+                    backgroundColor: ['#10B981', '#3B82F6', '#EF4444', '#6B7280'],
+                    borderRadius: 8,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                ...chartOptions,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: '#F3F4F6'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Ad Hoc Tasks Chart
+        const adhocCtx = document.getElementById('adhocChart').getContext('2d');
+        const adhocChart = new Chart(adhocCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Completed', 'Overdue', 'In-Progress'],
+                datasets: [{
+                    data: [67, 8, 23],
+                    backgroundColor: ['#10B981', '#EF4444', '#3B82F6'],
+                    borderWidth: 0
+                }]
+            },
+            options: chartOptions
+        });
+
+        // Daily Ad Hoc Numbers Chart
+        const dailyCtx = document.getElementById('dailyChart').getContext('2d');
+        const dailyChart = new Chart(dailyCtx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Ad Hoc Tasks',
+                    data: [85, 92, 78, 96, 89, 103, 98],
+                    borderColor: '#8B5CF6',
+                    backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#8B5CF6',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 6
+                }]
+            },
+            options: {
+                ...chartOptions,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: '#F3F4F6'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Chart update functions
+        function updateStaffChart() {
+            const timeframe = document.getElementById('staffTimeframe').value;
+            const date = document.getElementById('staffDate').value;
+            const dateInput = document.getElementById('staffDate');
+            
+            // Update date input type based on timeframe
+            if (timeframe === 'monthly') {
+                dateInput.type = 'month';
+                if (!dateInput.value.includes('-')) dateInput.value = thisMonth;
+            } else {
+                dateInput.type = 'date';
+                if (dateInput.value.includes('-') && dateInput.value.length === 7) dateInput.value = today;
+            }
+            
+            const data = sampleData.staff[timeframe];
+            staffChart.data.datasets[0].data = [data.inTask[0], data.offTime[0]];
+            staffChart.update();
+        }
+
+        function updateRoutineChart() {
+            const timeframe = document.getElementById('routineTimeframe').value;
+            const date = document.getElementById('routineDate').value;
+            const dateInput = document.getElementById('routineDate');
+            
+            // Update date input type based on timeframe
+            if (timeframe === 'monthly') {
+                dateInput.type = 'month';
+                if (!dateInput.value.includes('-')) dateInput.value = thisMonth;
+            } else {
+                dateInput.type = 'date';
+                if (dateInput.value.includes('-') && dateInput.value.length === 7) dateInput.value = today;
+            }
+            
+            const data = sampleData.routine[timeframe];
+            routineChart.data.datasets[0].data = [data.completed[0], data.inProgress[0], data.overdue[0], data.yetToComplete[0]];
+            routineChart.update();
+        }
+
+        function updateAdhocChart() {
+            const timeframe = document.getElementById('adhocTimeframe').value;
+            const date = document.getElementById('adhocDate').value;
+            const dateInput = document.getElementById('adhocDate');
+            
+            // Update date input type based on timeframe
+            if (timeframe === 'monthly') {
+                dateInput.type = 'month';
+                if (!dateInput.value.includes('-')) dateInput.value = thisMonth;
+            } else {
+                dateInput.type = 'date';
+                if (dateInput.value.includes('-') && dateInput.value.length === 7) dateInput.value = today;
+            }
+            
+            const data = sampleData.adhoc[timeframe];
+            adhocChart.data.datasets[0].data = [data.completed[0], data.overdue[0], data.inProgress[0]];
+            adhocChart.update();
+        }
+
+        function updateDailyChart() {
+            const timeframe = document.getElementById('dailyTimeframe').value;
+            const date = document.getElementById('dailyDate').value;
+            const dateInput = document.getElementById('dailyDate');
+            
+            // Update date input type based on timeframe
+            if (timeframe === 'monthly') {
+                dateInput.type = 'month';
+                if (!dateInput.value.includes('-')) dateInput.value = thisMonth;
+            } else {
+                dateInput.type = 'date';
+                if (dateInput.value.includes('-') && dateInput.value.length === 7) dateInput.value = today;
+            }
+            
+            const data = sampleData.daily[timeframe];
+            dailyChart.data.labels = data.labels;
+            dailyChart.data.datasets[0].data = data.data;
+            dailyChart.update();
+        }
+
+        // Export functionality
+        function exportChart(chartId) {
+            const canvas = document.getElementById(chartId);
+            const link = document.createElement('a');
+            link.download = `${chartId}_${new Date().toISOString().split('T')[0]}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+            
+            // Show success message
+            const button = event.target.closest('button');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Exported!';
+            button.classList.add('bg-green-600');
+            
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.classList.remove('bg-green-600');
+            }, 2000);
+        }
+
+        // Auto-refresh data every 30 seconds (simulation)
+        setInterval(() => {
+            document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
+        }, 30000);
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'967955dc348504f6',t:'MTc1MzkyNTQ3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
