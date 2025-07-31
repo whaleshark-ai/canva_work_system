@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontline Staff Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/date-fns@2.29.3/index.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+        }
+        
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .dashboard-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 25px;
+        }
+        
+        .chart-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .chart-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .chart-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2d3748;
+        }
+        
+        .chart-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .time-frame-selector {
+            display: flex;
+            background: #f7fafc;
+            border-radius: 8px;
+            padding: 3px;
+        }
+        
+        .time-frame-btn {
+            padding: 8px 16px;
+            border: none;
+            background: transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #4a5568;
+            transition: all 0.2s ease;
+        }
+        
+        .time-frame-btn.active {
+            background: #667eea;
+            color: white;
+            box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
+        }
+        
+        .date-picker {
+            padding: 8px 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #4a5568;
+            background: white;
+        }
+        
+        .date-picker:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .export-btn {
+            padding: 8px 16px;
+            background: #48bb78;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .export-btn:hover {
+            background: #38a169;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 350px;
+            margin-top: 15px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: #718096;
+            font-weight: 500;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .chart-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .chart-controls {
+                justify-content: center;
+            }
+            
+            .dashboard-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>Frontline Staff Dashboard</h1>
+            <p>Real-time monitoring and analytics for staff deployment and task management</p>
+        </div>
+        
+        <div class="dashboard-grid">
+            <!-- Staff Deployment Chart -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3 class="chart-title">Total Frontline Staff Deployment</h3>
+                    <div class="chart-controls">
+                        <div class="time-frame-selector">
+                            <button class="time-frame-btn active" onclick="updateTimeFrame('staff-deployment', 'daily')">Daily</button>
+                            <button class="time-frame-btn" onclick="updateTimeFrame('staff-deployment', 'weekly')">Weekly</button>
+                            <button class="time-frame-btn" onclick="updateTimeFrame('staff-deployment', 'monthly')">Monthly</button>
+                        </div>
+                        <input type="date" class="date-picker" id="staff-deployment-date" onchange="updateChartData('staff-deployment')">
+                        <button class="export-btn" onclick="exportChart('staffDeploymentChart')">
+                            📊 Export PNG
+                        </button>
+                    </div>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value" id="total-staff">156</div>
+                        <div class="stat-label">Total Staff</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="in-task-staff">124</div>
+                        <div class="stat-label">In Task</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="off-time-staff">32</div>
+                        <div class="stat-label">Off Time</div>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="staffDeploymentChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Task Locations Chart -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3 class="chart-title">Today's Task Locations Deployed</h3>
+                    <div class="chart-controls">
+                        <div class="time-frame-selector">
+                            <button class="time-frame-btn active" onclick="updateTimeFrame('task-locations', 'daily')">Daily</button>
+                            <button class="time-frame-btn" onclick="updateTimeFrame('task-locations', 'weekly')">Weekly</button>
+                            <button class="time-frame-btn" onclick="updateTimeFrame('task-locations', 'monthly')">Monthly</button>
+                        </div>
+                        <input type="date" class="date-picker" id="task-locations-date" onchange="updateChartData('task-locations')">
+                        <button class="export-btn" onclick="exportChart('taskLocationsChart')">
+                            📊 Export PNG
+                        </button>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="taskLocationsChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Routine Tasks Chart -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3 class="chart-title">Total Routine Tasks</h3>
+                    <div class="chart-controls">
+                        <div class="time-frame-selector">
+                            <button class="time-frame-btn active" onclick="updateTimeFrame('routine-tasks', 'daily')">Daily</button>
+                            <button class="time-frame-btn" onclick="updateTimeFrame('routine-tasks', 'weekly')">Weekly</button>
+                            <button class="time-frame-btn" onclick="updateTimeFrame('routine-tasks', 'monthly')">Monthly</button>
+                        </div>
+                        <input type="date" class="date-picker" id="routine-tasks-date" onchange="updateChartData('routine-tasks')">
+                        <button class="export-btn" onclick="exportChart('routineTasksChart')">
+                            📊 Export PNG
+                        </button>
+                    </div>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value" id="completed-routine">89</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="inprogress-routine">23</div>
+                        <div class="stat-label">In Progress</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="overdue-routine">7</div>
+                        <div class="stat-label">Overdue</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="pending-routine">15</div>
+                        <div class="stat-label">Yet to Complete</div>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="routineTasksChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Ad Hoc/Reservation Tasks Chart -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3 class="chart-title">Total Ad Hoc/Reservation Tasks</h3>
+                    <div class="chart-controls">
+                        <div class="time-frame-selector">
+                            <button class="time-frame-btn active" onclick="updateTimeFrame('adhoc-tasks', 'daily')">Daily</button>
+                            <button class="time-frame-btn" onclick="updateTimeFrame('adhoc-tasks', 'weekly')">Weekly</button>
+                            <button class="time-frame-btn" onclick="updateTimeFrame('adhoc-tasks', 'monthly')">Monthly</button>
+                        </div>
+                        <input type="date" class="date-picker" id="adhoc-tasks-date" onchange="updateChartData('adhoc-tasks')">
+                        <button class="export-btn" onclick="exportChart('adhocTasksChart')">
+                            📊 Export PNG
+                        </button>
+                    </div>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value" id="completed-adhoc">34</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="overdue-adhoc">5</div>
+                        <div class="stat-label">Overdue</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="inprogress-adhoc">12</div>
+                        <div class="stat-label">In Progress</div>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="adhocTasksChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Ad Hoc Numbers Chart -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3 class="chart-title">Total Ad Hoc Numbers</h3>
+                    <div class="chart-controls">
+                        <div class="time-frame-selector">
+                            <button class="time-frame-btn active" onclick="updateTimeFrame('adhoc-numbers', 'daily')">Daily</button>
+                            <button class="time-frame-btn" onclick="updateTimeFrame('adhoc-numbers', 'weekly')">Weekly</button>
+                            <button class="time-frame-btn" onclick="updateTimeFrame('adhoc-numbers', 'monthly')">Monthly</button>
+                        </div>
+                        <input type="date" class="date-picker" id="adhoc-numbers-date" onchange="updateChartData('adhoc-numbers')">
+                        <button class="export-btn" onclick="exportChart('adhocNumbersChart')">
+                            📊 Export PNG
+                        </button>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="adhocNumbersChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Chart instances
+        let charts = {};
+        
+        // Sample data generators
+        function generateStaffData(timeFrame) {
+            const data = {
+                daily: {
+                    labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+                    datasets: [{
+                        label: 'Total Staff',
+                        data: [145, 152, 156, 148, 142, 139],
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        tension: 0.4
+                    }, {
+                        label: 'In Task',
+                        data: [118, 125, 124, 119, 115, 112],
+                        borderColor: '#48bb78',
+                        backgroundColor: 'rgba(72, 187, 120, 0.1)',
+                        tension: 0.4
+                    }, {
+                        label: 'Off Time',
+                        data: [27, 27, 32, 29, 27, 27],
+                        borderColor: '#ed8936',
+                        backgroundColor: 'rgba(237, 137, 54, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                weekly: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Total Staff',
+                        data: [156, 154, 158, 152, 149, 145, 142],
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        tension: 0.4
+                    }, {
+                        label: 'In Task',
+                        data: [124, 122, 126, 120, 117, 113, 110],
+                        borderColor: '#48bb78',
+                        backgroundColor: 'rgba(72, 187, 120, 0.1)',
+                        tension: 0.4
+                    }, {
+                        label: 'Off Time',
+                        data: [32, 32, 32, 32, 32, 32, 32],
+                        borderColor: '#ed8936',
+                        backgroundColor: 'rgba(237, 137, 54, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                monthly: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                    datasets: [{
+                        label: 'Total Staff',
+                        data: [152, 156, 148, 145],
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        tension: 0.4
+                    }, {
+                        label: 'In Task',
+                        data: [120, 124, 116, 113],
+                        borderColor: '#48bb78',
+                        backgroundColor: 'rgba(72, 187, 120, 0.1)',
+                        tension: 0.4
+                    }, {
+                        label: 'Off Time',
+                        data: [32, 32, 32, 32],
+                        borderColor: '#ed8936',
+                        backgroundColor: 'rgba(237, 137, 54, 0.1)',
+                        tension: 0.4
+                    }]
+                }
+            };
+            return data[timeFrame];
+        }
+
+        function generateLocationData(timeFrame) {
+            const locations = ['Building A', 'Building B', 'Building C', 'Parking', 'Reception', 'Cafeteria'];
+            const data = {
+                daily: [25, 32, 28, 15, 18, 22],
+                weekly: [175, 224, 196, 105, 126, 154],
+                monthly: [700, 896, 784, 420, 504, 616]
+            };
+            
+            return {
+                labels: locations,
+                datasets: [{
+                    label: 'Staff Deployed',
+                    data: data[timeFrame],
+                    backgroundColor: [
+                        '#667eea', '#48bb78', '#ed8936', 
+                        '#38b2ac', '#9f7aea', '#f56565'
+                    ],
+                    borderWidth: 0
+                }]
+            };
+        }
+
+        function generateRoutineTaskData(timeFrame) {
+            const data = {
+                daily: {
+                    labels: ['Completed', 'In Progress', 'Overdue', 'Yet to Complete'],
+                    datasets: [{
+                        data: [89, 23, 7, 15],
+                        backgroundColor: ['#48bb78', '#667eea', '#f56565', '#ed8936'],
+                        borderWidth: 0
+                    }]
+                },
+                weekly: {
+                    labels: ['Completed', 'In Progress', 'Overdue', 'Yet to Complete'],
+                    datasets: [{
+                        data: [623, 161, 49, 105],
+                        backgroundColor: ['#48bb78', '#667eea', '#f56565', '#ed8936'],
+                        borderWidth: 0
+                    }]
+                },
+                monthly: {
+                    labels: ['Completed', 'In Progress', 'Overdue', 'Yet to Complete'],
+                    datasets: [{
+                        data: [2492, 644, 196, 420],
+                        backgroundColor: ['#48bb78', '#667eea', '#f56565', '#ed8936'],
+                        borderWidth: 0
+                    }]
+                }
+            };
+            return data[timeFrame];
+        }
+
+        function generateAdhocTaskData(timeFrame) {
+            const data = {
+                daily: {
+                    labels: ['Completed', 'Overdue', 'In Progress'],
+                    datasets: [{
+                        data: [34, 5, 12],
+                        backgroundColor: ['#48bb78', '#f56565', '#667eea'],
+                        borderWidth: 0
+                    }]
+                },
+                weekly: {
+                    labels: ['Completed', 'Overdue', 'In Progress'],
+                    datasets: [{
+                        data: [238, 35, 84],
+                        backgroundColor: ['#48bb78', '#f56565', '#667eea'],
+                        borderWidth: 0
+                    }]
+                },
+                monthly: {
+                    labels: ['Completed', 'Overdue', 'In Progress'],
+                    datasets: [{
+                        data: [952, 140, 336],
+                        backgroundColor: ['#48bb78', '#f56565', '#667eea'],
+                        borderWidth: 0
+                    }]
+                }
+            };
+            return data[timeFrame];
+        }
+
+        function generateAdhocNumbersData(timeFrame) {
+            const data = {
+                daily: {
+                    labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+                    datasets: [{
+                        label: 'Ad Hoc Requests',
+                        data: [12, 8, 25, 34, 28, 15],
+                        borderColor: '#9f7aea',
+                        backgroundColor: 'rgba(159, 122, 234, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                weekly: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Ad Hoc Requests',
+                        data: [45, 52, 48, 61, 58, 35, 28],
+                        borderColor: '#9f7aea',
+                        backgroundColor: 'rgba(159, 122, 234, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                monthly: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                    datasets: [{
+                        label: 'Ad Hoc Requests',
+                        data: [327, 285, 312, 298],
+                        borderColor: '#9f7aea',
+                        backgroundColor: 'rgba(159, 122, 234, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                }
+            };
+            return data[timeFrame];
+        }
+
+        // Initialize charts
+        function initializeCharts() {
+            // Staff Deployment Chart
+            const staffCtx = document.getElementById('staffDeploymentChart').getContext('2d');
+            charts.staffDeployment = new Chart(staffCtx, {
+                type: 'line',
+                data: generateStaffData('daily'),
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0,0,0,0.1)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(0,0,0,0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Task Locations Chart
+            const locationsCtx = document.getElementById('taskLocationsChart').getContext('2d');
+            charts.taskLocations = new Chart(locationsCtx, {
+                type: 'doughnut',
+                data: generateLocationData('daily'),
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        }
+                    }
+                }
+            });
+
+            // Routine Tasks Chart
+            const routineCtx = document.getElementById('routineTasksChart').getContext('2d');
+            charts.routineTasks = new Chart(routineCtx, {
+                type: 'doughnut',
+                data: generateRoutineTaskData('daily'),
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        }
+                    }
+                }
+            });
+
+            // Ad Hoc Tasks Chart
+            const adhocCtx = document.getElementById('adhocTasksChart').getContext('2d');
+            charts.adhocTasks = new Chart(adhocCtx, {
+                type: 'bar',
+                data: generateAdhocTaskData('daily'),
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0,0,0,0.1)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Ad Hoc Numbers Chart
+            const adhocNumbersCtx = document.getElementById('adhocNumbersChart').getContext('2d');
+            charts.adhocNumbers = new Chart(adhocNumbersCtx, {
+                type: 'line',
+                data: generateAdhocNumbersData('daily'),
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0,0,0,0.1)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(0,0,0,0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Update time frame
+        function updateTimeFrame(chartType, timeFrame) {
+            // Update active button
+            const buttons = document.querySelectorAll(`[onclick*="${chartType}"] .time-frame-btn`);
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Update date picker type
+            const datePicker = document.getElementById(`${chartType}-date`);
+            if (timeFrame === 'daily') {
+                datePicker.type = 'date';
+            } else if (timeFrame === 'weekly') {
+                datePicker.type = 'week';
+            } else {
+                datePicker.type = 'month';
+            }
+
+            // Update chart data
+            updateChartData(chartType, timeFrame);
+        }
+
+        // Update chart data
+        function updateChartData(chartType, timeFrame = 'daily') {
+            const activeBtn = document.querySelector(`[onclick*="${chartType}"] .time-frame-btn.active`);
+            if (activeBtn) {
+                timeFrame = activeBtn.textContent.toLowerCase();
+            }
+
+            switch(chartType) {
+                case 'staff-deployment':
+                    charts.staffDeployment.data = generateStaffData(timeFrame);
+                    charts.staffDeployment.update();
+                    break;
+                case 'task-locations':
+                    charts.taskLocations.data = generateLocationData(timeFrame);
+                    charts.taskLocations.update();
+                    break;
+                case 'routine-tasks':
+                    charts.routineTasks.data = generateRoutineTaskData(timeFrame);
+                    charts.routineTasks.update();
+                    break;
+                case 'adhoc-tasks':
+                    charts.adhocTasks.data = generateAdhocTaskData(timeFrame);
+                    charts.adhocTasks.update();
+                    break;
+                case 'adhoc-numbers':
+                    charts.adhocNumbers.data = generateAdhocNumbersData(timeFrame);
+                    charts.adhocNumbers.update();
+                    break;
+            }
+        }
+
+        // Export chart as PNG
+        function exportChart(chartId) {
+            const chart = charts[chartId.replace('Chart', '').replace(/([A-Z])/g, (match, p1, offset) => {
+                return offset > 0 ? '-' + p1.toLowerCase() : p1.toLowerCase();
+            })];
+            
+            if (chart) {
+                const url = chart.toBase64Image();
+                const link = document.createElement('a');
+                link.download = `${chartId}-${new Date().toISOString().split('T')[0]}.png`;
+                link.href = url;
+                link.click();
+            }
+        }
+
+        // Set default dates
+        function setDefaultDates() {
+            const today = new Date().toISOString().split('T')[0];
+            document.querySelectorAll('.date-picker').forEach(picker => {
+                picker.value = today;
+            });
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCharts();
+            setDefaultDates();
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9679d42694f81fc8',t:'MTc1MzkzMDY1MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
