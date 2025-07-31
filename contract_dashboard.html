@@ -209,14 +209,8 @@
             <!-- Staff Deployment Chart -->
             <div class="chart-card">
                 <div class="chart-header">
-                    <h3 class="chart-title">Total Frontline Staff Deployment</h3>
+                    <h3 class="chart-title">Total Frontline Staff Deployment - Current Snapshot</h3>
                     <div class="chart-controls">
-                        <div class="time-frame-selector">
-                            <button class="time-frame-btn active" onclick="updateTimeFrame('staff-deployment', 'daily')">Daily</button>
-                            <button class="time-frame-btn" onclick="updateTimeFrame('staff-deployment', 'weekly')">Weekly</button>
-                            <button class="time-frame-btn" onclick="updateTimeFrame('staff-deployment', 'monthly')">Monthly</button>
-                        </div>
-                        <input type="date" class="date-picker" id="staff-deployment-date" onchange="updateChartData('staff-deployment')">
                         <button class="export-btn" onclick="exportChart('staffDeploymentChart')">
                             📊 Export PNG
                         </button>
@@ -365,90 +359,15 @@
         
         // Sample data generators
         function generateStaffData(timeFrame) {
-            const today = new Date();
-            const data = {
-                daily: {
-                    labels: Array.from({length: 7}, (_, i) => {
-                        const date = new Date(today);
-                        date.setDate(date.getDate() - (6 - i));
-                        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-                    }),
-                    datasets: [{
-                        label: 'Total Staff',
-                        data: [145, 152, 156, 148, 142, 139, 156],
-                        borderColor: '#667eea',
-                        backgroundColor: 'rgba(102, 126, 234, 0.8)',
-                        tension: 0.4
-                    }, {
-                        label: 'In Task',
-                        data: [118, 125, 124, 119, 115, 112, 124],
-                        borderColor: '#48bb78',
-                        backgroundColor: 'rgba(72, 187, 120, 0.8)',
-                        tension: 0.4
-                    }, {
-                        label: 'Off Time',
-                        data: [27, 27, 32, 29, 27, 27, 32],
-                        borderColor: '#ed8936',
-                        backgroundColor: 'rgba(237, 137, 54, 0.8)',
-                        tension: 0.4
-                    }]
-                },
-                weekly: {
-                    labels: Array.from({length: 4}, (_, i) => {
-                        const weekStart = new Date(today);
-                        weekStart.setDate(weekStart.getDate() - (weekStart.getDay() || 7) + 1 - (3 - i) * 7);
-                        const weekEnd = new Date(weekStart);
-                        weekEnd.setDate(weekEnd.getDate() + 6);
-                        return `${weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${weekEnd.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
-                    }),
-                    datasets: [{
-                        label: 'Total Staff',
-                        data: [156, 154, 158, 152],
-                        borderColor: '#667eea',
-                        backgroundColor: 'rgba(102, 126, 234, 0.8)',
-                        tension: 0.4
-                    }, {
-                        label: 'In Task',
-                        data: [124, 122, 126, 120],
-                        borderColor: '#48bb78',
-                        backgroundColor: 'rgba(72, 187, 120, 0.8)',
-                        tension: 0.4
-                    }, {
-                        label: 'Off Time',
-                        data: [32, 32, 32, 32],
-                        borderColor: '#ed8936',
-                        backgroundColor: 'rgba(237, 137, 54, 0.8)',
-                        tension: 0.4
-                    }]
-                },
-                monthly: {
-                    labels: Array.from({length: 6}, (_, i) => {
-                        const date = new Date(today);
-                        date.setMonth(date.getMonth() - (5 - i));
-                        return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
-                    }),
-                    datasets: [{
-                        label: 'Total Staff',
-                        data: [148, 152, 156, 148, 145, 156],
-                        borderColor: '#667eea',
-                        backgroundColor: 'rgba(102, 126, 234, 0.8)',
-                        tension: 0.4
-                    }, {
-                        label: 'In Task',
-                        data: [116, 120, 124, 116, 113, 124],
-                        borderColor: '#48bb78',
-                        backgroundColor: 'rgba(72, 187, 120, 0.8)',
-                        tension: 0.4
-                    }, {
-                        label: 'Off Time',
-                        data: [32, 32, 32, 32, 32, 32],
-                        borderColor: '#ed8936',
-                        backgroundColor: 'rgba(237, 137, 54, 0.8)',
-                        tension: 0.4
-                    }]
-                }
+            // For pie chart, we show current moment snapshot regardless of timeFrame
+            return {
+                labels: ['In Task', 'Off Time'],
+                datasets: [{
+                    data: [124, 32],
+                    backgroundColor: ['#48bb78', '#ed8936'],
+                    borderWidth: 0
+                }]
             };
-            return data[timeFrame];
         }
 
         function generateLocationData(timeFrame) {
@@ -577,27 +496,14 @@
             // Staff Deployment Chart
             const staffCtx = document.getElementById('staffDeploymentChart').getContext('2d');
             charts.staffDeployment = new Chart(staffCtx, {
-                type: 'bar',
+                type: 'pie',
                 data: generateStaffData('daily'),
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
                         legend: {
-                            position: 'top',
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                color: 'rgba(0,0,0,0.1)'
-                            }
-                        },
-                        x: {
-                            grid: {
-                                display: false
-                            }
+                            position: 'right',
                         }
                     }
                 }
@@ -775,5 +681,5 @@
             setDefaultDates();
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'967a03e0d2c91110',t:'MTc1MzkzMjYwNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'967a1f1141651c66',t:'MTc1MzkzMzcxOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
