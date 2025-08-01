@@ -3,551 +3,844 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Operations Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Manager Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/date-fns@2.29.3/index.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .chart-container { position: relative; height: 300px; }
-        .export-btn { transition: all 0.2s ease; }
-        .export-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .dashboard-header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+        
+        .dashboard-header p {
+            opacity: 0.8;
+            font-size: 1.1rem;
+        }
+        
+        .controls-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            align-items: end;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .control-group label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .control-group select,
+        .control-group input {
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .control-group select:focus,
+        .control-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .export-controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .export-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .export-png {
+            background: #28a745;
+            color: white;
+        }
+        
+        .export-csv {
+            background: #17a2b8;
+            color: white;
+        }
+        
+        .export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            padding: 30px;
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+        
+        .chart-container:hover {
+            transform: translateY(-5px);
+        }
+        
+        .chart-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .chart-wrapper {
+            position: relative;
+            height: 300px;
+        }
+        
+        .insights-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .insights-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .insights-title::before {
+            content: "💡";
+            margin-right: 8px;
+        }
+        
+        .insights-content {
+            color: #495057;
+            line-height: 1.6;
+        }
+        
+        .insight-highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            color: #856404;
+        }
+        
+        .table-container {
+            grid-column: 1 / -1;
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .task-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .task-table th,
+        .task-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .task-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .task-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .completed { background: #d4edda; color: #155724; }
+        .in-progress { background: #fff3cd; color: #856404; }
+        .overdue { background: #f8d7da; color: #721c24; }
+        .yet-to-complete { background: #d1ecf1; color: #0c5460; }
+        
+        .chart-export-buttons {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 8px;
+        }
+        
+        .chart-export-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0.8;
+        }
+        
+        .chart-export-btn:hover {
+            opacity: 1;
+            transform: translateY(-1px);
+        }
+        
+        .chart-png {
+            background: #28a745;
+            color: white;
+        }
+        
+        .chart-csv {
+            background: #17a2b8;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+            
+            .controls-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .dashboard-header h1 {
+                font-size: 2rem;
+            }
+        }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
-    <div class="container mx-auto px-6 py-8">
-        <!-- Header -->
-        <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-800 mb-2">Operations Dashboard</h1>
-            <p class="text-gray-600">Real-time overview of frontline operations and task management</p>
-            <div class="text-sm text-gray-500 mt-2">Last updated: <span id="lastUpdated"></span></div>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>Manager Dashboard</h1>
+            <p>Comprehensive overview of staff deployment and task management</p>
         </div>
-
-        <!-- Dashboard Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            
-            <!-- Frontline Staff Deployment -->
-            <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-semibold text-gray-800">Frontline Staff Deployment</h2>
-                    <button onclick="exportChart('staffChart')" class="export-btn bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                        </svg>
-                        Export
-                    </button>
+        
+        <div class="controls-section">
+            <div class="controls-grid">
+                <div class="control-group">
+                    <label for="timeFrame">Time Frame</label>
+                    <select id="timeFrame" onchange="updateCharts()">
+                        <option value="daily">Daily</option>
+                        <option value="weekly" selected>Weekly</option>
+                        <option value="monthly">Monthly</option>
+                    </select>
                 </div>
-                <!-- Filter Controls -->
-                <div class="flex flex-wrap gap-3 mb-4 p-3 bg-gray-50 rounded-lg">
-                    <div class="flex items-center gap-2">
-                        <label class="text-sm font-medium text-gray-700">View:</label>
-                        <select id="staffTimeframe" onchange="updateStaffChart()" class="text-sm border border-gray-300 rounded px-2 py-1 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            <option value="daily">Daily</option>
-                            <option value="weekly" selected>Weekly</option>
-                            <option value="monthly">Monthly</option>
-                        </select>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <label class="text-sm font-medium text-gray-700">Date:</label>
-                        <input type="date" id="staffDate" onchange="updateStaffChart()" class="text-sm border border-gray-300 rounded px-2 py-1 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                
+                <div class="control-group" id="dailyDateControls">
+                    <label for="startDate">Start Date</label>
+                    <input type="date" id="startDate" onchange="updateCharts()">
+                </div>
+                
+                <div class="control-group" id="dailyEndDateControls">
+                    <label for="endDate">End Date</label>
+                    <input type="date" id="endDate" onchange="updateCharts()">
+                </div>
+                
+                <div class="control-group" id="weeklyDateControls" style="display: none;">
+                    <label for="weekPicker">Select Week</label>
+                    <input type="week" id="weekPicker" onchange="updateCharts()">
+                </div>
+                
+                <div class="control-group" id="monthlyDateControls" style="display: none;">
+                    <label for="monthPicker">Select Month</label>
+                    <input type="month" id="monthPicker" onchange="updateCharts()">
+                </div>
+                
+                <div class="control-group">
+                    <label>Global Export</label>
+                    <div class="export-controls">
+                        <button class="export-btn export-csv" onclick="exportToCSV()">Export All Data</button>
                     </div>
                 </div>
-                <div class="chart-container">
+            </div>
+        </div>
+        
+        <div class="charts-grid">
+            <div class="chart-container">
+                <div class="chart-export-buttons">
+                    <button class="chart-export-btn chart-png" onclick="exportChartToPNG('staffChart', 'staff-deployment')">PNG</button>
+                    <button class="chart-export-btn chart-csv" onclick="exportChartToCSV('staff')">CSV</button>
+                </div>
+                <div class="chart-title">Frontline Staff Deployment</div>
+                <div class="chart-wrapper">
                     <canvas id="staffChart"></canvas>
                 </div>
-                <div class="grid grid-cols-3 gap-4 mt-4">
-                    <div class="text-center">
-                        <div class="text-2xl font-bold text-blue-600">156</div>
-                        <div class="text-sm text-gray-600">Total</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-2xl font-bold text-green-600">124</div>
-                        <div class="text-sm text-gray-600">In-Task</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-2xl font-bold text-orange-600">32</div>
-                        <div class="text-sm text-gray-600">Off-Time</div>
-                    </div>
-                </div>
-                <!-- Trend Insight -->
-                <div class="mt-4 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-400">
-                    <div class="flex items-start">
-                        <svg class="w-5 h-5 text-blue-500 mt-0.5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
-                        </svg>
-                        <div>
-                            <h4 class="text-sm font-semibold text-blue-800 mb-1">7-Day Trend Analysis</h4>
-                            <p class="text-sm text-blue-700">Total staff deployment increased by <span class="font-semibold text-green-600">+8.2%</span> compared to last week.</p>
-                        </div>
-                    </div>
+                <div class="insights-section">
+                    <div class="insights-title">Key Insights</div>
+                    <div class="insights-content" id="staffInsights"></div>
                 </div>
             </div>
-
-            <!-- Routine Tasks -->
-            <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-semibold text-gray-800">Routine Tasks</h2>
-                    <button onclick="exportChart('routineChart')" class="export-btn bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                        </svg>
-                        Export
-                    </button>
+            
+            <div class="chart-container">
+                <div class="chart-export-buttons">
+                    <button class="chart-export-btn chart-png" onclick="exportChartToPNG('routineChart', 'routine-tasks')">PNG</button>
+                    <button class="chart-export-btn chart-csv" onclick="exportChartToCSV('routine')">CSV</button>
                 </div>
-                <!-- Filter Controls -->
-                <div class="flex flex-wrap gap-3 mb-4 p-3 bg-gray-50 rounded-lg">
-                    <div class="flex items-center gap-2">
-                        <label class="text-sm font-medium text-gray-700">View:</label>
-                        <select id="routineTimeframe" onchange="updateRoutineChart()" class="text-sm border border-gray-300 rounded px-2 py-1 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            <option value="daily">Daily</option>
-                            <option value="weekly" selected>Weekly</option>
-                            <option value="monthly">Monthly</option>
-                        </select>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <label class="text-sm font-medium text-gray-700">Date:</label>
-                        <input type="date" id="routineDate" onchange="updateRoutineChart()" class="text-sm border border-gray-300 rounded px-2 py-1 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                    </div>
-                </div>
-                <div class="chart-container">
+                <div class="chart-title">Routine Tasks Breakdown</div>
+                <div class="chart-wrapper">
                     <canvas id="routineChart"></canvas>
                 </div>
-                <div class="grid grid-cols-4 gap-2 mt-4">
-                    <div class="text-center">
-                        <div class="text-xl font-bold text-green-600">89</div>
-                        <div class="text-xs text-gray-600">Completed</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-xl font-bold text-blue-600">34</div>
-                        <div class="text-xs text-gray-600">In-Progress</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-xl font-bold text-red-600">12</div>
-                        <div class="text-xs text-gray-600">Overdue</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-xl font-bold text-gray-600">45</div>
-                        <div class="text-xs text-gray-600">Yet to Complete</div>
-                    </div>
-                </div>
-                <!-- Trend Insight -->
-                <div class="mt-4 p-4 bg-green-50 rounded-lg border-l-4 border-green-400">
-                    <div class="flex items-start">
-                        <svg class="w-5 h-5 text-green-500 mt-0.5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                        </svg>
-                        <div>
-                            <h4 class="text-sm font-semibold text-green-800 mb-1">7-Day Performance Insight</h4>
-                            <p class="text-sm text-green-700">Task completion rate improved by <span class="font-semibold text-green-600">+12%</span> this week. Overdue tasks decreased by 35%.</p>
-                        </div>
-                    </div>
+                <div class="insights-section">
+                    <div class="insights-title">Key Insights</div>
+                    <div class="insights-content" id="routineInsights"></div>
                 </div>
             </div>
-
-            <!-- Ad Hoc/Reservation Tasks -->
-            <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-semibold text-gray-800">Ad Hoc/Reservation Tasks</h2>
-                    <button onclick="exportChart('adhocChart')" class="export-btn bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                        </svg>
-                        Export
-                    </button>
+            
+            <div class="chart-container">
+                <div class="chart-export-buttons">
+                    <button class="chart-export-btn chart-png" onclick="exportChartToPNG('adhocChart', 'adhoc-tasks')">PNG</button>
+                    <button class="chart-export-btn chart-csv" onclick="exportChartToCSV('adhoc')">CSV</button>
                 </div>
-                <!-- Filter Controls -->
-                <div class="flex flex-wrap gap-3 mb-4 p-3 bg-gray-50 rounded-lg">
-                    <div class="flex items-center gap-2">
-                        <label class="text-sm font-medium text-gray-700">View:</label>
-                        <select id="adhocTimeframe" onchange="updateAdhocChart()" class="text-sm border border-gray-300 rounded px-2 py-1 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            <option value="daily">Daily</option>
-                            <option value="weekly">Weekly</option>
-                            <option value="monthly" selected>Monthly</option>
-                        </select>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <label class="text-sm font-medium text-gray-700">Date:</label>
-                        <input type="month" id="adhocDate" onchange="updateAdhocChart()" class="text-sm border border-gray-300 rounded px-2 py-1 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                    </div>
-                </div>
-                <div class="chart-container">
+                <div class="chart-title">Ad Hoc / Reservation Tasks</div>
+                <div class="chart-wrapper">
                     <canvas id="adhocChart"></canvas>
                 </div>
-                <div class="grid grid-cols-3 gap-4 mt-4">
-                    <div class="text-center">
-                        <div class="text-2xl font-bold text-green-600">67</div>
-                        <div class="text-sm text-gray-600">Completed</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-2xl font-bold text-red-600">8</div>
-                        <div class="text-sm text-gray-600">Overdue</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-2xl font-bold text-blue-600">23</div>
-                        <div class="text-sm text-gray-600">In-Progress</div>
-                    </div>
-                </div>
-                <!-- Trend Insight -->
-                <div class="mt-4 p-4 bg-purple-50 rounded-lg border-l-4 border-purple-400">
-                    <div class="flex items-start">
-                        <svg class="w-5 h-5 text-purple-500 mt-0.5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd"></path>
-                        </svg>
-                        <div>
-                            <h4 class="text-sm font-semibold text-purple-800 mb-1">Monthly Trend Analysis</h4>
-                            <p class="text-sm text-purple-700">Ad hoc task volume increased by <span class="font-semibold text-orange-600">+18%</span> this month.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Daily Ad Hoc Numbers -->
-            <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-semibold text-gray-800">Daily Ad Hoc Numbers</h2>
-                    <button onclick="exportChart('dailyChart')" class="export-btn bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                        </svg>
-                        Export
-                    </button>
-                </div>
-                <!-- Filter Controls -->
-                <div class="flex flex-wrap gap-3 mb-4 p-3 bg-gray-50 rounded-lg">
-                    <div class="flex items-center gap-2">
-                        <label class="text-sm font-medium text-gray-700">View:</label>
-                        <select id="dailyTimeframe" onchange="updateDailyChart()" class="text-sm border border-gray-300 rounded px-2 py-1 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            <option value="daily">Daily</option>
-                            <option value="weekly" selected>Weekly</option>
-                            <option value="monthly">Monthly</option>
-                        </select>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <label class="text-sm font-medium text-gray-700">Date:</label>
-                        <input type="date" id="dailyDate" onchange="updateDailyChart()" class="text-sm border border-gray-300 rounded px-2 py-1 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                    </div>
-                </div>
-                <div class="chart-container">
-                    <canvas id="dailyChart"></canvas>
-                </div>
-                <div class="mt-4 text-center">
-                    <div class="text-3xl font-bold text-purple-600">98</div>
-                    <div class="text-sm text-gray-600">Total Ad Hoc Tasks Today</div>
-                </div>
-                <!-- Trend Insight -->
-                <div class="mt-4 p-4 bg-orange-50 rounded-lg border-l-4 border-orange-400">
-                    <div class="flex items-start">
-                        <svg class="w-5 h-5 text-orange-500 mt-0.5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.293l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clip-rule="evenodd"></path>
-                        </svg>
-                        <div>
-                            <h4 class="text-sm font-semibold text-orange-800 mb-1">Weekly Pattern Analysis</h4>
-                            <p class="text-sm text-orange-700">Daily ad hoc requests peaked on <span class="font-semibold">Saturday (103)</span> and are <span class="font-semibold text-blue-600">+14%</span> higher than last week's average.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Summary Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-            <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl p-6 text-white">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-blue-100 text-sm">Total Staff Active</p>
-                        <p class="text-3xl font-bold">124</p>
-                    </div>
-                    <div class="bg-white bg-opacity-20 rounded-full p-3">
-                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
+                <div class="insights-section">
+                    <div class="insights-title">Key Insights</div>
+                    <div class="insights-content" id="adhocInsights"></div>
                 </div>
             </div>
             
-            <div class="bg-gradient-to-r from-green-500 to-green-600 rounded-xl p-6 text-white">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-green-100 text-sm">Tasks Completed</p>
-                        <p class="text-3xl font-bold">156</p>
-                    </div>
-                    <div class="bg-white bg-opacity-20 rounded-full p-3">
-                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                        </svg>
-                    </div>
+            <div class="chart-container">
+                <div class="chart-export-buttons">
+                    <button class="chart-export-btn chart-png" onclick="exportChartToPNG('trendChart', 'tasks-trend')">PNG</button>
+                    <button class="chart-export-btn chart-csv" onclick="exportChartToCSV('trend')">CSV</button>
+                </div>
+                <div class="chart-title">Daily Ad Hoc Tasks Trend</div>
+                <div class="chart-wrapper">
+                    <canvas id="trendChart"></canvas>
+                </div>
+                <div class="insights-section">
+                    <div class="insights-title">Key Insights</div>
+                    <div class="insights-content" id="trendInsights"></div>
                 </div>
             </div>
             
-            <div class="bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl p-6 text-white">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-orange-100 text-sm">Pending Tasks</p>
-                        <p class="text-3xl font-bold">20</p>
-                    </div>
-                    <div class="bg-white bg-opacity-20 rounded-full p-3">
-                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
-                        </svg>
-                    </div>
-                </div>
+            <div class="table-container">
+                <div class="chart-title">Task Duration Analysis</div>
+                <table class="task-table">
+                    <thead>
+                        <tr>
+                            <th>Task Category</th>
+                            <th>Total Tasks</th>
+                            <th>Avg. Completion Time</th>
+                            <th>Fastest Completion</th>
+                            <th>Longest Completion</th>
+                        </tr>
+                    </thead>
+                    <tbody id="taskTableBody">
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
     <script>
-        // Set last updated time and initialize dates
-        document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
+        // Initialize charts
+        let staffChart, routineChart, adhocChart, trendChart;
+        
+        // Sample data with different timeframes
+        const sampleData = {
+            daily: {
+                staff: {
+                    labels: ['Front Desk', 'Housekeeping', 'Maintenance', 'Security', 'Food Service'],
+                    data: [8, 12, 5, 4, 6]
+                },
+                routine: {
+                    labels: ['Completed', 'In Progress', 'Overdue', 'Yet to Complete'],
+                    data: [15, 8, 3, 9]
+                },
+                adhoc: {
+                    labels: ['Completed', 'Overdue', 'In Progress', 'Yet to Complete'],
+                    data: [12, 4, 6, 13]
+                },
+                trend: {
+                    labels: ['12AM', '4AM', '8AM', '12PM', '4PM', '8PM', '11PM'],
+                    data: [2, 1, 4, 8, 12, 6, 3]
+                }
+            },
+            weekly: {
+                staff: {
+                    labels: ['Front Desk', 'Housekeeping', 'Maintenance', 'Security', 'Food Service'],
+                    data: [25, 35, 15, 12, 13]
+                },
+                routine: {
+                    labels: ['Completed', 'In Progress', 'Overdue', 'Yet to Complete'],
+                    data: [45, 20, 8, 27]
+                },
+                adhoc: {
+                    labels: ['Completed', 'Overdue', 'In Progress', 'Yet to Complete'],
+                    data: [32, 12, 18, 38]
+                },
+                trend: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    data: [12, 19, 15, 25, 22, 18, 16]
+                }
+            },
+            monthly: {
+                staff: {
+                    labels: ['Front Desk', 'Housekeeping', 'Maintenance', 'Security', 'Food Service'],
+                    data: [105, 142, 68, 52, 58]
+                },
+                routine: {
+                    labels: ['Completed', 'In Progress', 'Overdue', 'Yet to Complete'],
+                    data: [180, 85, 32, 108]
+                },
+                adhoc: {
+                    labels: ['Completed', 'Overdue', 'In Progress', 'Yet to Complete'],
+                    data: [128, 48, 72, 152]
+                },
+                trend: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    data: [245, 268, 312, 289, 334, 298, 356, 378, 325, 342, 298, 315]
+                }
+            },
+            taskDuration: [
+                { category: 'Room Cleaning', total: 156, avgTime: '45 min', fastestTime: '25 min', longestTime: '1.5 hrs' },
+                { category: 'Maintenance Requests', total: 89, avgTime: '2.5 hrs', fastestTime: '45 min', longestTime: '6 hrs' },
+                { category: 'Guest Services', total: 234, avgTime: '15 min', fastestTime: '5 min', longestTime: '45 min' },
+                { category: 'Security Checks', total: 78, avgTime: '30 min', fastestTime: '15 min', longestTime: '1 hr' },
+                { category: 'Food Preparation', total: 145, avgTime: '1.2 hrs', fastestTime: '30 min', longestTime: '3 hrs' }
+            ]
+        };
+        
+        // Insights data for different timeframes
+        const insightsData = {
+            daily: {
+                staff: "Housekeeping has the <span class='insight-highlight'>highest deployment (34%)</span> today. Front desk staffing is at optimal levels for current guest volume.",
+                routine: "Daily completion rate is <span class='insight-highlight'>43%</span>. 3 overdue tasks require immediate attention, primarily in maintenance.",
+                adhoc: "Ad hoc requests are <span class='insight-highlight'>37% higher</span> than yesterday. Most pending tasks are guest service related.",
+                trend: "Peak activity occurs during <span class='insight-highlight'>4PM-8PM</span> with 12 tasks. Early morning shows lowest activity."
+            },
+            weekly: {
+                staff: "Housekeeping represents <span class='insight-highlight'>35% of deployment</span> this week. Security staffing is 15% below recommended levels.",
+                routine: "Weekly completion rate is <span class='insight-highlight'>45%</span>. 8 overdue tasks need escalation, mostly maintenance related.",
+                adhoc: "Ad hoc tasks increased <span class='insight-highlight'>23% from last week</span>. 38% are still pending completion.",
+                trend: "Thursday shows <span class='insight-highlight'>peak activity (25 tasks)</span>. Weekend activity drops by 30% compared to weekdays."
+            },
+            monthly: {
+                staff: "Monthly deployment shows <span class='insight-highlight'>Housekeeping leading at 33%</span>. Overall staffing efficiency improved by 8%.",
+                routine: "Monthly completion rate reached <span class='insight-highlight'>44%</span>. Overdue tasks reduced by 12% compared to last month.",
+                adhoc: "Ad hoc requests increased <span class='insight-highlight'>18% month-over-month</span>. Response time improved by 15 minutes average.",
+                trend: "Peak activity in <span class='insight-highlight'>August (378 tasks)</span>. Summer months show 15% higher activity than winter months."
+            }
+        };
         
         // Set default dates
-        const today = new Date().toISOString().split('T')[0];
-        const thisMonth = new Date().toISOString().slice(0, 7);
-        document.getElementById('staffDate').value = today;
-        document.getElementById('routineDate').value = today;
-        document.getElementById('adhocDate').value = thisMonth;
-        document.getElementById('dailyDate').value = today;
-
-        // Sample data for different timeframes
-        const sampleData = {
-            staff: {
-                daily: { inTask: [124], offTime: [32] },
-                weekly: { inTask: [124], offTime: [32] },
-                monthly: { inTask: [3720], offTime: [960] }
-            },
-            routine: {
-                daily: { completed: [89], inProgress: [34], overdue: [12], yetToComplete: [45] },
-                weekly: { completed: [623], inProgress: [238], overdue: [84], yetToComplete: [315] },
-                monthly: { completed: [2492], inProgress: [952], overdue: [336], yetToComplete: [1260] }
-            },
-            adhoc: {
-                daily: { completed: [67], overdue: [8], inProgress: [23] },
-                weekly: { completed: [469], overdue: [56], inProgress: [161] },
-                monthly: { completed: [1876], overdue: [224], inProgress: [644] }
-            },
-            daily: {
-                daily: { labels: ['Today'], data: [98] },
-                weekly: { labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], data: [85, 92, 78, 96, 89, 103, 98] },
-                monthly: { labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'], data: [645, 672, 598, 689] }
+        function setDefaultDates() {
+            const today = new Date();
+            const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+            
+            // Set daily defaults
+            document.getElementById('startDate').value = weekAgo.toISOString().split('T')[0];
+            document.getElementById('endDate').value = today.toISOString().split('T')[0];
+            
+            // Set weekly default (current week)
+            const currentYear = today.getFullYear();
+            const currentWeek = getWeekNumber(today);
+            document.getElementById('weekPicker').value = `${currentYear}-W${currentWeek.toString().padStart(2, '0')}`;
+            
+            // Set monthly default (current month)
+            const currentMonth = today.getMonth() + 1;
+            document.getElementById('monthPicker').value = `${currentYear}-${currentMonth.toString().padStart(2, '0')}`;
+        }
+        
+        function getWeekNumber(date) {
+            const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+            const dayNum = d.getUTCDay() || 7;
+            d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+            const yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+            return Math.ceil((((d - yearStart) / 86400000) + 1)/7);
+        }
+        
+        function showDateControls(timeFrame) {
+            // Hide all date controls
+            document.getElementById('dailyDateControls').style.display = 'none';
+            document.getElementById('dailyEndDateControls').style.display = 'none';
+            document.getElementById('weeklyDateControls').style.display = 'none';
+            document.getElementById('monthlyDateControls').style.display = 'none';
+            
+            // Show appropriate controls based on timeframe
+            if (timeFrame === 'daily') {
+                document.getElementById('dailyDateControls').style.display = 'flex';
+                document.getElementById('dailyEndDateControls').style.display = 'flex';
+            } else if (timeFrame === 'weekly') {
+                document.getElementById('weeklyDateControls').style.display = 'flex';
+            } else if (timeFrame === 'monthly') {
+                document.getElementById('monthlyDateControls').style.display = 'flex';
             }
-        };
-
-        // Chart configurations
-        const chartOptions = {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'bottom',
-                    labels: {
-                        padding: 20,
-                        usePointStyle: true
+        }
+        
+        // Initialize all charts
+        function initializeCharts() {
+            const timeFrame = document.getElementById('timeFrame').value;
+            const currentData = sampleData[timeFrame];
+            
+            // Staff Deployment Pie Chart
+            const staffCtx = document.getElementById('staffChart').getContext('2d');
+            staffChart = new Chart(staffCtx, {
+                type: 'pie',
+                data: {
+                    labels: currentData.staff.labels,
+                    datasets: [{
+                        data: currentData.staff.data,
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true
+                            }
+                        }
                     }
                 }
-            }
-        };
-
-        // Staff Deployment Chart
-        const staffCtx = document.getElementById('staffChart').getContext('2d');
-        const staffChart = new Chart(staffCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['In-Task', 'Off-Time'],
-                datasets: [{
-                    data: [124, 32],
-                    backgroundColor: ['#10B981', '#F59E0B'],
-                    borderWidth: 0,
-                    cutout: '60%'
-                }]
-            },
-            options: chartOptions
-        });
-
-        // Routine Tasks Chart
-        const routineCtx = document.getElementById('routineChart').getContext('2d');
-        const routineChart = new Chart(routineCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Completed', 'In-Progress', 'Overdue', 'Yet to Complete'],
-                datasets: [{
-                    data: [89, 34, 12, 45],
-                    backgroundColor: ['#10B981', '#3B82F6', '#EF4444', '#6B7280'],
-                    borderRadius: 8,
-                    borderSkipped: false
-                }]
-            },
-            options: {
-                ...chartOptions,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: '#F3F4F6'
-                        }
-                    },
-                    x: {
-                        grid: {
+            });
+            
+            // Routine Tasks Bar Chart
+            const routineCtx = document.getElementById('routineChart').getContext('2d');
+            routineChart = new Chart(routineCtx, {
+                type: 'bar',
+                data: {
+                    labels: currentData.routine.labels,
+                    datasets: [{
+                        data: currentData.routine.data,
+                        backgroundColor: ['#28a745', '#ffc107', '#dc3545', '#17a2b8'],
+                        borderWidth: 1,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
                             display: false
                         }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#f0f0f0'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
                     }
                 }
-            }
-        });
-
-        // Ad Hoc Tasks Chart
-        const adhocCtx = document.getElementById('adhocChart').getContext('2d');
-        const adhocChart = new Chart(adhocCtx, {
-            type: 'pie',
-            data: {
-                labels: ['Completed', 'Overdue', 'In-Progress'],
-                datasets: [{
-                    data: [67, 8, 23],
-                    backgroundColor: ['#10B981', '#EF4444', '#3B82F6'],
-                    borderWidth: 0
-                }]
-            },
-            options: chartOptions
-        });
-
-        // Daily Ad Hoc Numbers Chart
-        const dailyCtx = document.getElementById('dailyChart').getContext('2d');
-        const dailyChart = new Chart(dailyCtx, {
-            type: 'line',
-            data: {
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                datasets: [{
-                    label: 'Ad Hoc Tasks',
-                    data: [85, 92, 78, 96, 89, 103, 98],
-                    borderColor: '#8B5CF6',
-                    backgroundColor: 'rgba(139, 92, 246, 0.1)',
-                    borderWidth: 3,
-                    fill: true,
-                    tension: 0.4,
-                    pointBackgroundColor: '#8B5CF6',
-                    pointBorderColor: '#ffffff',
-                    pointBorderWidth: 2,
-                    pointRadius: 6
-                }]
-            },
-            options: {
-                ...chartOptions,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: '#F3F4F6'
+            });
+            
+            // Ad Hoc Tasks Pie Chart
+            const adhocCtx = document.getElementById('adhocChart').getContext('2d');
+            adhocChart = new Chart(adhocCtx, {
+                type: 'pie',
+                data: {
+                    labels: currentData.adhoc.labels,
+                    datasets: [{
+                        data: currentData.adhoc.data,
+                        backgroundColor: ['#28a745', '#dc3545', '#ffc107', '#17a2b8'],
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true
+                            }
                         }
-                    },
-                    x: {
-                        grid: {
+                    }
+                }
+            });
+            
+            // Daily Trend Line Chart
+            const trendCtx = document.getElementById('trendChart').getContext('2d');
+            trendChart = new Chart(trendCtx, {
+                type: 'line',
+                data: {
+                    labels: currentData.trend.labels,
+                    datasets: [{
+                        label: 'Ad Hoc Tasks',
+                        data: currentData.trend.data,
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#667eea',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
                             display: false
                         }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#f0f0f0'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
                     }
                 }
-            }
-        });
-
-        // Chart update functions
-        function updateStaffChart() {
-            const timeframe = document.getElementById('staffTimeframe').value;
-            const date = document.getElementById('staffDate').value;
-            const dateInput = document.getElementById('staffDate');
+            });
             
-            // Update date input type based on timeframe
-            if (timeframe === 'monthly') {
-                dateInput.type = 'month';
-                if (!dateInput.value.includes('-')) dateInput.value = thisMonth;
-            } else {
-                dateInput.type = 'date';
-                if (dateInput.value.includes('-') && dateInput.value.length === 7) dateInput.value = today;
+            // Populate task duration table and insights
+            populateTaskTable();
+            updateInsights();
+        }
+        
+        function populateTaskTable() {
+            const tbody = document.getElementById('taskTableBody');
+            tbody.innerHTML = '';
+            
+            sampleData.taskDuration.forEach(task => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${task.category}</strong></td>
+                    <td>${task.total}</td>
+                    <td><strong>${task.avgTime}</strong></td>
+                    <td><span style="color: #28a745; font-weight: 600;">${task.fastestTime}</span></td>
+                    <td><span style="color: #dc3545; font-weight: 600;">${task.longestTime}</span></td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        function updateInsights() {
+            const timeFrame = document.getElementById('timeFrame').value;
+            const currentInsights = insightsData[timeFrame];
+            
+            document.getElementById('staffInsights').innerHTML = currentInsights.staff;
+            document.getElementById('routineInsights').innerHTML = currentInsights.routine;
+            document.getElementById('adhocInsights').innerHTML = currentInsights.adhoc;
+            document.getElementById('trendInsights').innerHTML = currentInsights.trend;
+        }
+        
+        function updateCharts() {
+            const timeFrame = document.getElementById('timeFrame').value;
+            const currentData = sampleData[timeFrame];
+            
+            // Show appropriate date controls
+            showDateControls(timeFrame);
+            
+            // Get selected date values
+            let selectedDate = '';
+            if (timeFrame === 'daily') {
+                const startDate = document.getElementById('startDate').value;
+                const endDate = document.getElementById('endDate').value;
+                selectedDate = `${startDate} to ${endDate}`;
+            } else if (timeFrame === 'weekly') {
+                selectedDate = document.getElementById('weekPicker').value;
+            } else if (timeFrame === 'monthly') {
+                selectedDate = document.getElementById('monthPicker').value;
             }
             
-            const data = sampleData.staff[timeframe];
-            staffChart.data.datasets[0].data = [data.inTask[0], data.offTime[0]];
+            // Update all charts with new data
+            staffChart.data.labels = currentData.staff.labels;
+            staffChart.data.datasets[0].data = currentData.staff.data;
             staffChart.update();
-        }
-
-        function updateRoutineChart() {
-            const timeframe = document.getElementById('routineTimeframe').value;
-            const date = document.getElementById('routineDate').value;
-            const dateInput = document.getElementById('routineDate');
             
-            // Update date input type based on timeframe
-            if (timeframe === 'monthly') {
-                dateInput.type = 'month';
-                if (!dateInput.value.includes('-')) dateInput.value = thisMonth;
-            } else {
-                dateInput.type = 'date';
-                if (dateInput.value.includes('-') && dateInput.value.length === 7) dateInput.value = today;
-            }
-            
-            const data = sampleData.routine[timeframe];
-            routineChart.data.datasets[0].data = [data.completed[0], data.inProgress[0], data.overdue[0], data.yetToComplete[0]];
+            routineChart.data.labels = currentData.routine.labels;
+            routineChart.data.datasets[0].data = currentData.routine.data;
             routineChart.update();
-        }
-
-        function updateAdhocChart() {
-            const timeframe = document.getElementById('adhocTimeframe').value;
-            const date = document.getElementById('adhocDate').value;
-            const dateInput = document.getElementById('adhocDate');
             
-            // Update date input type based on timeframe
-            if (timeframe === 'monthly') {
-                dateInput.type = 'month';
-                if (!dateInput.value.includes('-')) dateInput.value = thisMonth;
-            } else {
-                dateInput.type = 'date';
-                if (dateInput.value.includes('-') && dateInput.value.length === 7) dateInput.value = today;
-            }
-            
-            const data = sampleData.adhoc[timeframe];
-            adhocChart.data.datasets[0].data = [data.completed[0], data.overdue[0], data.inProgress[0]];
+            adhocChart.data.labels = currentData.adhoc.labels;
+            adhocChart.data.datasets[0].data = currentData.adhoc.data;
             adhocChart.update();
-        }
-
-        function updateDailyChart() {
-            const timeframe = document.getElementById('dailyTimeframe').value;
-            const date = document.getElementById('dailyDate').value;
-            const dateInput = document.getElementById('dailyDate');
             
-            // Update date input type based on timeframe
-            if (timeframe === 'monthly') {
-                dateInput.type = 'month';
-                if (!dateInput.value.includes('-')) dateInput.value = thisMonth;
-            } else {
-                dateInput.type = 'date';
-                if (dateInput.value.includes('-') && dateInput.value.length === 7) dateInput.value = today;
-            }
+            trendChart.data.labels = currentData.trend.labels;
+            trendChart.data.datasets[0].data = currentData.trend.data;
+            trendChart.update();
             
-            const data = sampleData.daily[timeframe];
-            dailyChart.data.labels = data.labels;
-            dailyChart.data.datasets[0].data = data.data;
-            dailyChart.update();
+            // Update insights
+            updateInsights();
+            
+            // Simulate data refresh based on date range
+            console.log(`Updated charts for ${timeFrame} view: ${selectedDate}`);
         }
-
-        // Export functionality
-        function exportChart(chartId) {
+        
+        function exportChartToPNG(chartId, filename) {
             const canvas = document.getElementById(chartId);
             const link = document.createElement('a');
-            link.download = `${chartId}_${new Date().toISOString().split('T')[0]}.png`;
+            link.download = `${filename}-${new Date().toISOString().split('T')[0]}.png`;
             link.href = canvas.toDataURL();
             link.click();
             
-            // Show success message
-            const button = event.target.closest('button');
-            const originalText = button.innerHTML;
-            button.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Exported!';
-            button.classList.add('bg-green-600');
-            
-            setTimeout(() => {
-                button.innerHTML = originalText;
-                button.classList.remove('bg-green-600');
-            }, 2000);
+            alert(`${filename} chart exported as PNG!`);
         }
-
-        // Auto-refresh data every 30 seconds (simulation)
-        setInterval(() => {
-            document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
-        }, 30000);
+        
+        function exportChartToCSV(chartType) {
+            const timeFrame = document.getElementById('timeFrame').value;
+            const currentData = sampleData[timeFrame][chartType];
+            
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += `${chartType.charAt(0).toUpperCase() + chartType.slice(1)} Chart Data\n`;
+            csvContent += `Generated on: ${new Date().toLocaleString()}\n`;
+            csvContent += `Time Frame: ${timeFrame}\n\n`;
+            csvContent += "Label,Value\n";
+            
+            currentData.labels.forEach((label, index) => {
+                csvContent += `${label},${currentData.data[index]}\n`;
+            });
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `${chartType}-chart-${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            alert(`${chartType} chart data exported as CSV!`);
+        }
+        
+        function exportToCSV() {
+            let csvContent = "data:text/csv;charset=utf-8,";
+            
+            // Add header
+            csvContent += "Manager Dashboard Export\n";
+            csvContent += `Generated on: ${new Date().toLocaleString()}\n\n`;
+            
+            // Staff deployment data
+            csvContent += "Frontline Staff Deployment\n";
+            csvContent += "Department,Count\n";
+            sampleData.staff.labels.forEach((label, index) => {
+                csvContent += `${label},${sampleData.staff.data[index]}\n`;
+            });
+            csvContent += "\n";
+            
+            // Routine tasks data
+            csvContent += "Routine Tasks Breakdown\n";
+            csvContent += "Status,Count\n";
+            sampleData.routine.labels.forEach((label, index) => {
+                csvContent += `${label},${sampleData.routine.data[index]}\n`;
+            });
+            csvContent += "\n";
+            
+            // Task duration data
+            csvContent += "Task Duration Analysis\n";
+            csvContent += "Category,Total Tasks,Avg Completion Time,Completed,In Progress,Overdue,Yet to Complete\n";
+            sampleData.taskDuration.forEach(task => {
+                csvContent += `${task.category},${task.total},${task.avgTime},${task.completed},${task.inProgress},${task.overdue},${task.yetToComplete}\n`;
+            });
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `dashboard-export-${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            alert('Dashboard data exported as CSV!');
+        }
+        
+        // Initialize everything when page loads
+        window.addEventListener('load', function() {
+            setDefaultDates();
+            showDateControls('weekly'); // Show weekly controls by default
+            initializeCharts();
+        });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'967955dc348504f6',t:'MTc1MzkyNTQ3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96831f7f75c23dda',t:'MTc1NDAyODEwOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
