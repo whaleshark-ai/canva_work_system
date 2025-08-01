@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manager Dashboard</title>
+    <title>AA Admin Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/date-fns@2.29.3/index.min.js"></script>
     <style>
@@ -88,35 +88,7 @@
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
         
-        .export-controls {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .export-btn {
-            padding: 12px 20px;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
-        }
-        
-        .export-png {
-            background: #28a745;
-            color: white;
-        }
-        
-        .export-csv {
-            background: #17a2b8;
-            color: white;
-        }
-        
-        .export-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
+
         
         .charts-grid {
             display: grid;
@@ -151,40 +123,7 @@
             height: 300px;
         }
         
-        .insights-section {
-            margin-top: 20px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            border-left: 4px solid #667eea;
-        }
-        
-        .insights-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .insights-title::before {
-            content: "💡";
-            margin-right: 8px;
-        }
-        
-        .insights-content {
-            color: #495057;
-            line-height: 1.6;
-        }
-        
-        .insight-highlight {
-            background: #fff3cd;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: 600;
-            color: #856404;
-        }
+
         
         .table-container {
             grid-column: 1 / -1;
@@ -229,39 +168,7 @@
         .overdue { background: #f8d7da; color: #721c24; }
         .yet-to-complete { background: #d1ecf1; color: #0c5460; }
         
-        .chart-export-buttons {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 8px;
-        }
-        
-        .chart-export-btn {
-            padding: 6px 12px;
-            border: none;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            opacity: 0.8;
-        }
-        
-        .chart-export-btn:hover {
-            opacity: 1;
-            transform: translateY(-1px);
-        }
-        
-        .chart-png {
-            background: #28a745;
-            color: white;
-        }
-        
-        .chart-csv {
-            background: #17a2b8;
-            color: white;
-        }
+
         
         @media (max-width: 768px) {
             .charts-grid {
@@ -282,7 +189,7 @@
 <body>
     <div class="dashboard-container">
         <div class="dashboard-header">
-            <h1>Manager Dashboard</h1>
+            <h1>AA Admin Dashboard</h1>
             <p>Comprehensive overview of staff deployment and task management</p>
         </div>
         
@@ -317,96 +224,58 @@
                     <input type="month" id="monthPicker" onchange="updateCharts()">
                 </div>
                 
-                <div class="control-group">
-                    <label>Global Export</label>
-                    <div class="export-controls">
-                        <button class="export-btn export-csv" onclick="exportToCSV()">Export All Data</button>
-                    </div>
-                </div>
+
             </div>
         </div>
         
         <div class="charts-grid">
             <div class="chart-container">
-                <div class="chart-export-buttons">
-                    <button class="chart-export-btn chart-png" onclick="exportChartToPNG('staffChart', 'staff-deployment')">PNG</button>
-                    <button class="chart-export-btn chart-csv" onclick="exportChartToCSV('staff')">CSV</button>
-                </div>
+
                 <div class="chart-title">Frontline Staff Deployment</div>
                 <div class="chart-wrapper">
                     <canvas id="staffChart"></canvas>
                 </div>
-                <div class="insights-section">
-                    <div class="insights-title">Key Insights</div>
-                    <div class="insights-content" id="staffInsights"></div>
-                </div>
+
             </div>
             
             <div class="chart-container">
-                <div class="chart-export-buttons">
-                    <button class="chart-export-btn chart-png" onclick="exportChartToPNG('routineChart', 'routine-tasks')">PNG</button>
-                    <button class="chart-export-btn chart-csv" onclick="exportChartToCSV('routine')">CSV</button>
-                </div>
+
                 <div class="chart-title">Routine Tasks Breakdown</div>
                 <div class="chart-wrapper">
                     <canvas id="routineChart"></canvas>
                 </div>
-                <div class="insights-section">
-                    <div class="insights-title">Key Insights</div>
-                    <div class="insights-content" id="routineInsights"></div>
-                </div>
+
             </div>
             
             <div class="chart-container">
-                <div class="chart-export-buttons">
-                    <button class="chart-export-btn chart-png" onclick="exportChartToPNG('adhocChart', 'adhoc-tasks')">PNG</button>
-                    <button class="chart-export-btn chart-csv" onclick="exportChartToCSV('adhoc')">CSV</button>
-                </div>
+
                 <div class="chart-title">Ad Hoc / Reservation Tasks</div>
                 <div class="chart-wrapper">
                     <canvas id="adhocChart"></canvas>
                 </div>
-                <div class="insights-section">
-                    <div class="insights-title">Key Insights</div>
-                    <div class="insights-content" id="adhocInsights"></div>
-                </div>
+
             </div>
             
             <div class="chart-container">
-                <div class="chart-export-buttons">
-                    <button class="chart-export-btn chart-png" onclick="exportChartToPNG('trendChart', 'tasks-trend')">PNG</button>
-                    <button class="chart-export-btn chart-csv" onclick="exportChartToCSV('trend')">CSV</button>
-                </div>
+
                 <div class="chart-title">Daily Ad Hoc Tasks Trend</div>
                 <div class="chart-wrapper">
                     <canvas id="trendChart"></canvas>
                 </div>
-                <div class="insights-section">
-                    <div class="insights-title">Key Insights</div>
-                    <div class="insights-content" id="trendInsights"></div>
-                </div>
+
             </div>
             
             <div class="chart-container">
-                <div class="chart-export-buttons">
-                    <button class="chart-export-btn chart-png" onclick="exportChartToPNG('completionRateChart', 'completion-rate-trends')">PNG</button>
-                    <button class="chart-export-btn chart-csv" onclick="exportChartToCSV('completionRate')">CSV</button>
-                </div>
+
                 <div class="chart-title">Task Completion Rate Trends</div>
                 <div class="chart-wrapper">
                     <canvas id="completionRateChart"></canvas>
                 </div>
-                <div class="insights-section">
-                    <div class="insights-title">Key Insights</div>
-                    <div class="insights-content" id="completionRateInsights"></div>
-                </div>
+
             </div>
             
             <div class="table-container">
-                <div class="chart-export-buttons">
-                    <button class="chart-export-btn chart-png" onclick="exportTableToPNG()">PNG</button>
-                    <button class="chart-export-btn chart-csv" onclick="exportTableToCSV()">CSV</button>
-                </div>
+
                 <div class="chart-title">Task Duration Analysis</div>
                 <table class="task-table">
                     <thead>
@@ -828,16 +697,7 @@
             });
         }
         
-        function updateInsights() {
-            const timeFrame = document.getElementById('timeFrame').value;
-            const currentInsights = insightsData[timeFrame];
-            
-            document.getElementById('staffInsights').innerHTML = currentInsights.staff;
-            document.getElementById('routineInsights').innerHTML = currentInsights.routine;
-            document.getElementById('adhocInsights').innerHTML = currentInsights.adhoc;
-            document.getElementById('trendInsights').innerHTML = currentInsights.trend;
-            document.getElementById('completionRateInsights').innerHTML = currentInsights.completionRate;
-        }
+
         
         function updateCharts() {
             const timeFrame = document.getElementById('timeFrame').value;
@@ -1081,5 +941,5 @@
             initializeCharts();
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'968384ff04f41053',t:'MTc1NDAzMjI2Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9683aa7372c10655',t:'MTc1NDAzMzgwMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
