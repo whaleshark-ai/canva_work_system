@@ -197,7 +197,7 @@
             <div class="controls-grid">
                 <div class="control-group">
                     <label for="timeFrame">Time Frame</label>
-                    <select id="timeFrame" onchange="updateCharts()">
+                    <select id="timeFrame" onchange="updateAllData()">
                         <option value="daily">Daily</option>
                         <option value="weekly" selected>Weekly</option>
                         <option value="monthly">Monthly</option>
@@ -206,22 +206,22 @@
                 
                 <div class="control-group" id="dailyDateControls">
                     <label for="startDate">Start Date</label>
-                    <input type="date" id="startDate" onchange="updateCharts()">
+                    <input type="date" id="startDate" onchange="updateAllData()">
                 </div>
                 
                 <div class="control-group" id="dailyEndDateControls">
                     <label for="endDate">End Date</label>
-                    <input type="date" id="endDate" onchange="updateCharts()">
+                    <input type="date" id="endDate" onchange="updateAllData()">
                 </div>
                 
                 <div class="control-group" id="weeklyDateControls" style="display: none;">
                     <label for="weekPicker">Select Week</label>
-                    <input type="week" id="weekPicker" onchange="updateCharts()">
+                    <input type="week" id="weekPicker" onchange="updateAllData()">
                 </div>
                 
                 <div class="control-group" id="monthlyDateControls" style="display: none;">
                     <label for="monthPicker">Select Month</label>
-                    <input type="month" id="monthPicker" onchange="updateCharts()">
+                    <input type="month" id="monthPicker" onchange="updateAllData()">
                 </div>
                 
 
@@ -231,7 +231,7 @@
         <div class="charts-grid">
             <div class="chart-container">
 
-                <div class="chart-title">Frontline Staff Deployment</div>
+                <div class="chart-title">Number of Frontline Staff Deployment</div>
                 <div class="chart-wrapper">
                     <canvas id="staffChart"></canvas>
                 </div>
@@ -303,8 +303,8 @@
         const sampleData = {
             daily: {
                 staff: {
-                    labels: ['Front Desk', 'Housekeeping', 'Maintenance', 'Security', 'Food Service'],
-                    data: [8, 12, 5, 4, 6]
+                    labels: ['補充物資', '機械操作', '清潔', '消毒'],
+                    data: [8, 12, 7, 8]
                 },
                 routine: {
                     labels: ['Completed', 'In Progress', 'Overdue', 'Yet to Complete'],
@@ -327,8 +327,8 @@
             },
             weekly: {
                 staff: {
-                    labels: ['Front Desk', 'Housekeeping', 'Maintenance', 'Security', 'Food Service'],
-                    data: [25, 35, 15, 12, 13]
+                    labels: ['補充物資', '機械操作', '清潔', '消毒'],
+                    data: [25, 35, 22, 18]
                 },
                 routine: {
                     labels: ['Completed', 'In Progress', 'Overdue', 'Yet to Complete'],
@@ -339,11 +339,11 @@
                     data: [32, 12, 18, 38]
                 },
                 trend: {
-                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    labels: ['星期一', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
                     data: [12, 19, 15, 25, 22, 18, 16]
                 },
                 completionRate: {
-                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    labels: ['星期一', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
                     adhoc: [82, 85, 79, 88, 91, 86, 83],
                     routine: [89, 92, 87, 94, 96, 90, 88],
                     reservation: [86, 89, 84, 91, 93, 88, 85]
@@ -351,8 +351,8 @@
             },
             monthly: {
                 staff: {
-                    labels: ['Front Desk', 'Housekeeping', 'Maintenance', 'Security', 'Food Service'],
-                    data: [105, 142, 68, 52, 58]
+                    labels: ['補充物資', '機械操作', '清潔', '消毒'],
+                    data: [105, 142, 155, 23]
                 },
                 routine: {
                     labels: ['Completed', 'In Progress', 'Overdue', 'Yet to Complete'],
@@ -373,40 +373,28 @@
                     reservation: [81, 84, 87, 90, 93, 91, 94, 89, 86, 88, 84, 87]
                 }
             },
-            taskDuration: [
-                { category: 'Room Cleaning', total: 156, completionRate: '94%', avgTime: '45 min', fastestTime: '25 min', longestTime: '1.5 hrs' },
-                { category: 'Maintenance Requests', total: 89, completionRate: '87%', avgTime: '2.5 hrs', fastestTime: '45 min', longestTime: '6 hrs' },
-                { category: 'Guest Services', total: 234, completionRate: '96%', avgTime: '15 min', fastestTime: '5 min', longestTime: '45 min' },
-                { category: 'Security Checks', total: 78, completionRate: '92%', avgTime: '30 min', fastestTime: '15 min', longestTime: '1 hr' },
-                { category: 'Food Preparation', total: 145, completionRate: '89%', avgTime: '1.2 hrs', fastestTime: '30 min', longestTime: '3 hrs' }
-            ]
-        };
-        
-        // Insights data for different timeframes
-        const insightsData = {
-            daily: {
-                staff: "Housekeeping has the <span class='insight-highlight'>highest deployment (34%)</span> today. Front desk staffing is at optimal levels for current guest volume.",
-                routine: "Daily completion rate is <span class='insight-highlight'>43%</span>. 3 overdue tasks require immediate attention, primarily in maintenance.",
-                adhoc: "Ad hoc requests are <span class='insight-highlight'>37% higher</span> than yesterday. Most pending tasks are guest service related.",
-                trend: "Peak activity occurs during <span class='insight-highlight'>4PM-8PM</span> with 12 tasks. Early morning shows lowest activity.",
-                completionRate: "Routine tasks maintain <span class='insight-highlight'>highest completion rates (91% avg)</span>. Ad hoc tasks dip to 75% during peak hours. Reservation tasks show consistent 89% average."
-            },
-            weekly: {
-                staff: "Housekeeping represents <span class='insight-highlight'>35% of deployment</span> this week. Security staffing is 15% below recommended levels.",
-                routine: "Weekly completion rate is <span class='insight-highlight'>45%</span>. 8 overdue tasks need escalation, mostly maintenance related.",
-                adhoc: "Ad hoc tasks increased <span class='insight-highlight'>23% from last week</span>. 38% are still pending completion.",
-                trend: "Thursday shows <span class='insight-highlight'>peak activity (25 tasks)</span>. Weekend activity drops by 30% compared to weekdays.",
-                completionRate: "Friday shows <span class='insight-highlight'>peak performance across all task types</span>. Routine tasks lead at 96%, followed by reservations at 93%. Ad hoc tasks improve to 91% by week-end."
-            },
-            monthly: {
-                staff: "Monthly deployment shows <span class='insight-highlight'>Housekeeping leading at 33%</span>. Overall staffing efficiency improved by 8%.",
-                routine: "Monthly completion rate reached <span class='insight-highlight'>44%</span>. Overdue tasks reduced by 12% compared to last month.",
-                adhoc: "Ad hoc requests increased <span class='insight-highlight'>18% month-over-month</span>. Response time improved by 15 minutes average.",
-                trend: "Peak activity in <span class='insight-highlight'>August (378 tasks)</span>. Summer months show 15% higher activity than winter months.",
-                completionRate: "July shows <span class='insight-highlight'>peak completion rates</span> with routine tasks at 97%. Seasonal pattern shows summer months outperform winter by 8%. Ad hoc tasks show steady improvement trend."
+            taskDuration: {
+                monthly: [
+                    { category: '補充物資', total: 378, completionRate: '90%', avgTime: '36 min', fastestTime: '25 min', longestTime: '1.5 hrs' },
+                    { category: '機械操作', total: 147, completionRate: '88%', avgTime: '1.75 hrs', fastestTime: '45 min', longestTime: '6 hrs' },
+                    { category: '清潔', total: 234, completionRate: '95%', avgTime: '25 min', fastestTime: '8 min', longestTime: '45 min' },
+                    { category: '消毒', total: 189, completionRate: '92%', avgTime: '15 min', fastestTime: '8 min', longestTime: '27 min' }
+                ],
+                daily: [
+                    { category: '補充物資', total: 40, completionRate: '91%', avgTime: '34 min', fastestTime: '25 min', longestTime: '45 min' },
+                    { category: '機械操作', total: 21, completionRate: '88%', avgTime: '1 hrs', fastestTime: '45 min', longestTime: '1 hrs' },
+                    { category: '清潔', total: 57, completionRate: '93%', avgTime: '20 min', fastestTime: '5 min', longestTime: '45 min' },
+                    { category: '消毒', total: 234, completionRate: '95%', avgTime: '25 min', fastestTime: '8 min', longestTime: '45 min' }
+                ],
+                weekly: [
+                    { category: '補充物資', total: 156, completionRate: '94%', avgTime: '40 min', fastestTime: '25 min', longestTime: '1.5 hrs' },
+                    { category: '機械操作', total: 89, completionRate: '90%', avgTime: '1.5 hrs', fastestTime: '45 min', longestTime: '3 hrs' },
+                    { category: '清潔', total: 234, completionRate: '92%', avgTime: '18 min', fastestTime: '10 min', longestTime: '39 min' },
+                    { category: '消毒', total: 234, completionRate: '96%', avgTime: '17 min', fastestTime: '8 min', longestTime: '23 min' }
+                ]
             }
         };
-        
+
         // Set default dates
         function setDefaultDates() {
             const today = new Date();
@@ -672,17 +660,31 @@
                     }
                 }
             });
-            
-            // Populate task duration table and insights
             populateTaskTable();
-            updateInsights();
         }
         
         function populateTaskTable() {
             const tbody = document.getElementById('taskTableBody');
-            tbody.innerHTML = '';
+            tbody.innerHTML = '';           
+            const timeFrame = document.getElementById('timeFrame').value;
+            const currentData = sampleData.taskDuration[timeFrame];
             
-            sampleData.taskDuration.forEach(task => {
+            // Show appropriate date controls
+            showDateControls(timeFrame);
+            
+            // Get selected date values
+            let selectedDate = '';
+            if (timeFrame === 'daily') {
+                const startDate = document.getElementById('startDate').value;
+                const endDate = document.getElementById('endDate').value;
+                selectedDate = `${startDate} to ${endDate}`;
+            } else if (timeFrame === 'weekly') {
+                selectedDate = document.getElementById('weekPicker').value;
+            } else if (timeFrame === 'monthly') {
+                selectedDate = document.getElementById('monthPicker').value;
+            }
+
+            currentData.forEach(task => {
                 const row = document.createElement('tr');
                 const completionRateColor = parseFloat(task.completionRate) >= 90 ? '#28a745' : parseFloat(task.completionRate) >= 80 ? '#ffc107' : '#dc3545';
                 row.innerHTML = `
@@ -696,9 +698,7 @@
                 tbody.appendChild(row);
             });
         }
-        
-
-        
+            
         function updateCharts() {
             const timeFrame = document.getElementById('timeFrame').value;
             const currentData = sampleData[timeFrame];
@@ -741,199 +741,15 @@
             completionRateChart.data.datasets[2].data = currentData.completionRate.reservation;
             completionRateChart.update();
             
-            // Update insights
-            updateInsights();
-            
             // Simulate data refresh based on date range
             console.log(`Updated charts for ${timeFrame} view: ${selectedDate}`);
         }
-        
-        function exportChartToPNG(chartId, filename) {
-            const canvas = document.getElementById(chartId);
-            const link = document.createElement('a');
-            link.download = `${filename}-${new Date().toISOString().split('T')[0]}.png`;
-            link.href = canvas.toDataURL();
-            link.click();
-            
-            alert(`${filename} chart exported as PNG!`);
+
+        function updateAllData(){
+            updateCharts()
+            populateTaskTable()
         }
-        
-        function exportChartToCSV(chartType) {
-            const timeFrame = document.getElementById('timeFrame').value;
-            
-            let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += `${chartType.charAt(0).toUpperCase() + chartType.slice(1)} Chart Data\n`;
-            csvContent += `Generated on: ${new Date().toLocaleString()}\n`;
-            csvContent += `Time Frame: ${timeFrame}\n\n`;
-            
-            if (chartType === 'completionRate') {
-                const currentData = sampleData[timeFrame][chartType];
-                csvContent += "Period,Ad Hoc Tasks (%),Routine Tasks (%),Reservation Tasks (%)\n";
-                
-                currentData.labels.forEach((label, index) => {
-                    csvContent += `${label},${currentData.adhoc[index]},${currentData.routine[index]},${currentData.reservation[index]}\n`;
-                });
-            } else {
-                const currentData = sampleData[timeFrame][chartType];
-                csvContent += "Label,Value\n";
-                
-                currentData.labels.forEach((label, index) => {
-                    csvContent += `${label},${currentData.data[index]}\n`;
-                });
-            }
-            
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", `${chartType}-chart-${new Date().toISOString().split('T')[0]}.csv`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            alert(`${chartType} chart data exported as CSV!`);
-        }
-        
-        function exportTableToPNG() {
-            // Create a canvas to capture the table
-            const table = document.querySelector('.task-table');
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            
-            // Set canvas size
-            canvas.width = 1200;
-            canvas.height = 400;
-            
-            // Fill background
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // Draw title
-            ctx.fillStyle = '#2c3e50';
-            ctx.font = 'bold 24px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText('Task Duration Analysis', canvas.width / 2, 40);
-            
-            // Draw table headers
-            ctx.fillStyle = '#f8f9fa';
-            ctx.fillRect(50, 70, canvas.width - 100, 40);
-            ctx.strokeStyle = '#e9ecef';
-            ctx.strokeRect(50, 70, canvas.width - 100, 40);
-            
-            ctx.fillStyle = '#495057';
-            ctx.font = 'bold 14px Arial';
-            ctx.textAlign = 'left';
-            const headers = ['Task Category', 'Total Tasks', 'Completion Rate', 'Avg. Completion Time', 'Fastest', 'Longest'];
-            const colWidths = [200, 120, 140, 180, 120, 120];
-            let xPos = 60;
-            headers.forEach((header, index) => {
-                ctx.fillText(header, xPos, 95);
-                xPos += colWidths[index];
-            });
-            
-            // Draw table data
-            let yPos = 120;
-            sampleData.taskDuration.forEach((task, rowIndex) => {
-                // Alternate row colors
-                if (rowIndex % 2 === 0) {
-                    ctx.fillStyle = '#f8f9fa';
-                    ctx.fillRect(50, yPos - 20, canvas.width - 100, 35);
-                }
-                
-                ctx.fillStyle = '#495057';
-                ctx.font = '14px Arial';
-                xPos = 60;
-                
-                const rowData = [task.category, task.total, task.completionRate, task.avgTime, task.fastestTime, task.longestTime];
-                rowData.forEach((data, colIndex) => {
-                    if (colIndex === 2) { // Completion rate column
-                        const rate = parseFloat(task.completionRate);
-                        ctx.fillStyle = rate >= 90 ? '#28a745' : rate >= 80 ? '#ffc107' : '#dc3545';
-                    } else if (colIndex === 4) { // Fastest time
-                        ctx.fillStyle = '#28a745';
-                    } else if (colIndex === 5) { // Longest time
-                        ctx.fillStyle = '#dc3545';
-                    } else {
-                        ctx.fillStyle = '#495057';
-                    }
-                    
-                    ctx.fillText(data.toString(), xPos, yPos);
-                    xPos += colWidths[colIndex];
-                });
-                
-                yPos += 35;
-            });
-            
-            // Export as PNG
-            const link = document.createElement('a');
-            link.download = `task-duration-analysis-${new Date().toISOString().split('T')[0]}.png`;
-            link.href = canvas.toDataURL();
-            link.click();
-            
-            alert('Task Duration Analysis table exported as PNG!');
-        }
-        
-        function exportTableToCSV() {
-            let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "Task Duration Analysis\n";
-            csvContent += `Generated on: ${new Date().toLocaleString()}\n\n`;
-            csvContent += "Task Category,Total Tasks,Completion Rate,Avg Completion Time,Fastest Completion,Longest Completion\n";
-            
-            sampleData.taskDuration.forEach(task => {
-                csvContent += `${task.category},${task.total},${task.completionRate},${task.avgTime},${task.fastestTime},${task.longestTime}\n`;
-            });
-            
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", `task-duration-analysis-${new Date().toISOString().split('T')[0]}.csv`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            alert('Task Duration Analysis exported as CSV!');
-        }
-        
-        function exportToCSV() {
-            let csvContent = "data:text/csv;charset=utf-8,";
-            
-            // Add header
-            csvContent += "Manager Dashboard Export\n";
-            csvContent += `Generated on: ${new Date().toLocaleString()}\n\n`;
-            
-            // Staff deployment data
-            csvContent += "Frontline Staff Deployment\n";
-            csvContent += "Department,Count\n";
-            sampleData.staff.labels.forEach((label, index) => {
-                csvContent += `${label},${sampleData.staff.data[index]}\n`;
-            });
-            csvContent += "\n";
-            
-            // Routine tasks data
-            csvContent += "Routine Tasks Breakdown\n";
-            csvContent += "Status,Count\n";
-            sampleData.routine.labels.forEach((label, index) => {
-                csvContent += `${label},${sampleData.routine.data[index]}\n`;
-            });
-            csvContent += "\n";
-            
-            // Task duration data
-            csvContent += "Task Duration Analysis\n";
-            csvContent += "Category,Total Tasks,Completion Rate,Avg Completion Time,Fastest Completion,Longest Completion\n";
-            sampleData.taskDuration.forEach(task => {
-                csvContent += `${task.category},${task.total},${task.completionRate},${task.avgTime},${task.fastestTime},${task.longestTime}\n`;
-            });
-            
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", `dashboard-export-${new Date().toISOString().split('T')[0]}.csv`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            alert('Dashboard data exported as CSV!');
-        }
-        
+       
         // Initialize everything when page loads
         window.addEventListener('load', function() {
             setDefaultDates();
