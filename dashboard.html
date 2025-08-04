@@ -214,16 +214,22 @@
                 </div>
                 
                 <div class="control-group" id="weeklyDateControls" style="display: none;">
-                    <label for="weekPicker">Select Week</label>
+                    <label for="weekPicker">選擇週數</label>
                     <input type="week" id="weekPicker" onchange="updateAllData()">
                 </div>
                 
                 <div class="control-group" id="monthlyDateControls" style="display: none;">
-                    <label for="monthPicker">Select Month</label>
+                    <label for="monthPicker">選擇月份</label>
                     <input type="month" id="monthPicker" onchange="updateAllData()">
                 </div>
-                
-
+            </div>
+            <div>
+                <div class="control-group">
+                    <label for="contract">合約編號</label>
+                    <select id="contract" onchange="updateAllData()">
+                        <option value="">PA12345</option>
+                    </select>
+                </div>
             </div>
         </div>
         
