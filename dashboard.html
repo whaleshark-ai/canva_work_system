@@ -230,13 +230,22 @@
         <div class="charts-grid">
             <div class="chart-container">
 
-                <div class="chart-title">前線人員部署人數</div>
+                <div class="chart-title">前線人員部署人數(LIVE)</div>
                 <div class="chart-wrapper">
                     <canvas id="staffChart"></canvas>
                 </div>
 
             </div>
-            
+
+            <div class="chart-container">
+
+                <div class="chart-title">員工部署數量趨勢</div>
+                <div class="chart-wrapper">
+                    <canvas id="trendChart"></canvas>
+                </div>
+
+            </div>
+
             <div class="chart-container">
 
                 <div class="chart-title">日常任務狀態</div>
@@ -248,7 +257,7 @@
             
             <div class="chart-container">
 
-                <div class="chart-title">臨時/預約任務數量</div>
+                <div class="chart-title">臨時/預約任務狀態</div>
                 <div class="chart-wrapper">
                     <canvas id="adhocChart"></canvas>
                 </div>
@@ -257,9 +266,9 @@
             
             <div class="chart-container">
 
-                <div class="chart-title">臨時任務數量趨勢</div>
+                <div class="chart-title">任務數量趨勢</div>
                 <div class="chart-wrapper">
-                    <canvas id="trendChart"></canvas>
+                    <canvas id="taskTotalTrendChart"></canvas>
                 </div>
 
             </div>
@@ -303,43 +312,65 @@
             daily: {
                 staff: {
                     labels: ['補充物資', '機械操作', '清潔', '消毒'],
-                    data: [8, 12, 7, 8]
+                    data: [8, 12, 7, 8],
+                    total: 35
+                },
+                trend: {
+                    labels: ['12AM - 8AM(SHIFT A)', '8AM - 4PM(SHIFT B)', '4PM - 12AM(SHIFT C)'],
+                    data: [26, 35, 37],
                 },
                 routine: {
                     labels: ['已完成', '進行中', '超過時限', '尚未完成'],
-                    data: [15, 8, 3, 9]
+                    data: [15, 20, 6, 37],
+                    total: 78
                 },
                 adhoc: {
                     labels: ['已完成', '超過時限', '進行中', '尚未完成'],
-                    data: [12, 4, 6, 13]
+                    data: [12, 4, 6, 13],
+                    total: 35
                 },
-                trend: {
-                    labels: ['12AM', '4AM', '8AM', '12PM', '4PM', '8PM', '11PM'],
-                    data: [2, 1, 4, 8, 12, 6, 3]
+                task_total: {
+                    labels: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                    adhoc: [78, 82, 85, 88, 91, 89, 93, 87, 84, 86, 81, 83],
+                    routine: [85, 88, 91, 94, 96, 93, 97, 92, 89, 91, 87, 90],
+                    reservation: [81, 84, 87, 90, 93, 91, 94, 89, 86, 88, 84, 87]
                 },
                 completionRate: {
-                    labels: ['12AM', '4AM', '8AM', '12PM', '4PM', '8PM', '11PM'],
-                    adhoc: [85, 78, 92, 88, 75, 82, 90],
-                    routine: [92, 88, 95, 91, 87, 89, 94],
-                    reservation: [88, 85, 90, 93, 89, 91, 87]
+                    labels: ['12AM - 8AM(SHIFT A)', '8AM - 4PM(SHIFT B)', '4PM - 12AM(SHIFT C)'],
+                    adhoc: [85, 78, 92],
+                    routine: [92, 88, 95],
+                    reservation: [88, 85, 90]
                 }
             },
             weekly: {
                 staff: {
                     labels: ['補充物資', '機械操作', '清潔', '消毒'],
-                    data: [25, 35, 22, 18]
-                },
-                routine: {
-                    labels: ['已完成', '進行中', '超過時限', '尚未完成'],
-                    data: [45, 20, 8, 27]
-                },
-                adhoc: {
-                    labels: ['已完成', '超過時限', '進行中', '尚未完成'],
-                    data: [32, 12, 18, 38]
+                    data: [8, 12, 7, 8],
+                    total: 35
                 },
                 trend: {
                     labels: ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'],
-                    data: [12, 19, 15, 25, 22, 18, 16]
+                    data: [98, 102, 95, 99, 106, 96, 100],
+                },
+                routine: {
+                    labels: ['已完成', '進行中', '超過時限', '尚未完成'],
+                    data: [268, 20, 8, 7],
+                    total: 303
+                },
+                routine_total: {
+                    labels: ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'],
+                    data: [90, 84, 87, 92, 81, 95, 88],
+                    total: 58
+                },
+                adhoc: {
+                    labels: ['已完成', '超過時限', '進行中', '尚未完成'],
+                    data: [74, 12, 18, 8],
+                    total: 112
+                },
+                task_total: {
+                    labels: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                    adhoc: [78, 82, 85, 88, 91, 89, 93, 87, 84, 86, 81, 83],
+                    reservation: [45, 41, 48, 49, 43, 47, 45, 45, 48, 42, 48, 42]
                 },
                 completionRate: {
                     labels: ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'],
@@ -351,24 +382,31 @@
             monthly: {
                 staff: {
                     labels: ['補充物資', '機械操作', '清潔', '消毒'],
-                    data: [105, 142, 155, 23]
+                    data: [8, 12, 7, 8],
+                    total: 35
+                },
+                trend: {
+                    labels: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                    data: [245, 268, 312, 289, 334, 298, 356, 378, 325, 342, 298, 315]
                 },
                 routine: {
                     labels: ['已完成', '進行中', '超過時限', '尚未完成'],
-                    data: [180, 85, 32, 108]
+                    data: [2181, 20, 32, 23],
+                    total: 2256
                 },
                 adhoc: {
-                    labels: ['已完成', '超過時限', '進行中', '尚未完成'],
-                    data: [128, 48, 72, 152]
+                    labels: ['已完成', '進行中', '超過時限', '尚未完成'],
+                    data: [1128, 20, 5, 68],
+                    total: 1221
                 },
-                trend: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                    data: [245, 268, 312, 289, 334, 298, 356, 378, 325, 342, 298, 315]
+                task_total: {
+                    labels: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                    adhoc: [, 82, 85, 88, 91, 89, 93, 105, 125, 86, 81, 83],
+                    reservation: [50, 51, 57, 52, 56, 56, 56, 51, 60, 68, 50, 57]
                 },
                 completionRate: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                    adhoc: [78, 82, 85, 88, 91, 89, 93, 87, 84, 86, 81, 83],
-                    routine: [85, 88, 91, 94, 96, 93, 97, 92, 89, 91, 87, 90],
+                    labels: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                    adhoc: [178, 182, 185, 188, 191, 189, 193, 187, 184, 186, 181, 183],
                     reservation: [81, 84, 87, 90, 93, 91, 94, 89, 86, 88, 84, 87]
                 }
             },
@@ -472,79 +510,14 @@
                 }
             });
             
-            // Routine Tasks Bar Chart
-            const routineCtx = document.getElementById('routineChart').getContext('2d');
-            routineChart = new Chart(routineCtx, {
-                type: 'bar',
-                data: {
-                    labels: currentData.routine.labels,
-                    datasets: [{
-                        data: currentData.routine.data,
-                        backgroundColor: ['#28a745', '#ffc107', '#dc3545', '#17a2b8'],
-                        borderWidth: 1,
-                        borderRadius: 8
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                color: '#f0f0f0'
-                            }
-                        },
-                        x: {
-                            grid: {
-                                display: false
-                            }
-                        }
-                    }
-                }
-            });
-            
-            // Ad Hoc Tasks Pie Chart
-            const adhocCtx = document.getElementById('adhocChart').getContext('2d');
-            adhocChart = new Chart(adhocCtx, {
-                type: 'pie',
-                data: {
-                    labels: currentData.adhoc.labels,
-                    datasets: [{
-                        data: currentData.adhoc.data,
-                        backgroundColor: ['#28a745', '#dc3545', '#ffc107', '#17a2b8'],
-                        borderWidth: 2,
-                        borderColor: '#fff'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                padding: 20,
-                                usePointStyle: true
-                            }
-                        }
-                    }
-                }
-            });
-            
-            // Daily Trend Line Chart
+            // Daily Staff Trend Line Chart
             const trendCtx = document.getElementById('trendChart').getContext('2d');
             trendChart = new Chart(trendCtx, {
-                type: 'line',
+                type: 'bar',
                 data: {
                     labels: currentData.trend.labels,
                     datasets: [{
-                        label: 'Ad Hoc Tasks',
+                        label: '員工部署數量',
                         data: currentData.trend.data,
                         borderColor: '#667eea',
                         backgroundColor: 'rgba(102, 126, 234, 0.1)',
@@ -580,7 +553,130 @@
                     }
                 }
             });
+
+            // Routine Tasks Bar Chart
+            const routineCtx = document.getElementById('routineChart').getContext('2d');
+            routineChart = new Chart(routineCtx, {
+                type: 'bar',
+                data: {
+                    labels: currentData.routine.labels,
+                    datasets: [{
+                        data: currentData.routine.data,
+                        backgroundColor: ['#28a745', '#ffc107', '#dc3545', '#17a2b8'],
+                        borderWidth: 1,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#f0f0f0'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    
+                }
+            });
+
+            // Ad Hoc Tasks Pie Chart
+            const adhocCtx = document.getElementById('adhocChart').getContext('2d');
+            adhocChart = new Chart(adhocCtx, {
+                type: 'pie',
+                data: {
+                    labels: currentData.adhoc.labels,
+                    datasets: [{
+                        data: currentData.adhoc.data,
+                        backgroundColor: ['#28a745', '#dc3545', '#ffc107', '#17a2b8'],
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true
+                            }
+                        }
+                    }
+                }
+            });
             
+            // Total Tasks trend Chart
+            const taskTotalTrendCtx = document.getElementById('taskTotalTrendChart').getContext('2d');
+            taskTotalTrendChart = new Chart(taskTotalTrendCtx, {
+                type: 'line',
+                data: {
+                    labels: currentData.task_total.labels,
+                    datasets: [{
+                        label: '臨時任務',
+                        data: currentData.task_total.adhoc,
+                        borderColor: '#FF6384',
+                        backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                        borderWidth: 3,
+                        fill: false,
+                        tension: 0.4,
+                        pointBackgroundColor: '#FF6384',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 5
+                    },{
+                        label: '預約任務',
+                        data: currentData.task_total.reservation,
+                        borderColor: '#FFCE56',
+                        backgroundColor: 'rgba(255, 206, 86, 0.1)',
+                        borderWidth: 3,
+                        fill: false,
+                        tension: 0.4,
+                        pointBackgroundColor: '#FFCE56',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#f0f0f0'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    
+                }
+            });
+
             // Completion Rate Trends Line Chart
             const completionRateCtx = document.getElementById('completionRateChart').getContext('2d');
             completionRateChart = new Chart(completionRateCtx, {
@@ -722,6 +818,10 @@
             staffChart.data.datasets[0].data = currentData.staff.data;
             staffChart.update();
             
+            trendChart.data.labels = currentData.trend.labels;
+            trendChart.data.datasets[0].data = currentData.trend.data;
+            trendChart.update();
+
             routineChart.data.labels = currentData.routine.labels;
             routineChart.data.datasets[0].data = currentData.routine.data;
             routineChart.update();
@@ -730,9 +830,10 @@
             adhocChart.data.datasets[0].data = currentData.adhoc.data;
             adhocChart.update();
             
-            trendChart.data.labels = currentData.trend.labels;
-            trendChart.data.datasets[0].data = currentData.trend.data;
-            trendChart.update();
+            taskTotalTrendChart.data.labels = currentData.task_total.labels;
+            taskTotalTrendChart.data.datasets[0].data = currentData.task_total.adhoc;
+            taskTotalTrendChart.data.datasets[1].data = currentData.task_total.reservation;
+            taskTotalTrendChart.update();
             
             completionRateChart.data.labels = currentData.completionRate.labels;
             completionRateChart.data.datasets[0].data = currentData.completionRate.adhoc;
