@@ -786,46 +786,91 @@
         </header>
 
         <main class="container mx-auto py-8 px-4">
+            <!-- Role Selector -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Select Your Role</h2>
+                <div class="flex flex-wrap gap-4">
+                    <button onclick="selectRole('system-admin')" class="role-btn px-4 py-2 rounded-lg border-2 border-gray-200 hover:border-purple-400 transition-colors" data-role="system-admin">
+                        System Admin
+                    </button>
+                    <button onclick="selectRole('aa-admin')" class="role-btn px-4 py-2 rounded-lg border-2 border-gray-200 hover:border-purple-400 transition-colors" data-role="aa-admin">
+                        AA Admin & Contract Manager
+                    </button>
+                    <button onclick="selectRole('contract-admin')" class="role-btn px-4 py-2 rounded-lg border-2 border-gray-200 hover:border-purple-400 transition-colors" data-role="contract-admin">
+                        Contract Admin / Supervisor
+                    </button>
+                </div>
+            </div>
+
             <div class="bg-white rounded-xl shadow-md p-6 mb-8">
                 <h2 class="text-xl font-semibold text-gray-800 mb-4">Configuration Options</h2>
                 <p class="text-gray-600 mb-6">Select a setting to customize your experience</p>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Department Settings -->
-                    <a href="Department.html"
-                        class="setting-item block bg-white border border-gray-200 rounded-lg p-6 hover:border-purple-400">
+                    <!-- System Admin Items -->
+                    <a href="user-role.html" class="setting-item system-admin-item block bg-white border border-gray-200 rounded-lg p-6 hover:border-purple-400">
                         <div class="flex items-center">
                             <div class="bg-purple-100 p-3 rounded-full mr-4">
-                                <svg class="setting-icon w-6 h-6 text-purple-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                <svg class="setting-icon w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                 </svg>
                             </div>
                             <div>
-                                <h3 class="font-medium text-gray-800 text-lg">Department</h3>
-                                <p class="text-gray-500 mt-1"></p>
+                                <h3 class="font-medium text-gray-800 text-lg">User Role</h3>
+                                <p class="text-gray-500 mt-1">Manage user roles and permissions</p>
                             </div>
                             <div class="ml-auto">
-                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 5l7 7-7 7"></path>
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                 </svg>
                             </div>
                         </div>
                     </a>
 
-                    <!-- Contract -->
-                    <a href="contract.html"
-                        class="setting-item block bg-white border border-gray-200 rounded-lg p-6 hover:border-blue-400">
+                    <a href="staff-management.html" class="setting-item system-admin-item block bg-white border border-gray-200 rounded-lg p-6 hover:border-blue-400">
                         <div class="flex items-center">
                             <div class="bg-blue-100 p-3 rounded-full mr-4">
-                                <svg class="setting-icon w-6 h-6 text-blue-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
-                                    </path>
+                                <svg class="setting-icon w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800 text-lg">Staff (AA Admin / Contract Manager / Contract Admin)</h3>
+                                <p class="text-gray-500 mt-1">Manage staff members</p>
+                            </div>
+                            <div class="ml-auto">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="access-rights.html" class="setting-item system-admin-item block bg-white border border-gray-200 rounded-lg p-6 hover:border-green-400">
+                        <div class="flex items-center">
+                            <div class="bg-green-100 p-3 rounded-full mr-4">
+                                <svg class="setting-icon w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800 text-lg">Access Rights</h3>
+                                <p class="text-gray-500 mt-1">Configure access permissions</p>
+                            </div>
+                            <div class="ml-auto">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- AA Admin & Contract Manager Items -->
+                    <a href="contract.html" class="setting-item aa-admin-item block bg-white border border-gray-200 rounded-lg p-6 hover:border-blue-400">
+                        <div class="flex items-center">
+                            <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                <svg class="setting-icon w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
                                 </svg>
                             </div>
                             <div>
@@ -833,195 +878,261 @@
                                 <p class="text-gray-500 mt-1">Manage your contract</p>
                             </div>
                             <div class="ml-auto">
-                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 5l7 7-7 7"></path>
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                 </svg>
                             </div>
                         </div>
                     </a>
 
-                    <!-- Service -->
-                    <a href="service.html"
-                        class="setting-item block bg-white border border-gray-200 rounded-lg p-6 hover:border-green-400">
+                    <a href="service.html" class="setting-item aa-admin-item block bg-white border border-gray-200 rounded-lg p-6 hover:border-green-400">
                         <div class="flex items-center">
                             <div class="bg-green-100 p-3 rounded-full mr-4">
-                                <svg class="setting-icon w-6 h-6 text-green-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
-                                    </path>
+                                <svg class="setting-icon w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
                                 </svg>
                             </div>
                             <div>
                                 <h3 class="font-medium text-gray-800 text-lg">Service</h3>
-                                <p class="text-gray-500 mt-1"></p>
+                                <p class="text-gray-500 mt-1">Manage services</p>
                             </div>
                             <div class="ml-auto">
-                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 5l7 7-7 7"></path>
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                 </svg>
                             </div>
                         </div>
                     </a>
 
-                    <!-- Team -->
-                    <a href="team.html"
-                        class="setting-item block bg-white border border-gray-200 rounded-lg p-6 hover:border-yellow-400">
+                    <a href="Department.html" class="setting-item aa-admin-item block bg-white border border-gray-200 rounded-lg p-6 hover:border-purple-400">
                         <div class="flex items-center">
-                            <div class="bg-yellow-100 p-3 rounded-full mr-4">
-                                <svg class="setting-icon w-6 h-6 text-yellow-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01">
-                                    </path>
+                            <div class="bg-purple-100 p-3 rounded-full mr-4">
+                                <svg class="setting-icon w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
                                 </svg>
                             </div>
                             <div>
-                                <h3 class="font-medium text-gray-800 text-lg">Team</h3>
-                                <p class="text-gray-500 mt-1"></p>
+                                <h3 class="font-medium text-gray-800 text-lg">Department</h3>
+                                <p class="text-gray-500 mt-1">Manage departments</p>
                             </div>
                             <div class="ml-auto">
-                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 5l7 7-7 7"></path>
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                 </svg>
                             </div>
                         </div>
                     </a>
 
-                    <!-- Adhoc task -->
-                    <a href="adhoc_task.html"
-                        class="setting-item block bg-white border border-gray-200 rounded-lg p-6 hover:border-yellow-400">
+                    <a href="staff-supervisor.html" class="setting-item aa-admin-item block bg-white border border-gray-200 rounded-lg p-6 hover:border-yellow-400">
                         <div class="flex items-center">
                             <div class="bg-yellow-100 p-3 rounded-full mr-4">
-                                <svg class="setting-icon w-6 h-6 text-yellow-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01">
-                                    </path>
+                                <svg class="setting-icon w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                                 </svg>
                             </div>
                             <div>
-                                <h3 class="font-medium text-gray-800 text-lg">Adhoc Task</h3>
-                                <p class="text-gray-500 mt-1"></p>
+                                <h3 class="font-medium text-gray-800 text-lg">Staff (Supervisor / Staff)</h3>
+                                <p class="text-gray-500 mt-1">Manage supervisors and staff</p>
                             </div>
                             <div class="ml-auto">
-                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 5l7 7-7 7"></path>
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                 </svg>
                             </div>
                         </div>
                     </a>
 
-                    <!-- Reservation task -->
-                    <a href="reservation_task.html"
-                        class="setting-item block bg-white border border-gray-200 rounded-lg p-6 hover:border-yellow-400">
+                    <a href="job-title.html" class="setting-item aa-admin-item block bg-white border border-gray-200 rounded-lg p-6 hover:border-indigo-400">
                         <div class="flex items-center">
-                            <div class="bg-yellow-100 p-3 rounded-full mr-4">
-                                <svg class="setting-icon w-6 h-6 text-yellow-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01">
-                                    </path>
+                            <div class="bg-indigo-100 p-3 rounded-full mr-4">
+                                <svg class="setting-icon w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.608-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H8a2 2 0 01-2-2V8a2 2 0 012-2V6"></path>
                                 </svg>
                             </div>
                             <div>
-                                <h3 class="font-medium text-gray-800 text-lg">Reservation Task</h3>
-                                <p class="text-gray-500 mt-1"></p>
+                                <h3 class="font-medium text-gray-800 text-lg">Job Title</h3>
+                                <p class="text-gray-500 mt-1">Manage job titles</p>
                             </div>
                             <div class="ml-auto">
-                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 5l7 7-7 7"></path>
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                 </svg>
                             </div>
                         </div>
                     </a>
 
-                    <!-- Checkpoints task -->
-                    <a href="checkpoints.html"
-                        class="setting-item block bg-white border border-gray-200 rounded-lg p-6 hover:border-yellow-400">
+                    <a href="documents.html" class="setting-item aa-admin-item block bg-white border border-gray-200 rounded-lg p-6 hover:border-pink-400">
+                        <div class="flex items-center">
+                            <div class="bg-pink-100 p-3 rounded-full mr-4">
+                                <svg class="setting-icon w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800 text-lg">Documents</h3>
+                                <p class="text-gray-500 mt-1">Manage documents</p>
+                            </div>
+                            <div class="ml-auto">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="clocking-device.html" class="setting-item aa-admin-item block bg-white border border-gray-200 rounded-lg p-6 hover:border-teal-400">
+                        <div class="flex items-center">
+                            <div class="bg-teal-100 p-3 rounded-full mr-4">
+                                <svg class="setting-icon w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800 text-lg">Clocking Device</h3>
+                                <p class="text-gray-500 mt-1">Manage clocking devices</p>
+                            </div>
+                            <div class="ml-auto">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="operational-period.html" class="setting-item aa-admin-item block bg-white border border-gray-200 rounded-lg p-6 hover:border-red-400">
+                        <div class="flex items-center">
+                            <div class="bg-red-100 p-3 rounded-full mr-4">
+                                <svg class="setting-icon w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800 text-lg">Operational Period</h3>
+                                <p class="text-gray-500 mt-1">Manage operational periods</p>
+                            </div>
+                            <div class="ml-auto">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Contract Admin / Supervisor Items -->
+                    <a href="shift-schedule.html" class="setting-item contract-admin-item block bg-white border border-gray-200 rounded-lg p-6 hover:border-purple-400">
+                        <div class="flex items-center">
+                            <div class="bg-purple-100 p-3 rounded-full mr-4">
+                                <svg class="setting-icon w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800 text-lg">Shift Schedule</h3>
+                                <p class="text-gray-500 mt-1">Manage shift schedules</p>
+                            </div>
+                            <div class="ml-auto">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="task-templates.html" class="setting-item contract-admin-item block bg-white border border-gray-200 rounded-lg p-6 hover:border-blue-400">
+                        <div class="flex items-center">
+                            <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                <svg class="setting-icon w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800 text-lg">Task Templates</h3>
+                                <p class="text-gray-500 mt-1">Manage task templates</p>
+                            </div>
+                            <div class="ml-auto">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="custom-location-poi.html" class="setting-item contract-admin-item block bg-white border border-gray-200 rounded-lg p-6 hover:border-green-400">
+                        <div class="flex items-center">
+                            <div class="bg-green-100 p-3 rounded-full mr-4">
+                                <svg class="setting-icon w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800 text-lg">Custom Location POI</h3>
+                                <p class="text-gray-500 mt-1">Manage custom location POIs</p>
+                            </div>
+                            <div class="ml-auto">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="location-zone.html" class="setting-item contract-admin-item block bg-white border border-gray-200 rounded-lg p-6 hover:border-yellow-400">
                         <div class="flex items-center">
                             <div class="bg-yellow-100 p-3 rounded-full mr-4">
-                                <svg class="setting-icon w-6 h-6 text-yellow-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01">
-                                    </path>
+                                <svg class="setting-icon w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800 text-lg">Location Zone</h3>
+                                <p class="text-gray-500 mt-1">Manage location zones</p>
+                            </div>
+                            <div class="ml-auto">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="checkpoints.html" class="setting-item contract-admin-item block bg-white border border-gray-200 rounded-lg p-6 hover:border-indigo-400">
+                        <div class="flex items-center">
+                            <div class="bg-indigo-100 p-3 rounded-full mr-4">
+                                <svg class="setting-icon w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                             </div>
                             <div>
                                 <h3 class="font-medium text-gray-800 text-lg">Checkpoints</h3>
-                                <p class="text-gray-500 mt-1"></p>
+                                <p class="text-gray-500 mt-1">Manage checkpoints</p>
                             </div>
                             <div class="ml-auto">
-                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 5l7 7-7 7"></path>
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                 </svg>
                             </div>
                         </div>
                     </a>
-                    <!-- Geolocation -->
-                    <!-- <a href="geo.html"
-                        class="setting-item block bg-white border border-gray-200 rounded-lg p-6 hover:border-red-400">
-                        <div class="flex items-center">
-                            <div class="bg-red-100 p-3 rounded-full mr-4">
-                                <svg class="setting-icon w-6 h-6 text-red-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129">
-                                    </path>
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="font-medium text-gray-800 text-lg">Geolocation</h3>
-                                <p class="text-gray-500 mt-1">POI</p>
-                            </div>
-                            <div class="ml-auto">
-                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 5l7 7-7 7"></path>
-                                </svg>
-                            </div>
-                        </div>
-                    </a> -->
 
-                    <!-- Help & Support -->
-                    <!-- <a href="support.html"
-                        class="setting-item block bg-white border border-gray-200 rounded-lg p-6 hover:border-teal-400">
+                    <a href="task-category.html" class="setting-item contract-admin-item block bg-white border border-gray-200 rounded-lg p-6 hover:border-pink-400">
                         <div class="flex items-center">
-                            <div class="bg-teal-100 p-3 rounded-full mr-4">
-                                <svg class="setting-icon w-6 h-6 text-teal-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
-                                    </path>
+                            <div class="bg-pink-100 p-3 rounded-full mr-4">
+                                <svg class="setting-icon w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 10V7a4 4 0 014-4z"></path>
                                 </svg>
                             </div>
                             <div>
-                                <h3 class="font-medium text-gray-800 text-lg">Help &amp; Support</h3>
-                                <p class="text-gray-500 mt-1">Get help and contact support</p>
+                                <h3 class="font-medium text-gray-800 text-lg">Task Category</h3>
+                                <p class="text-gray-500 mt-1">Manage task categories</p>
                             </div>
                             <div class="ml-auto">
-                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 5l7 7-7 7"></path>
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                 </svg>
                             </div>
                         </div>
-                    </a> -->
+                    </a>
                 </div>
             </div>
 
@@ -1032,7 +1143,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Access control -->
                     <a href="access_control.html"
-                        class="setting-item block bg-white border border-gray-200 rounded-lg p-6 hover:border-indigo-400">
+                        class="setting-item system-admin-item block bg-white border border-gray-200 rounded-lg p-6 hover:border-indigo-400">
                         <div class="flex items-center">
                             <div class="bg-indigo-100 p-3 rounded-full mr-4">
                                 <svg class="setting-icon w-6 h-6 text-indigo-600" fill="none" stroke="currentColor"
@@ -1055,31 +1166,6 @@
                             </div>
                         </div>
                     </a>
-
-                    <!-- Developer Options -->
-                    <!-- <a href="developer.html"
-                        class="setting-item block bg-white border border-gray-200 rounded-lg p-6 hover:border-pink-400">
-                        <div class="flex items-center">
-                            <div class="bg-pink-100 p-3 rounded-full mr-4">
-                                <svg class="setting-icon w-6 h-6 text-pink-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="font-medium text-gray-800 text-lg">Developer Options</h3>
-                                <p class="text-gray-500 mt-1">Advanced tools and API access</p>
-                            </div>
-                            <div class="ml-auto">
-                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 5l7 7-7 7"></path>
-                                </svg>
-                            </div>
-                        </div>
-                    </a> -->
                 </div>
             </div>
         </main>
@@ -1090,6 +1176,65 @@
             </div>
         </footer>
     </div>
+
+    <script>
+        // Role-based access control functionality
+        let currentRole = 'system-admin'; // Default role
+
+        function selectRole(role) {
+            currentRole = role;
+            
+            // Update button styles
+            document.querySelectorAll('.role-btn').forEach(btn => {
+                btn.classList.remove('bg-purple-600', 'text-white');
+                btn.classList.add('border-gray-200');
+            });
+            
+            // Highlight selected role
+            const selectedBtn = document.querySelector(`[data-role="${role}"]`);
+            if (selectedBtn) {
+                selectedBtn.classList.add('bg-purple-600', 'text-white');
+                selectedBtn.classList.remove('border-gray-200');
+            }
+            
+            // Show/hide items based on role
+            updateVisibility();
+        }
+
+        function updateVisibility() {
+            // Hide all role-specific items first
+            document.querySelectorAll('.system-admin-item, .aa-admin-item, .contract-admin-item').forEach(item => {
+                item.style.display = 'none';
+            });
+            
+            // Show items based on hierarchical role access
+            switch(currentRole) {
+                case 'system-admin':
+                    // System Admin can see ALL items
+                    document.querySelectorAll('.system-admin-item, .aa-admin-item, .contract-admin-item').forEach(item => {
+                        item.style.display = 'block';
+                    });
+                    break;
+                case 'aa-admin':
+                    // AA Admin & Contract Manager can see their own items + Contract Admin items
+                    document.querySelectorAll('.aa-admin-item, .contract-admin-item').forEach(item => {
+                        item.style.display = 'block';
+                    });
+                    break;
+                case 'contract-admin':
+                    // Contract Admin / Supervisor can only see their own items
+                    document.querySelectorAll('.contract-admin-item').forEach(item => {
+                        item.style.display = 'block';
+                    });
+                    break;
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            selectRole('system-admin');
+        });
+    </script>
     <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'95cdf0ef52d70ecc',t:'MTc1MjEyODI3OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
     <iframe height="1" width="1"
         style="position: absolute; top: 0px; left: 0px; border: none; visibility: hidden;"></iframe>
